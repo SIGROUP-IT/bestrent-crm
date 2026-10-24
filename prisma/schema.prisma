@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+model Cliente {
+  id Int @id @default(autoincrement())
+  cognome_nome String @db.VarChar(100)
+  luogo_nascita String? @db.VarChar(100)
+  data_nascita DateTime? @db.Date
+  codice_fiscale_piva String? @db.VarChar(20)
+  indirizzo String? @db.VarChar(200)
+  citta_cap String? @db.VarChar(100)
+  nazione String @default("Italia") @db.VarChar(50)
+  telefono String? @db.VarChar(30)
+  email String? @db.VarChar(100)
+  patente_nr String? @db.VarChar(30)
+  patente_valida_al DateTime? @db.Date
+  note String? @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  contratti Contratto[]
+  @@map("clienti")
+}
+model Veicolo {
+  id Int @id @default(autoincrement())
+  targa String @unique @db.VarChar(10)
+  marca String @db.VarChar(50)
+  modello String @db.VarChar(50)
+  colore String? @db.VarChar(30)
+  gruppo_tariffa String? @db.VarChar(10)
+  km_attuali Int @default(0)
+  capacita_serbatoio Int?
+  tipo_carburante String @default("benzina") @db.VarChar(20)
+  stato String @default("disponibile") @db.VarChar(20)
+  sede String? @db.VarChar(100)
+  note String? @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  contratti Contratto[]
+  @@map("veicoli")
+}
+model Operatore {
+  id Int @id @default(autoincrement())
+  cognome_nome String @db.VarChar(100)
+  ruolo String @default("operatore") @db.VarChar(15)
+  telefono String? @db.VarChar(30)
+  email String? @db.VarChar(100)
+  username String @unique @db.VarChar(50)
+  password_hash String? @db.VarChar(255)
+  attivo Boolean @default(true)
+  created_at DateTime @default(now())
+  @@map("operatori")
+}
+model Contratto {
+  id Int @id @default(autoincrement())
+  numero_contratto String @unique @db.VarChar(20)
+  numero_prenotazione String? @db.VarChar(30)
+  ref_number String? @db.VarChar(30)
+  id_cliente Int
+  id_veicolo Int
+  sede_consegna String? @db.VarChar(100)
+  data_consegna DateTime
+  sede_rientro String? @db.VarChar(100)
+  data_rientro_prevista DateTime
+  data_rientro_effettiva DateTime?
+  km_uscita Int?
+  km_rientro Int?
+  gas_uscita String? @db.VarChar(10)
+  gas_rientro String? @db.VarChar(10)
+  tariffa_giornaliera Decimal @db.Decimal(8, 2)
+  giorni_noleggio Int
+  sconto_percentuale Decimal @default(0) @db.Decimal(5, 2)
+  totale_imponibile Decimal? @db.Decimal(10, 2)
+  totale_documento Decimal? @db.Decimal(10, 2)
+  stato_contratto String @default("prenotato") @db.VarChar(20)
+  franchigia_danni Decimal @default(500) @db.Decimal(10, 2)
+  penalita_furto Decimal @default(1000) @db.Decimal(10, 2)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  cliente Cliente @relation(fields: [id_cliente], references: [id])
+  veicolo Veicolo @relation(fields: [id_veicolo], references: [id])
+  pagamenti Pagamento[]
+  ispezioni Ispezione[]
+  dotazioni Dotazione[]
+  @@index([id_cliente])
+  @@index([id_veicolo])
+  @@map("contratti")
+}
+model Pagamento {
+  id Int @id @default(autoincrement())
+  id_contratto Int
+  tipo_pagamento String @db.VarChar(20)
+  importo Decimal @db.Decimal(10, 2)
+  deposito_cauzionale Decimal @default(0) @db.Decimal(10, 2)
+  rimborsato Boolean @default(false)
+  data_pagamento DateTime @default(now())
+  note String? @db.Text
+  contratto Contratto @relation(fields: [id_contratto], references: [id])
+  @@index([id_contratto])
+  @@map("pagamenti")
+}
+model Ispezione {
+  id Int @id @default(autoincrement())
+  id_contratto Int
+  fase String @db.VarChar(10)
+  classe_danno String? @db.VarChar(50)
+  tipo_danno String? @db.VarChar(50)
+  componente String? @db.VarChar(50)
+  note String? @db.Text
+  data_ispezione DateTime @default(now())
+  contratto Contratto @relation(fields: [id_contratto], references: [id])
+  @@index([id_contratto])
+  @@map("ispezioni_veicolo")
+}
+model Dotazione {
+  id Int @id @default(autoincrement())
+  id_contratto Int
+  elemento String @db.VarChar(100)
+  presente_uscita Boolean @default(true)
+  presente_rientro Boolean?
+  note String? @db.Text
+  contratto Contratto @relation(fields: [id_contratto], references: [id])
+  @@index([id_contratto])
+  @@map("dotazioni_bordo")
+}
+model Penale {
+  id Int @id @default(autoincrement())
+  codice String? @unique @db.VarChar(20)
+  descrizione String @db.VarChar(200)
+  importo Decimal @db.Decimal(10, 2)
+  categoria String @db.VarChar(15)
+  attivo Boolean @default(true)
+  @@map("penali_tariffario")
+}

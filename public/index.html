@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BestRent CRM</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f3f4f6;color:#1f2937;font-size:14px}
+.hidden{display:none!important}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1e3a5f,#1d4ed8)}
+.login-box{background:#fff;border-radius:16px;padding:40px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-box h1{text-align:center;font-size:24px;margin-bottom:8px;color:#1d4ed8}
+.login-box p.sub{text-align:center;color:#6b7280;font-size:13px;margin-bottom:24px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:4px}
+.form-group input{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none}
+.form-group input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.btn{padding:12px 24px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%}
+.btn-primary{background:#1d4ed8;color:#fff}.btn-primary:hover{background:#1e40af}
+.btn-secondary{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+.btn-danger{background:#dc2626;color:#fff}
+.btn-sm{padding:8px 14px;font-size:12px;width:auto}
+.error-msg{background:#fee2e2;color:#dc2626;padding:10px;border-radius:8px;font-size:13px;margin-bottom:12px;text-align:center}
+.login-hint{text-align:center;font-size:11px;color:#9ca3af;margin-top:16px}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#111827;color:#fff}
+.header h2{font-size:18px;font-weight:700}.header h2 span{color:#60a5fa;font-weight:400;font-size:12px}
+.header-right{display:flex;align-items:center;gap:12px}
+.header-right span{font-size:13px;color:#d1d5db}
+.btn-logout{background:#374151;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:12px;cursor:pointer}
+
+/* NAV */
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;overflow-x:auto}
+.nav button{padding:14px 18px;border:none;background:none;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.nav button.active{color:#1d4ed8;border-bottom-color:#1d4ed8}
+.nav button:hover{color:#374151}
+
+/* CONTENT */
+.content{padding:24px;max-width:1200px;margin:0 auto}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:16px}
+.card h3{font-size:15px;font-weight:600;margin-bottom:14px;color:#374151}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.kpi{padding:20px;border-radius:12px;color:#fff}
+.kpi.blue{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.kpi.green{background:linear-gradient(135deg,#059669,#10b981)}
+.kpi.orange{background:linear-gradient(135deg,#d97706,#f59e0b)}
+.kpi.purple{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.kpi-label{font-size:12px;opacity:.85;margin-bottom:4px}
+.kpi-value{font-size:28px;font-weight:700}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;color:#6b7280;text-transform:uppercase;padding:10px;border-bottom:2px solid #e5e7eb}
+td{padding:12px 10px;border-bottom:1px solid #f3f4f6;font-size:13px}
+tr:hover td{background:#f9fafb}
+.status{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.status.attivo{background:#dcfce7;color:#15803d}
+.status.chiuso{background:#e5e7eb;color:#374151}
+.status.prenotato{background:#dbeafe;color:#1d4ed8}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.search-box{padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;width:280px;outline:none}
+.search-box:focus{border-color:#3b82f6}
+
+/* MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:center;justify-content:center}
+.modal-box{background:#fff;border-radius:16px;padding:28px;width:480px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-box h3{font-size:16px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e5e7eb}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+</style>
+</head>
+<body>
+
+<!-- ========== LOGIN ========== -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>BestRent CRM</h1>
+    <p class="sub">Gestione Autonoleggio</p>
+    <div id="login-error" class="error-msg hidden"></div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="Username" value="gaetano.t">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Password" value="BestRent2026!">
+    </div>
+    <button class="btn btn-primary" id="btn-login">Accedi</button>
+    <p class="login-hint">Credenziali: gaetano.t / BestRent2026!</p>
+  </div>
+</div>
+
+<!-- ========== MAIN APP ========== -->
+<div id="main-app" class="hidden">
+  <div class="header">
+    <h2>BestRent <span>CRM</span></h2>
+    <div class="header-right">
+      <span id="user-name"></span>
+      <button class="btn-logout" id="btn-logout">Esci</button>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="active" data-tab="dashboard">Dashboard</button>
+    <button data-tab="contratti">Contratti</button>
+    <button data-tab="clienti">Clienti</button>
+    <button data-tab="veicoli">Flotta</button>
+    <button data-tab="pagamenti">Pagamenti</button>
+  </div>
+  <div class="content" id="content"></div>
+</div>
+
+<!-- ========== MODAL ========== -->
+<div id="modal" class="hidden"></div>
+
+<script>
+// ===== STATE =====
+var token = '';
+var currentTab = 'dashboard';
+var API = '/api';
+
+// ===== API HELPER =====
+function api(method, path, body) {
+  var opts = {
+    method: method,
+    headers: { 'Content-Type': 'application/json' }
+  };
+  if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+  if (body) opts.body = JSON.stringify(body);
+  return fetch(API + path, opts).then(function(r) { return r.json(); });
+}
+
+// ===== LOGIN =====
+document.getElementById('btn-login').addEventListener('click', doLogin);
+document.getElementById('login-pass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogin() {
+  var user = document.getElementById('login-user').value;
+  var pass = document.getElementById('login-pass').value;
+  var errEl = document.getElementById('login-error');
+  errEl.classList.add('hidden');
+
+  api('POST', '/auth/login', { username: user, password: pass })
+    .then(function(data) {
+      if (data.token) {
+        token = data.token;
+        document.getElementById('user-name').textContent = data.operatore.nome;
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('main-app').classList.remove('hidden');
+        loadTab('dashboard');
+      } else {
+        errEl.textContent = data.error || 'Credenziali non valide';
+        errEl.classList.remove('hidden');
+      }
+    })
+    .catch(function() {
+      errEl.textContent = 'Errore di connessione al server';
+      errEl.classList.remove('hidden');
+    });
+}
+
+// ===== LOGOUT =====
+document.getElementById('btn-logout').addEventListener('click', function() {
+  token = '';
+  document.getElementById('main-app').classList.add('hidden');
+  document.getElementById('login-screen').classList.remove('hidden');
+});
+
+// ===== NAV TABS =====
+document.querySelectorAll('.nav button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.nav button').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    loadTab(btn.getAttribute('data-tab'));
+  });
+});
+
+// ===== LOAD TAB =====
+function loadTab(tab) {
+  currentTab = tab;
+  var el = document.getElementById('content');
+  el.innerHTML = '<p style="text-align:center;padding:40px;color:#9ca3af">Caricamento...</p>';
+
+  if (tab === 'dashboard') loadDashboard();
+  else if (tab === 'contratti') loadContratti();
+  else if (tab === 'clienti') loadClienti();
+  else if (tab === 'veicoli') loadVeicoli();
+  else if (tab === 'pagamenti') loadPagamenti();
+}
+
+// ===== DASHBOARD =====
+function loadDashboard() {
+  api('GET', '/dashboard').then(function(data) {
+    if (data.error) { document.getElementById('content').innerHTML = '<p>' + data.error + '</p>'; return; }
+    var k = data.kpi;
+    var html = '<div class="kpi-grid">';
+    html += '<div class="card kpi blue"><div class="kpi-label">Contratti Attivi</div><div class="kpi-value">' + k.contrattiAttivi + '</div></div>';
+    html += '<div class="card kpi green"><div class="kpi-label">Clienti Totali</div><div class="kpi-value">' + k.totaleClienti + '</div></div>';
+    html += '<div class="card kpi orange"><div class="kpi-label">Veicoli in Flotta</div><div class="kpi-value">' + k.totaleVeicoli + '</div></div>';
+    html += '<div class="card kpi purple"><div class="kpi-label">Fatturato Totale</div><div class="kpi-value">&euro;' + Number(k.fatturato).toFixed(2) + '</div></div>';
+    html += '</div>';
+
+    html += '<div class="card"><h3>Ultimi Contratti</h3><table><thead><tr><th>N.</th><th>Cliente</th><th>Veicolo</th><th>Stato</th></tr></thead><tbody>';
+    if (data.ultimiContratti && data.ultimiContratti.length > 0) {
+      data.ultimiContratti.forEach(function(c) {
+        html += '<tr><td>' + c.numero_contratto + '</td>';
+        html += '<td>' + (c.cliente ? c.cliente.cognome_nome : '-') + '</td>';
+        html += '<td>' + (c.veicolo ? c.veicolo.marca + ' ' + c.veicolo.modello + ' (' + c.veicolo.targa + ')' : '-') + '</td>';
+        html += '<td><span class="status ' + c.stato_contratto + '">' + c.stato_contratto + '</span></td></tr>';
+      });
+    } else {
+      html += '<tr><td colspan="4" style="text-align:center;color:#9ca3af">Nessun contratto</td></tr>';
+    }
+    html += '</tbody></table></div>';
+    document.getElementById('content').innerHTML = html;
+  });
+}
+
+// ===== CONTRATTI =====
+function loadContratti() {
+  api('GET', '/contratti').then(function(data) {
+    var list = data.dati || data || [];
+    var html = '<div class="toolbar"><input class="search-box" placeholder="Cerca contratto..." id="search-contratti"><button class="btn btn-primary btn-sm" onclick="showNewContratto()">+ Nuovo Contratto</button></div>';
+    html += '<div class="card"><table><thead><tr><th>N. Contratto</th><th>Cliente</th><th>Veicolo</th><th>Consegna</th><th>Rientro</th><th>Totale</th><th>Stato</th></tr></thead><tbody>';
+    if (list.length > 0) {
+      list.forEach(function(c) {
+        var dc = c.data_consegna ? new Date(c.data_consegna).toLocaleDateString('it-IT') : '-';
+        var dr = c.data_rientro_prevista ? new Date(c.data_rientro_prevista).toLocaleDateString('it-IT') : '-';
+        html += '<tr><td><strong>' + c.numero_contratto + '</strong></td>';
+        html += '<td>' + (c.cliente ? c.cliente.cognome_nome : '-') + '</td>';
+        html += '<td>' + (c.veicolo ? c.veicolo.targa : '-') + '</td>';
+        html += '<td>' + dc + '</td><td>' + dr + '</td>';
+        html += '<td>&euro;' + Number(c.totale_documento || 0).toFixed(2) + '</td>';
+        html += '<td><span class="status ' + c.stato_contratto + '">' + c.stato_contratto + '</span></td></tr>';
+      });
+    } else {
+      html += '<tr><td colspan="7" style="text-align:center;color:#9ca3af">Nessun contratto trovato</td></tr>';
+    }
+    html += '</tbody></table></div>';
+    document.getElementById('content').innerHTML = html;
+  });
+}
+
+// ===== CLIENTI =====
+function loadClienti() {
+  api('GET', '/clienti').then(function(data) {
+    var list = data.dati || data || [];
+    var html = '<div class="toolbar"><input class="search-box" placeholder="Cerca cliente..." id="search-clienti"><button class="btn btn-primary btn-sm" onclick="showNewCliente()">+ Nuovo Cliente</button></div>';
+    html += '<div class="card"><table><thead><tr><th>Nome</th><th>Telefono</th><th>Email</th><th>Patente</th><th>Nazione</th><th>Azioni</th></tr></thead><tbody>';
+    if (list.length > 0) {
+      list.forEach(function(c) {
+        html += '<tr><td><strong>' + c.cognome_nome + '</strong></td>';
+        html += '<td>' + (c.telefono || '-') + '</td>';
+        html += '<td>' + (c.email || '-') + '</td>';
+        html += '<td>' + (c.patente_nr || '-') + '</td>';
+        html += '<td>' + (c.nazione || '-') + '</td>';
+        html += '<td><button class="btn btn-secondary btn-sm" onclick="editCliente(' + c.id + ')">Modifica</button> ';
+        html += '<button class="btn btn-danger btn-sm" onclick="deleteCliente(' + c.id + ')">Elimina</button></td></tr>';
+      });
+    } else {
+      html += '<tr><td colspan="6" style="text-align:center;color:#9ca3af">Nessun cliente trovato</td></tr>';
+    }
+    html += '</tbody></table></div>';
+    document.getElementById('content').innerHTML = html;
+  });
+}
+
+// ===== VEICOLI =====
+function loadVeicoli() {
+  api('GET', '/veicoli').then(function(data) {
+    var list = Array.isArray(data) ? data : (data.dati || []);
+    var html = '<div class="toolbar"><input class="search-box" placeholder="Cerca veicolo..." id="search-veicoli"><button class="btn btn-primary btn-sm" onclick="showNewVeicolo()">+ Nuovo Veicolo</button></div>';
+    html += '<div class="card"><table><thead><tr><th>Targa</th><th>Marca</th><th>Modello</th><th>Km</th><th>Carburante</th><th>Stato</th><th>Azioni</th></tr></thead><tbody>';
+    if (list.length > 0) {
+      list.forEach(function(v) {
+        html += '<tr><td><strong>' + v.targa + '</strong></td>';
+        html += '<td>' + v.marca + '</td><td>' + v.modello + '</td>';
+        html += '<td>' + (v.km_attuali || 0).toLocaleString() + '</td>';
+        html += '<td>' + (v.tipo_carburante || '-') + '</td>';
+        html += '<td><span class="status ' + (v.stato === 'disponibile' ? 'attivo' : 'chiuso') + '">' + v.stato + '</span></td>';
+        html += '<td><button class="btn btn-secondary btn-sm" onclick="editVeicolo(' + v.id + ')">Modifica</button></td></tr>';
+      });
+    } else {
+      html += '<tr><td colspan="7" style="text-align:center;color:#9ca3af">Nessun veicolo trovato</td></tr>';
+    }
+    html += '</tbody></table></div>';
+    document.getElementById('content').innerHTML = html;
+  });
+}
+
+// ===== PAGAMENTI =====
+function loadPagamenti() {
+  api('GET', '/pagamenti').then(function(data) {
+    var list = Array.isArray(data) ? data : (data.dati || []);
+    var html = '<div class="card"><h3>Registro Pagamenti</h3><table><thead><tr><th>Data</th><th>Tipo</th><th>Importo</th><th>Deposito</th><th>Rimborsato</th></tr></thead><tbody>';
+    if (list.length > 0) {
+      list.forEach(function(p) {
+        var dp = p.data_pagamento ? new Date(p.data_pagamento).toLocaleDateString('it-IT') : '-';
+        html += '<tr><td>' + dp + '</td>';
+        html += '<td>' + p.tipo_pagamento + '</td>';
+        html += '<td>&euro;' + Number(p.importo).toFixed(2) + '</td>';
+        html += '<td>&euro;' + Number(p.deposito_cauzionale || 0).toFixed(2) + '</td>';
+        html += '<td>' + (p.rimborsato ? 'Si' : 'No') + '</td></tr>';
+      });
+    } else {
+      html += '<tr><td colspan="5" style="text-align:center;color:#9ca3af">Nessun pagamento trovato</td></tr>';
+    }
+    html += '</tbody></table></div>';
+    document.getElementById('content').innerHTML = html;
+  });
+}
+
+// ===== MODAL: NUOVO CLIENTE =====
+function showNewCliente() {
+  var html = '<div class="modal-overlay" onclick="closeModal()">';
+  html += '<div class="modal-box" onclick="event.stopPropagation()">';
+  html += '<h3>Nuovo Cliente</h3>';
+  html += '<div class="form-group"><label>Cognome e Nome *</label><input id="m-nome" placeholder="Es: Mario Rossi"></div>';
+  html += '<div class="form-row"><div class="form-group"><label>Telefono</label><input id="m-tel" placeholder="+39..."></div>';
+  html += '<div class="form-group"><label>Email</label><input id="m-email" placeholder="email@..."></div></div>';
+  html += '<div class="form-row"><div class="form-group"><label>N. Patente</label><input id="m-pat"></div>';
+  html += '<div class="form-group"><label>Nazione</label><input id="m-naz" value="Italia"></div></div>';
+  html += '<div class="form-group"><label>Indirizzo</label><input id="m-ind"></div>';
+  html += '<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button>';
+  html += '<button class="btn btn-primary btn-sm" onclick="saveCliente()">Salva</button></div>';
+  html += '</div></div>';
+  document.getElementById('modal').innerHTML = html;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function saveCliente() {
+  var nome = document.getElementById('m-nome').value;
+  if (!nome) { alert('Nome obbligatorio!'); return; }
+  api('POST', '/clienti', {
+    cognome_nome: nome,
+    telefono: document.getElementById('m-tel').value || null,
+    email: document.getElementById('m-email').value || null,
+    patente_nr: document.getElementById('m-pat').value || null,
+    nazione: document.getElementById('m-naz').value || 'Italia',
+    indirizzo: document.getElementById('m-ind').value || null
+  }).then(function() { closeModal(); loadClienti(); });
+}
+
+function deleteCliente(id) {
+  if (!confirm('Eliminare questo cliente?')) return;
+  api('DELETE', '/clienti/' + id).then(function() { loadClienti(); });
+}
+
+function editCliente(id) {
+  api('GET', '/clienti/' + id).then(function(c) {
+    var html = '<div class="modal-overlay" onclick="closeModal()">';
+    html += '<div class="modal-box" onclick="event.stopPropagation()">';
+    html += '<h3>Modifica Cliente</h3>';
+    html += '<div class="form-group"><label>Cognome e Nome</label><input id="m-nome" value="' + (c.cognome_nome || '') + '"></div>';
+    html += '<div class="form-row"><div class="form-group"><label>Telefono</label><input id="m-tel" value="' + (c.telefono || '') + '"></div>';
+    html += '<div class="form-group"><label>Email</label><input id="m-email" value="' + (c.email || '') + '"></div></div>';
+    html += '<div class="form-row"><div class="form-group"><label>N. Patente</label><input id="m-pat" value="' + (c.patente_nr || '') + '"></div>';
+    html += '<div class="form-group"><label>Nazione</label><input id="m-naz" value="' + (c.nazione || '') + '"></div></div>';
+    html += '<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button>';
+    html += '<button class="btn btn-primary btn-sm" onclick="updateCliente(' + c.id + ')">Aggiorna</button></div>';
+    html += '</div></div>';
+    document.getElementById('modal').innerHTML = html;
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+
+function updateCliente(id) {
+  api('PUT', '/clienti/' + id, {
+    cognome_nome: document.getElementById('m-nome').value,
+    telefono: document.getElementById('m-tel').value || null,
+    email: document.getElementById('m-email').value || null,
+    patente_nr: document.getElementById('m-pat').value || null,
+    nazione: document.getElementById('m-naz').value || 'Italia'
+  }).then(function() { closeModal(); loadClienti(); });
+}
+
+// ===== MODAL: NUOVO VEICOLO =====
+function showNewVeicolo() {
+  var html = '<div class="modal-overlay" onclick="closeModal()">';
+  html += '<div class="modal-box" onclick="event.stopPropagation()">';
+  html += '<h3>Nuovo Veicolo</h3>';
+  html += '<div class="form-row"><div class="form-group"><label>Targa *</label><input id="m-targa" placeholder="AA000BB"></div>';
+  html += '<div class="form-group"><label>Marca *</label><input id="m-marca"></div></div>';
+  html += '<div class="form-row"><div class="form-group"><label>Modello *</label><input id="m-modello"></div>';
+  html += '<div class="form-group"><label>Colore</label><input id="m-colore"></div></div>';
+  html += '<div class="form-row"><div class="form-group"><label>Km Attuali</label><input id="m-km" type="number" value="0"></div>';
+  html += '<div class="form-group"><label>Carburante</label><select id="m-carb"><option>benzina</option><option>diesel</option><option>gpl</option><option>elettrico</option><option>ibrido</option></select></div></div>';
+  html += '<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button>';
+  html += '<button class="btn btn-primary btn-sm" onclick="saveVeicolo()">Salva</button></div>';
+  html += '</div></div>';
+  document.getElementById('modal').innerHTML = html;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function saveVeicolo() {
+  var targa = document.getElementById('m-targa').value;
+  var marca = document.getElementById('m-marca').value;
+  var modello = document.getElementById('m-modello').value;
+  if (!targa || !marca || !modello) { alert('Targa, marca e modello obbligatori!'); return; }
+  api('POST', '/veicoli', {
+    targa: targa, marca: marca, modello: modello,
+    colore: document.getElementById('m-colore').value || null,
+    km_attuali: parseInt(document.getElementById('m-km').value) || 0,
+    tipo_carburante: document.getElementById('m-carb').value
+  }).then(function() { closeModal(); loadVeicoli(); });
+}
+
+function editVeicolo(id) {
+  api('GET', '/veicoli/' + id).then(function(v) {
+    var html = '<div class="modal-overlay" onclick="closeModal()">';
+    html += '<div class="modal-box" onclick="event.stopPropagation()">';
+    html += '<h3>Modifica Veicolo</h3>';
+    html += '<div class="form-row"><div class="form-group"><label>Targa</label><input id="m-targa" value="' + v.targa + '" readonly></div>';
+    html += '<div class="form-group"><label>Stato</label><select id="m-stato"><option ' + (v.stato === 'disponibile' ? 'selected' : '') + '>disponibile</option><option ' + (v.stato === 'noleggiato' ? 'selected' : '') + '>noleggiato</option><option ' + (v.stato === 'manutenzione' ? 'selected' : '') + '>manutenzione</option></select></div></div>';
+    html += '<div class="form-row"><div class="form-group"><label>Km Attuali</label><input id="m-km" type="number" value="' + (v.km_attuali || 0) + '"></div>';
+    html += '<div class="form-group"><label>Sede</label><input id="m-sede" value="' + (v.sede || '') + '"></div></div>';
+    html += '<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button>';
+    html += '<button class="btn btn-primary btn-sm" onclick="updateVeicolo(' + v.id + ')">Aggiorna</button></div>';
+    html += '</div></div>';
+    document.getElementById('modal').innerHTML = html;
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+
+function updateVeicolo(id) {
+  api('PUT', '/veicoli/' + id, {
+    stato: document.getElementById('m-stato').value,
+    km_attuali: parseInt(document.getElementById('m-km').value) || 0,
+    sede: document.getElementById('m-sede').value || null
+  }).then(function() { closeModal(); loadVeicoli(); });
+}
+
+// ===== MODAL: NUOVO CONTRATTO =====
+function showNewContratto() {
+  api('GET', '/clienti').then(function(cData) {
+    api('GET', '/veicoli?stato=disponibile').then(function(vData) {
+      var clienti = cData.dati || cData || [];
+      var veicoli = Array.isArray(vData) ? vData : (vData.dati || []);
+      var html = '<div class="modal-overlay" onclick="closeModal()">';
+      html += '<div class="modal-box" onclick="event.stopPropagation()">';
+      html += '<h3>Nuovo Contratto</h3>';
+      html += '<div class="form-group"><label>N. Contratto *</label><input id="m-nc" placeholder="Es: M166"></div>';
+      html += '<div class="form-group"><label>Cliente *</label><select id="m-cl"><option value="">Seleziona...</option>';
+      clienti.forEach(function(c) { html += '<option value="' + c.id + '">' + c.cognome_nome + '</option>'; });
+      html += '</select></div>';
+      html += '<div class="form-group"><label>Veicolo *</label><select id="m-ve"><option value="">Seleziona...</option>';
+      veicoli.forEach(function(v) { html += '<option value="' + v.id + '">' + v.targa + ' - ' + v.marca + ' ' + v.modello + '</option>'; });
+      html += '</select></div>';
+      html += '<div class="form-row"><div class="form-group"><label>Data Consegna</label><input id="m-dc" type="date"></div>';
+      html += '<div class="form-group"><label>Data Rientro</label><input id="m-dr" type="date"></div></div>';
+      html += '<div class="form-row"><div class="form-group"><label>Tariffa/Giorno</label><input id="m-tar" type="number" value="45"></div>';
+      html += '<div class="form-group"><label>Giorni</label><input id="m-gg" type="number" value="1"></div></div>';
+      html += '<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button>';
+      html += '<button class="btn btn-primary btn-sm" onclick="saveContratto()">Crea Contratto</button></div>';
+      html += '</div></div>';
+      document.getElementById('modal').innerHTML = html;
+      document.getElementById('modal').classList.remove('hidden');
+    });
+  });
+}
+
+function saveContratto() {
+  var nc = document.getElementById('m-nc').value;
+  var cl = document.getElementById('m-cl').value;
+  var ve = document.getElementById('m-ve').value;
+  if (!nc || !cl || !ve) { alert('Compila tutti i campi obbligatori!'); return; }
+  var tar = parseFloat(document.getElementById('m-tar').value) || 45;
+  var gg = parseInt(document.getElementById('m-gg').value) || 1;
+  api('POST', '/contratti', {
+    numero_contratto: nc,
+    id_cliente: parseInt(cl),
+    id_veicolo: parseInt(ve),
+    data_consegna: document.getElementById('m-dc').value || new Date().toISOString(),
+    data_rientro_prevista: document.getElementById('m-dr').value || new Date().toISOString(),
+    tariffa_giornaliera: tar,
+    giorni_noleggio: gg,
+    totale_documento: tar * gg,
+    stato_contratto: 'attivo'
+  }).then(function() { closeModal(); loadContratti(); });
+}
+
+// ===== CLOSE MODAL =====
+function closeModal() {
+  document.getElementById('modal').classList.add('hidden');
+  document.getElementById('modal').innerHTML = '';
+}
+</script>
+</body>
+</html>

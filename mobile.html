@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h1 class="sr-only">BestRent CRM Mobile</h1>
+
+<!-- Nav Radios -->
+<input type="radio" name="page" id="p-dash" checked class="radio-hide">
+<input type="radio" name="page" id="p-contratti" class="radio-hide">
+<input type="radio" name="page" id="p-clienti" class="radio-hide">
+<input type="radio" name="page" id="p-flotta" class="radio-hide">
+<input type="radio" name="page" id="p-pagamenti" class="radio-hide">
+<input type="radio" name="page" id="p-ispezioni" class="radio-hide">
+
+<!-- Sub-page radios for detail views -->
+<input type="radio" name="detail" id="d-none" checked class="radio-hide">
+<input type="radio" name="detail" id="d-contratto" class="radio-hide">
+<input type="radio" name="detail" id="d-cliente" class="radio-hide">
+<input type="radio" name="detail" id="d-veicolo" class="radio-hide">
+<input type="radio" name="detail" id="d-checkin" class="radio-hide">
+
+<!-- ===== TOP HEADER ===== -->
+<header class="header">
+  <div class="header-left">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18M3 9h18"/></svg>
+    <span class="header-title">BestRent <small>CRM</small></span>
+  </div>
+  <div class="header-right">
+    <div class="notif-wrap">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <span class="notif-dot"></span>
+    </div>
+    <div class="avatar-sm">GT</div>
+  </div>
+</header>
+
+<!-- ===== PAGES CONTAINER ===== -->
+<div class="pages-wrap">
+
+  <!-- ==================== DASHBOARD ==================== -->
+  <section class="page pg-dash">
+
+    <!-- Greeting -->
+    <div class="greeting fade-in">
+      <span class="greet-text">Ciao, Gaetano 👋</span>
+      <span class="greet-sub">Giovedì 15 Ottobre 2026</span>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions fade-in" style="--d:1">
+      <label for="p-contratti" class="qa-btn">
+        <div class="qa-icon blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <span>Nuovo<br>Contratto</span>
+      </label>
+      <label for="d-checkin" class="qa-btn">
+        <div class="qa-icon green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <span>Check-in<br>Rientro</span>
+      </label>
+      <label for="p-flotta" class="qa-btn">
+        <div class="qa-icon orange">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <span>Cerca<br>Veicolo</span>
+      </label>
+      <label for="p-clienti" class="qa-btn">
+        <div class="qa-icon purple">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        </div>
+        <span>Nuovo<br>Cliente</span>
+      </label>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-row fade-in" style="--d:2">
+      <div class="kpi-mini">
+        <div class="kpi-mini-icon blue">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        </div>
+        <div>
+          <span class="kpi-mini-val">1</span>
+          <span class="kpi-mini-lbl">Attivi</span>
+        </div>
+      </div>
+      <div class="kpi-mini">
+        <div class="kpi-mini-icon green">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div>
+          <span class="kpi-mini-val">€171</span>
+          <span class="kpi-mini-lbl">Mese</span>
+        </div>
+      </div>
+      <div class="kpi-mini">
+        <div class="kpi-mini-icon orange">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 17h14M5 17a2 2 0 01-2-2V7h18v8a2 2 0 01-2 2"/><circle cx="7" cy="11" r="1"/><circle cx="17" cy="11" r="1"/></svg>
+        </div>
+        <div>
+          <span class="kpi-mini-val">1</span>
+          <span class="kpi-mini-lbl">Veicoli</span>
+        </div>
+      </div>
+      <div class="kpi-mini">
+        <div class="kpi-mini-icon purple">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div>
+          <span class="kpi-mini-val">1</span>
+          <span class="kpi-mini-lbl">Clienti</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div class="mobile-card alert-border fade-in" style="--d:3">
+      <div class="mc-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <strong>Rientro in scadenza</strong>
+        <span class="badge-sm warn">3 giorni</span>
+      </div>
+      <div class="alert-body">
+        <div class="alert-row">
+          <span class="alert-label">Contratto</span>
+          <strong>M165</strong>
+        </div>
+        <div class="alert-row">
+          <span class="alert-label">Cliente</span>
+          <span>Jandar Baker</span>
+        </div>
+        <div class="alert-row">
+          <span class="alert-label">Veicolo</span>
+          <span>Mitsubishi Space Star · <code>GA398HG</code></span>
+        </div>
+        <div class="alert-row">
+          <span class="alert-label">Rientro</span>
+          <strong>18/10/2026 ore 10:00</strong>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <label for="d-contratto" class="btn-action blue">Dettaglio</label>
+        <label for="d-checkin" class="btn-action green">Check-in</label>
+        <a href="tel:04917680553896" class="btn-action gray">Chiama</a>
+      </div>
+    </div>
+
+    <!-- Contratto Attivo Card -->
+    <div class="mobile-card fade-in" style="--d:4">
+      <div class="mc-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        <strong>Contratto Attivo</strong>
+      </div>
+      <label for="d-contratto" class="contract-card-body">
+        <div class="cc-top">
+          <span class="cc-number">M165</span>
+          <span class="status-pill active">Attivo</span>
+        </div>
+        <div class="cc-vehicle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="1.5"><path d="M5 17h14M5 17a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2"/><circle cx="7" cy="11" r="1"/><circle cx="17" cy="11" r="1"/></svg>
+          <span>Mitsubishi Space Star</span>
+          <code>GA398HG</code>
+        </div>
+        <div class="cc-details">
+          <div class="cc-det-item">
+            <span class="cc-det-label">Cliente</span>
+            <span>Jandar Baker</span>
+          </div>
+          <div class="cc-det-item">
+            <span class="cc-det-label">Periodo</span>
+            <span>14/10 → 18/10</span>
+          </div>
+          <div class="cc-det-item">
+            <span class="cc-det-label">Totale</span>
+            <strong>€ 171,00</strong>
+          </div>
+          <div class="cc-det-item">
+            <span class="cc-det-label">Deposito</span>
+            <span>€ 700,00</span>
+          </div>
+        </div>
+        <div class="cc-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <!-- ==================== CONTRATTI ==================== -->
+  <section class="page pg-contratti">
+    <div class="section-title fade-in">Contratti</div>
+
+    <div class="search-mobile fade-in" style="--d:1">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Cerca per numero, cliente, targa...">
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-chips fade-in" style="--d:2">
+      <span class="chip active">Tutti</span>
+      <span class="chip">Attivi</span>
+      <span class="chip">Chiusi</span>
+      <span class="chip">Annullati</span>
+    </div>
+
+    <label for="d-contratto" class="mobile-card list-card fade-in" style="--d:3">
+      <div class="lc-top">
+        <span class="lc-id">M165</span>
+        <span class="status-pill active">Attivo</span>
+      </div>
+      <div class="lc-main">Jandar Baker</div>
+      <div class="lc-sub">Mitsubishi Space Star · <code>GA398HG</code></div>
+      <div class="lc-meta">
+        <span>14/10 → 18/10/2026</span>
+        <strong>€ 171,00</strong>
+      </div>
+      <div class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
+    </label>
+  </section>
+
+  <!-- ==================== CLIENTI ==================== -->
+  <section class="page pg-clienti">
+    <div class="section-title fade-in">Clienti</div>
+
+    <div class="search-mobile fade-in" style="--d:1">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Cerca cliente...">
+    </div>
+
+    <label for="d-cliente" class="mobile-card list-card fade-in" style="--d:2">
+      <div class="client-avatar">JB</div>
+      <div class="lc-content">
+        <div class="lc-main">Jandar Baker</div>
+        <div class="lc-sub">Tenero (CH) · 🇨🇭</div>
+        <div class="lc-meta">
+          <span>1 noleggio</span>
+          <strong>€ 171,00</strong>
+        </div>
+      </div>
+      <div class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
+    </label>
+  </section>
+
+  <!-- ==================== FLOTTA ==================== -->
+  <section class="page pg-flotta">
+    <div class="section-title fade-in">Flotta Veicoli</div>
+
+    <div class="filter-chips fade-in" style="--d:1">
+      <span class="chip active">Tutti</span>
+      <span class="chip">Disponibili</span>
+      <span class="chip">Noleggiati</span>
+      <span class="chip">Manutenzione</span>
+    </div>
+
+    <label for="d-veicolo" class="mobile-card vehicle-card fade-in" style="--d:2">
+      <div class="vc-top">
+        <div class="vc-plate"><code>GA398HG</code></div>
+        <span class="status-pill warning">Noleggiato</span>
+      </div>
+      <div class="vc-name">Mitsubishi Space Star</div>
+      <div class="vc-specs">
+        <span class="vc-spec">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          Gruppo C
+        </span>
+        <span class="vc-spec">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6l3 3"/><circle cx="12" cy="14" r="8"/></svg>
+          148.000 km
+        </span>
+        <span class="vc-spec">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 22V12h4v10M9 22V8h4v14M15 22V4h4v18"/></svg>
+          47L Benzina
+        </span>
+      </div>
+      <div class="vc-renter">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Jandar Baker · Rientro 18/10
+      </div>
+      <div class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
+    </label>
+  </section>
+
+  <!-- ==================== PAGAMENTI ==================== -->
+  <section class="page pg-pagamenti">
+    <div class="section-title fade-in">Pagamenti</div>
+
+    <!-- Summary -->
+    <div class="pay-summary fade-in" style="--d:1">
+      <div class="pay-sum-item">
+        <span class="pay-sum-val">€ 700</span>
+        <span class="pay-sum-lbl">Incassato</span>
+      </div>
+      <div class="pay-sum-divider"></div>
+      <div class="pay-sum-item">
+        <span class="pay-sum-val">€ 700</span>
+        <span class="pay-sum-lbl">Depositi</span>
+      </div>
+      <div class="pay-sum-divider"></div>
+      <div class="pay-sum-item">
+        <span class="pay-sum-val">€ 0</span>
+        <span class="pay-sum-lbl">Rimborsati</span>
+      </div>
+    </div>
+
+    <div class="mobile-card fade-in" style="--d:2">
+      <div class="pay-row">
+        <div class="pay-left">
+          <div class="pay-icon blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div>
+            <div class="pay-title">Bonifico – M165</div>
+            <div class="pay-sub">Jandar Baker · 14/10/2026</div>
+          </div>
+        </div>
+        <div class="pay-right">
+          <strong>€ 700,00</strong>
+          <span class="status-pill active">Ricevuto</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tariffario -->
+    <div class="section-title fade-in" style="--d:3">Tariffario Penali</div>
+    <div class="mobile-card fade-in" style="--d:4">
+      <div class="tariff-item"><span>Smarrimento chiave</span><span class="tariff-price red">€ 450</span></div>
+      <div class="tariff-item"><span>Smarrimento seggiolino</span><span class="tariff-price red">€ 70</span></div>
+      <div class="tariff-item"><span>Penale fumatori</span><span class="tariff-price red">€ 120</span></div>
+      <div class="tariff-item"><span>Smarrimento targa</span><span class="tariff-price red">€ 450</span></div>
+      <div class="tariff-item"><span>Smarrimento documenti</span><span class="tariff-price red">€ 150</span></div>
+      <div class="tariff-item"><span>Cross border</span><span class="tariff-price red">€ 610</span></div>
+      <div class="tariff-item"><span>Pulizia speciale</span><span class="tariff-price orange">€ 122</span></div>
+      <div class="tariff-item"><span>Gestione multe</span><span class="tariff-price orange">€ 50</span></div>
+      <div class="tariff-item"><span>Rifornimento carburante</span><span class="tariff-price orange">€ 42,70</span></div>
+      <div class="tariff-item"><span>Gestione danni/sinistri</span><span class="tariff-price orange">€ 60</span></div>
+      <div class="tariff-item"><span>Assistenza stradale</span><span class="tariff-price orange">€ 183</span></div>
+      <div class="tariff-item last"><span>Riconsegna fuori orario</span><span class="tariff-price orange">€ 61</span></div>
+    </div>
+  </section>
+
+  <!-- ==================== ISPEZIONI ==================== -->
+  <section class="page pg-ispezioni">
+    <div class="section-title fade-in">Ispezioni</div>
+
+    <div class="mobile-card fade-in" style="--d:1">
+      <div class="mc-header">
+        <strong>M165 – Uscita</strong>
+        <span class="badge-sm blue">14/10/2026</span>
+      </div>
+
+      <!-- Inspection items -->
+      <div class="insp-item">
+        <div class="insp-dot orange"></div>
+        <div class="insp-content">
+          <div class="insp-title">Carrozzeria</div>
+          <div class="insp-detail">Graffio cat.2 · Vedi rilievo foto</div>
+        </div>
+        <span class="status-pill warning">Danno</span>
+      </div>
+      <div class="insp-item">
+        <div class="insp-dot green"></div>
+        <div class="insp-content">
+          <div class="insp-title">Spia Diagnosi</div>
+          <div class="insp-detail">Nessuna anomalia</div>
+        </div>
+        <span class="status-pill active">OK</span>
+      </div>
+      <div class="insp-item">
+        <div class="insp-dot green"></div>
+        <div class="insp-content">
+          <div class="insp-title">Interni</div>
+          <div class="insp-detail">Nessun danno</div>
+        </div>
+        <span class="status-pill active">OK</span>
+      </div>
+      <div class="insp-item">
+        <div class="insp-dot green"></div>
+        <div class="insp-content">
+          <div class="insp-title">Cerchi</div>
+          <div class="insp-detail">Copricerchio presente</div>
+        </div>
+        <span class="status-pill active">OK</span>
+      </div>
+      <div class="insp-item last">
+        <div class="insp-dot green"></div>
+        <div class="insp-content">
+          <div class="insp-title">Parti Meccaniche</div>
+          <div class="insp-detail">Nessuna anomalia</div>
+        </div>
+        <span class="status-pill active">OK</span>
+      </div>
+    </div>
+
+    <!-- Dotazioni -->
+    <div class="section-title fade-in" style="--d:2">Dotazioni di Bordo</div>
+    <div class="mobile-card fade-in" style="--d:3">
+      <div class="dot-grid">
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Carta circolazione</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Foglio di via</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Lib. garanzia</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Doc. assicurativi</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> RFID Card</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Cavo ricarica</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Doppie chiavi</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Triangolo/Giubb.</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Gomme tecniche</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Tessera Code</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Tessera Radio</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Disco orario</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Ruota Scorta</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Catene Neve</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Autoradio</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Carta Carburante</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Navigatore</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Kit Riparazione</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Estintore</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Kit antifort.</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Martello emerg.</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Reg. manutenz.</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> TMD Nanoi</div>
+        <div class="dot-m"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg> Kit TMF</div>
+      </div>
+    </div>
+
+    <div style="height:80px"></div>
+  </section>
+
+  <!-- ==================== DETAIL: CONTRATTO ==================== -->
+  <section class="page pg-detail-contratto">
+    <label for="d-none" class="back-btn fade-in">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+      Indietro
+    </label>
+
+    <div class="section-title fade-in" style="--d:1">Contratto M165</div>
+
+    <div class="mobile-card fade-in" style="--d:2">
+      <div class="detail-section">
+        <div class="ds-title">Informazioni Generali</div>
+        <div class="ds-row"><span>Prenotazione</span><span>HD 016526</span></div>
+        <div class="ds-row"><span>Ref.</span><code>BR 1652026</code></div>
+        <div class="ds-row"><span>Stato</span><span class="status-pill active">Attivo</span></div>
+        <div class="ds-row"><span>Operatore</span><span>Gaetano T.</span></div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">Periodo & Luogo</div>
+        <div class="ds-row"><span>Consegna</span><span>14/10/2026 15:30</span></div>
+        <div class="ds-row"><span>Sede Consegna</span><span>Gallarate MXP</span></div>
+        <div class="ds-row"><span>Rientro Previsto</span><strong>18/10/2026 10:00</strong></div>
+        <div class="ds-row"><span>Sede Rientro</span><span>Gallarate Sede</span></div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">Veicolo</div>
+        <div class="ds-row"><span>Veicolo</span><span>Mitsubishi Space Star</span></div>
+        <div class="ds-row"><span>Targa</span><code>GA398HG</code></div>
+        <div class="ds-row"><span>Km Uscita</span><span>148.000</span></div>
+        <div class="ds-row"><span>Carburante</span><span>47/47 (pieno)</span></div>
+        <div class="ds-row"><span>Km Inclusi</span><span>Illimitati</span></div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">Tariffazione</div>
+        <div class="ds-row"><span>Tariffa/giorno</span><span>€ 45,00</span></div>
+        <div class="ds-row"><span>Giorni</span><span>4</span></div>
+        <div class="ds-row"><span>Sconto</span><span>SC STAR 5%</span></div>
+        <div class="ds-row highlight"><span>Totale</span><strong>€ 171,00</strong></div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">Assicurazioni</div>
+        <div class="ds-row"><span>CDW</span><span class="status-pill active">Inclusa</span></div>
+        <div class="ds-row"><span>RCA</span><span class="status-pill active">Inclusa</span></div>
+        <div class="ds-row"><span>PAI</span><span class="status-pill active">Inclusa</span></div>
+        <div class="ds-row"><span>Franchigia Danni</span><strong>€ 500</strong></div>
+        <div class="ds-row"><span>Penalità Furto</span><strong>€ 1.000</strong></div>
+      </div>
+      <div class="detail-section last">
+        <div class="ds-title">Pagamento</div>
+        <div class="ds-row"><span>Tipo</span><span>Bonifico</span></div>
+        <div class="ds-row"><span>Deposito</span><strong>€ 700,00</strong></div>
+        <div class="ds-row"><span>Rimborsato</span><span>No</span></div>
+      </div>
+    </div>
+    <div style="height:80px"></div>
+  </section>
+
+  <!-- ==================== DETAIL: CLIENTE ==================== -->
+  <section class="page pg-detail-cliente">
+    <label for="d-none" class="back-btn fade-in">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+      Indietro
+    </label>
+
+    <div class="client-hero fade-in" style="--d:1">
+      <div class="ch-avatar">JB</div>
+      <div class="ch-name">Jandar Baker</div>
+      <div class="ch-loc">Tenero (CH) · 🇨🇭 Svizzera</div>
+    </div>
+
+    <div class="mobile-card fade-in" style="--d:2">
+      <div class="detail-section">
+        <div class="ds-title">Dati Personali</div>
+        <div class="ds-row"><span>Data Nascita</span><span>13/11/2003</span></div>
+        <div class="ds-row"><span>Luogo Nascita</span><span>Keder (Afrin)</span></div>
+        <div class="ds-row"><span>CF / P.IVA</span><code>YZ14YKHXK</code></div>
+        <div class="ds-row"><span>Indirizzo</span><span>Via del Giardino 6</span></div>
+        <div class="ds-row"><span>Telefono</span><span>049-17680553896</span></div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">Patente</div>
+        <div class="ds-row"><span>Numero</span><code>0030324HJ62</code></div>
+        <div class="ds-row"><span>Rilasciata da</span><span>MIT-UCO</span></div>
+        <div class="ds-row"><span>Valida al</span><span>01/03/2037</span></div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">Statistiche</div>
+        <div class="ds-row"><span>Noleggi Totali</span><strong>1</strong></div>
+        <div class="ds-row"><span>Fatturato</span><strong>€ 171,00</strong></div>
+      </div>
+      <div class="detail-section last">
+        <div class="ds-title">Consensi GDPR</div>
+        <div class="ds-row"><span>Promo BestRent</span><span class="status-pill inactive">No</span></div>
+        <div class="ds-row"><span>Promo Profilate</span><span class="status-pill inactive">No</span></div>
+        <div class="ds-row"><span>Promo Terzi</span><span class="status-pill inactive">No</span></div>
+      </div>
+    </div>
+    <div style="height:80px"></div>
+  </section>
+
+  <!-- ==================== DETAIL: VEICOLO ==================== -->
+  <section class="page pg-detail-veicolo">
+    <label for="d-none" class="back-btn fade-in">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+      Indietro
+    </label>
+
+    <div class="vehicle-hero fade-in" style="--d:1">
+      <div class="vh-plate"><code>GA398HG</code></div>
+      <div class="vh-name">Mitsubishi Space Star</div>
+      <span class="status-pill warning">Noleggiato</span>
+    </div>
+
+    <div class="kpi-row fade-in" style="--d:2">
+      <div class="kpi-mini"><div class="kpi-mini-icon blue"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div><div><span class="kpi-mini-val">148k</span><span class="kpi-mini-lbl">Km</span></div></div>
+      <div class="kpi-mini"><div class="kpi-mini-icon green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg></div><div><span class="kpi-mini-val">1</span><span class="kpi-mini-lbl">Noleggi</span></div></div>
+      <div class="kpi-mini"><div class="kpi-mini-icon orange"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div><span class="kpi-mini-val">€171</span><span class="kpi-mini-lbl">Ricavo</span></div></div>
+      <div class="kpi-mini"><div class="kpi-mini-icon red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div><div><span class="kpi-mini-val">1</span><span class="kpi-mini-lbl">Danni</span></div></div>
+    </div>
+
+    <div class="mobile-card fade-in" style="--d:3">
+      <div class="detail-section">
+        <div class="ds-title">Specifiche</div>
+        <div class="ds-row"><span>Gruppo Tariffa</span><span>C</span></div>
+        <div class="ds-row"><span>Carburante</span><span>Benzina</span></div>
+        <div class="ds-row"><span>Serbatoio</span><span>47 litri</span></div>
+        <div class="ds-row"><span>Sede</span><span>Lonate Pozzolo</span></div>
+      </div>
+      <div class="detail-section last">
+        <div class="ds-title">Cliente Attuale</div>
+        <div class="ds-row"><span>Nome</span><strong>Jandar Baker</strong></div>
+        <div class="ds-row"><span>Contratto</span><span>M165</span></div>
+        <div class="ds-row"><span>Rientro</span><strong>18/10/2026 10:00</strong></div>
+      </div>
+    </div>
+    <div style="height:80px"></div>
+  </section>
+
+  <!-- ==================== DETAIL: CHECK-IN ==================== -->
+  <section class="page pg-detail-checkin">
+    <label for="d-none" class="back-btn fade-in">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+      Indietro
+    </label>
+
+    <div class="section-title fade-in" style="--d:1">Check-in Rientro</div>
+
+    <div class="mobile-card fade-in" style="--d:2">
+      <div class="checkin-info">
+        <div class="ci-row"><span>Contratto</span><strong>M165</strong></div>
+        <div class="ci-row"><span>Veicolo</span><span>Mitsubishi Space Star · <code>GA398HG</code></span></div>
+        <div class="ci-row"><span>Cliente</span><span>Jandar Baker</span></div>
+      </div>
+
+      <form class="checkin-form">
+        <div class="form-group">
+          <label class="form-label">Km Rientro</label>
+          <input type="number" class="form-input" placeholder="Es: 148350" value="">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Livello Carburante</label>
+          <div class="fuel-bar">
+            <div class="fuel-level" style="width:100%"></div>
+          </div>
+          <div class="fuel-labels"><span>Vuoto</span><span>1/4</span><span>1/2</span><span>3/4</span><span>Pieno</span></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Danni Riscontrati</label>
+          <textarea class="form-textarea" rows="3" placeholder="Descrivi eventuali danni..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Foto Ispezione</label>
+          <div class="photo-upload">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+            <span>Tocca per aggiungere foto</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Note</label>
+          <textarea class="form-textarea" rows="2" placeholder="Note aggiuntive..."></textarea>
+        </div>
+        <button type="button" class="btn-submit">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Completa Check-in
+        </button>
+      </form>
+    </div>
+    <div style="height:80px"></div>
+  </section>
+
+</div>
+
+<!-- ===== BOTTOM TAB BAR ===== -->
+<nav class="tab-bar">
+  <label for="p-dash" class="tab-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <span>Home</span>
+  </label>
+  <label for="p-contratti" class="tab-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+    <span>Contratti</span>
+  </label>
+  <label for="p-flotta" class="tab-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17h14M5 17a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2"/><circle cx="7" cy="11" r="1"/><circle cx="17" cy="11" r="1"/></svg>
+    <span>Flotta</span>
+  </label>
+  <label for="p-pagamenti" class="tab-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <span>Pagamenti</span>
+  </label>
+  <label for="p-ispezioni" class="tab-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    <span>Ispezioni</span>
+  </label>
+</nav>
+
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:#f3f4f6;color:#1f2937;line-height:1.5;font-size:14px;max-width:430px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.radio-hide{position:absolute;opacity:0;pointer-events:none}
+code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:'SF Mono',Consolas,monospace;font-size:12px;color:#334155}
+
+/* ===== HEADER ===== */
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#111827;color:#fff;position:sticky;top:0;z-index:20}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-title{font-size:16px;font-weight:700}
+.header-title small{font-weight:400;font-size:10px;color:#9ca3af;margin-left:2px}
+.header-right{display:flex;align-items:center;gap:12px}
+.notif-wrap{position:relative;padding:4px}
+.notif-dot{position:absolute;top:2px;right:2px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #111827}
+.avatar-sm{width:30px;height:30px;border-radius:8px;background:#3b82f6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+
+/* ===== PAGES ===== */
+.pages-wrap{padding:0 0 72px 0}
+.page{display:none;padding:16px}
+
+/* Main page visibility */
+#p-dash:checked ~ .pages-wrap .pg-dash,
+#p-contratti:checked ~ .pages-wrap .pg-contratti,
+#p-clienti:checked ~ .pages-wrap .pg-clienti,
+#p-flotta:checked ~ .pages-wrap .pg-flotta,
+#p-pagamenti:checked ~ .pages-wrap .pg-pagamenti,
+#p-ispezioni:checked ~ .pages-wrap .pg-ispezioni{display:block}
+
+/* Detail pages override main pages */
+#d-contratto:checked ~ .pages-wrap .pg-dash,
+#d-contratto:checked ~ .pages-wrap .pg-contratti,
+#d-cliente:checked ~ .pages-wrap .pg-clienti,
+#d-veicolo:checked ~ .pages-wrap .pg-flotta,
+#d-checkin:checked ~ .pages-wrap .pg-dash{display:none}
+
+#d-contratto:checked ~ .pages-wrap .pg-detail-contratto{display:block}
+#d-cliente:checked ~ .pages-wrap .pg-detail-cliente{display:block}
+#d-veicolo:checked ~ .pages-wrap .pg-detail-veicolo{display:block}
+#d-checkin:checked ~ .pages-wrap .pg-detail-checkin{display:block}
+
+/* ===== TAB BAR ===== */
+.tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:#fff;border-top:1px solid #e5e7eb;padding:6px 0 env(safe-area-inset-bottom,8px);z-index:20}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;cursor:pointer;color:#9ca3af;font-size:10px;font-weight:500;transition:color .15s}
+.tab-item:hover{color:#6b7280}
+
+#p-dash:checked ~ .tab-bar .tab-item:nth-child(1),
+#p-contratti:checked ~ .tab-bar .tab-item:nth-child(2),
+#p-flotta:checked ~ .tab-bar .tab-item:nth-child(3),
+#p-pagamenti:checked ~ .tab-bar .tab-item:nth-child(4),
+#p-ispezioni:checked ~ .tab-bar .tab-item:nth-child(5){color:#1d4ed8}
+
+/* ===== GREETING ===== */
+.greeting{margin-bottom:16px}
+.greet-text{display:block;font-size:20px;font-weight:700;color:#111827}
+.greet-sub{font-size:12px;color:#6b7280}
+
+/* ===== QUICK ACTIONS ===== */
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.qa-btn{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;text-align:center;font-size:11px;color:#374151;font-weight:500}
+.qa-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.qa-icon:hover{transform:scale(1.05)}
+.qa-icon.blue{background:#dbeafe;color:#1d4ed8}
+.qa-icon.green{background:#dcfce7;color:#15803d}
+.qa-icon.orange{background:#ffedd5;color:#c2410c}
+.qa-icon.purple{background:#f3e8ff;color:#7c3aed}
+
+/* ===== KPI ROW ===== */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.kpi-mini{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px}
+.kpi-mini-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kpi-mini-icon.blue{background:#dbeafe;color:#1d4ed8}
+.kpi-mini-icon.green{background:#dcfce7;color:#15803d}
+.kpi-mini-icon.orange{background:#ffedd5;color:#c2410c}
+.kpi-mini-icon.purple{background:#f3e8ff;color:#7c3aed}
+.kpi-mini-icon.red{background:#fee2e2;color:#dc2626}
+.kpi-mini-val{display:block;font-size:16px;font-weight:700;color:#111827;font-family:'SF Mono',Consolas,monospace;line-height:1.2}
+.kpi-mini-lbl{display:block;font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.03em}
+
+/* ===== MOBILE CARD ===== */
+.mobile-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:12px}
+.mc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px}
+.alert-border{border-left:4px solid #f59e0b}
+
+/* ===== ALERT ===== */
+.alert-body{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.alert-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0}
+.alert-label{color:#6b7280;font-size:12px}
+.alert-actions{display:flex;gap:8px}
+.btn-action{display:inline-flex;align-items:center;justify-content:center;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;transition:opacity .15s}
+.btn-action.blue{background:#1d4ed8;color:#fff}
+.btn-action.green{background:#15803d;color:#fff}
+.btn-action.gray{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}
+
+/* ===== STATUS & BADGES ===== */
+.status-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;white-space:nowrap}
+.status-pill.active{background:#dcfce7;color:#15803d}
+.status-pill.warning{background:#fef3c7;color:#b45309}
+.status-pill.inactive{background:#fee2e2;color:#dc2626}
+.badge-sm{padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600}
+.badge-sm.warn{background:#fef3c7;color:#b45309}
+.badge-sm.blue{background:#dbeafe;color:#1d4ed8}
+
+/* ===== CONTRACT CARD ===== */
+.contract-card-body{display:block;cursor:pointer;position:relative}
+.cc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cc-number{font-size:18px;font-weight:700;color:#111827;font-family:'SF Mono',Consolas,monospace}
+.cc-vehicle{display:flex;align-items:center;gap:6px;font-size:13px;color:#6b7280;margin-bottom:10px}
+.cc-details{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cc-det-item{display:flex;flex-direction:column}
+.cc-det-label{font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:.03em}
+.cc-arrow{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+
+/* ===== LIST CARD ===== */
+.list-card{display:block;cursor:pointer;position:relative;padding-right:30px}
+.lc-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.lc-id{font-weight:700;font-family:'SF Mono',Consolas,monospace;font-size:15px}
+.lc-main{font-weight:600;font-size:15px;color:#111827}
+.lc-sub{font-size:12px;color:#6b7280;margin-

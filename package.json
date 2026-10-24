@@ -1,0 +1,23 @@
+{
+  "name": "bestrent-crm",
+  "version": "1.0.0",
+  "description": "BestRent CRM – Autonoleggio (Netlify + PlanetScale)",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo Build completata",
+    "db:push": "npx prisma db push",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "npx prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.24.6"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^2.4.0",
+    "netlify-cli": "^17.10.0",
+    "prisma": "^5.7.0"
+  }
+}

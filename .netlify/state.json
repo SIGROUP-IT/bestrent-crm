@@ -1,0 +1,21 @@
+{
+	"dbConnectionString": "postgres://postgres@localhost:59465/postgres",
+	"geolocation": {
+		"data": {
+			"city": "Legnano",
+			"country": {
+				"code": "IT",
+				"name": "Italy"
+			},
+			"subdivision": {
+				"code": "25",
+				"name": "Lombardy"
+			},
+			"timezone": "Europe/Rome",
+			"latitude": 45.5968,
+			"longitude": 8.919,
+			"postalCode": "20025"
+		},
+		"timestamp": 1792802328756
+	}
+}

@@ -273,8 +273,8 @@ function loadTab(t){
   else if(t==='veicoli')loadVeicoli();
   else if(t==='pagamenti')loadPagamenti();
   else if(t==='penali')loadPenali();
-  else if(t==='calendario')loadCalendario();
 }
+else if(t==='calendario')loadCalendario();
 
 function loadDashboard(){
   api('GET','/dashboard').then(function(d){
@@ -680,62 +680,6 @@ function closePrint(){
   var el=document.getElementById('print-overlay');
   if(el)el.remove();
 }
-// ===== CALENDARIO =====
-var calMonth=new Date().getMonth();
-var calYear=new Date().getFullYear();
-
-function loadCalendario(){
-  api('GET','/contratti').then(function(d){
-    var list=d.dati||[];
-    var h='<div class="card">';
-    h+='<div class="cal-header"><h3>'+getMonthName(calMonth)+' '+calYear+'</h3><div class="cal-nav"><button onclick="calPrev()">&#9664; Prec</button><button onclick="calToday()">Oggi</button><button onclick="calNext()">Succ &#9654;</button></div></div>';
-    h+='<div class="cal-grid">';
-    var days=['LUN','MAR','MER','GIO','VEN','SAB','DOM'];
-    days.forEach(function(d){h+='<div class="cal-day-header">'+d+'</div>';});
-    var first=new Date(calYear,calMonth,1);
-    var startDay=(first.getDay()+6)%7;
-    var daysInMonth=new Date(calYear,calMonth+1,0).getDate();
-    var prevDays=new Date(calYear,calMonth,0).getDate();
-    var today=new Date();
-    for(var i=startDay-1;i>=0;i--){
-      h+='<div class="cal-day other-month"><div class="day-num">'+(prevDays-i)+'</div></div>';
-    }
-    for(var day=1;day<=daysInMonth;day++){
-      var isToday=(day===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear());
-      h+='<div class="cal-day'+(isToday?' today':'')+'">';
-      h+='<div class="day-num">'+day+'</div>';
-      list.forEach(function(c){
-        var dc=c.data_consegna?new Date(c.data_consegna):null;
-        var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista):null;
-        if(dc&&dc.getDate()===day&&dc.getMonth()===calMonth&&dc.getFullYear()===calYear){
-          h+='<div class="cal-event consegna" title="Consegna: '+c.numero_contratto+'">&#9654; '+(c.veicolo?c.veicolo.targa:c.numero_contratto)+'</div>';
-        }
-        if(dr&&dr.getDate()===day&&dr.getMonth()===calMonth&&dr.getFullYear()===calYear){
-          h+='<div class="cal-event rientro" title="Rientro: '+c.numero_contratto+'">&#9632; '+(c.veicolo?c.veicolo.targa:c.numero_contratto)+'</div>';
-        }
-      });
-      h+='</div>';
-    }
-    var totalCells=startDay+daysInMonth;
-    var remaining=totalCells%7===0?0:7-(totalCells%7);
-    for(var r=1;r<=remaining;r++){
-      h+='<div class="cal-day other-month"><div class="day-num">'+r+'</div></div>';
-    }
-    h+='</div>';
-    h+='<div class="cal-legend"><span><span class="dot" style="background:#DCFCE7"></span> Consegna</span><span><span class="dot" style="background:#FEE2E2"></span> Rientro</span></div>';
-    h+='</div>';
-    document.getElementById('content').innerHTML=h;
-  });
-}
-
-function getMonthName(m){
-  var nomi=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-  return nomi[m];
-}
-
-function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}loadCalendario();}
-function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}loadCalendario();}
-function calToday(){calMonth=new Date().getMonth();calYear=new Date().getFullYear();loadCalendario();}
 
 </script>
 </body>

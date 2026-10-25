@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -379,9 +378,7 @@ function saveCliente(){
   var nome=document.getElementById('m-nome').value;if(!nome){alert('Nome obbligatorio!');return}
   var data={cognome_nome:nome,telefono:document.getElementById('m-tel').value||null,email:document.getElementById('m-email').value||null,patente_nr:document.getElementById('m-pat').value||null,nazione:document.getElementById('m-naz').value||'Italia',indirizzo:document.getElementById('m-ind').value||null,codice_fiscale_piva:document.getElementById('m-cf').value||null};
   var patsc=document.getElementById('m-patsc').value;if(patsc)data.patente_valida_al=patsc;
-  api('POST','/'/clienti',data)).then(function(r){if(r.error){alert(r.error)}else{closeModal();loadClienti()}});
-}
-
+  api('POST','/clienti',data).then(function(r){if(r.error){alert(r.error)}else{closeModal();loadClienti()}});
 function editCliente(id){
   api('GET','/clienti/'+id).then(function(c){
     var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>✏️ Modifica Cliente</h3>';

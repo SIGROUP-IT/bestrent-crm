@@ -99,8 +99,36 @@ tr:hover td{background:#FAFAFA}
 .alert-card.danger{border-color:var(--rosso);background:#FEF2F2}
 .alert-card .alert-title{font-weight:600;font-size:13px}
 .alert-card .alert-detail{font-size:12px;color:var(--grigio);margin-top:2px}
+
+.notif-wrapper{position:relative}
+.notif-btn{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;position:relative;padding:4px 8px}
+.notif-badge{position:absolute;top:-2px;right:-2px;background:var(--rosso);color:#fff;font-size:9px;font-weight:700;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center}
+.notif-panel{position:absolute;top:40px;right:0;width:340px;background:var(--bianco);border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);z-index:200;max-height:400px;overflow-y:auto;display:none}
+.notif-panel.open{display:block}
+.notif-panel h4{padding:14px 16px;margin:0;font-size:13px;border-bottom:1px solid var(--grigio-chiaro);color:var(--nero)}
+.notif-item{padding:10px 16px;border-bottom:1px solid #f3f4f6;font-size:12px;cursor:pointer;transition:background .1s}
+.notif-item:hover{background:#fafafa}
+.notif-item .ni-icon{margin-right:8px}
+.notif-item .ni-title{font-weight:600;color:var(--nero)}
+.notif-item .ni-detail{color:var(--grigio);margin-top:2px}
+.notif-item.urgent{border-left:3px solid var(--rosso)}
+.notif-item.warning{border-left:3px solid var(--arancio)}
+.notif-empty{padding:20px;text-align:center;color:var(--grigio);font-size:12px}
+.print-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:center;justify-content:center}
+.print-box{background:#fff;width:700px;max-height:90vh;overflow-y:auto;border-radius:12px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.print-box .pb-header{text-align:center;border-bottom:2px solid var(--rosso);padding-bottom:16px;margin-bottom:16px}
+.print-box .pb-logo{font-size:22px;font-weight:800}
+.print-box .pb-title{font-size:16px;font-weight:700;margin-top:8px}
+.print-box .pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-bottom:12px}
+.print-box .pb-label{font-weight:600;color:var(--grigio-scuro)}
+.print-box .pb-val{color:var(--nero)}
+.print-box .pb-section{font-size:13px;font-weight:700;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--grigio-chiaro)}
+.print-box .pb-actions{display:flex;gap:8px;justify-content:center;margin-top:20px}
+@media print{body *{visibility:hidden}.print-box,.print-box *{visibility:visible}.print-box{position:absolute;left:0;top:0;width:100%;box-shadow:none;border-radius:0}.print-box .pb-actions{display:none}.print-overlay{background:none}}
 </style>
 </head>
+
+
 <body>
 <div id="login-screen">
   <div class="login-box">
@@ -135,7 +163,14 @@ tr:hover td{background:#FAFAFA}
         <span class="user-info" id="user-name"></span><br>
         <span class="user-role" id="user-role"></span>
       </div>
+      
+<div class="notif-wrapper">
+        <button class="notif-btn" id="notif-btn" title="Notifiche">&#128276;<span class="notif-badge hidden" id="notif-count">0</span></button>
+        <div class="notif-panel" id="notif-panel"></div>
+      </div>
       <button class="btn-logout" id="btn-logout">Esci</button>
+
+
     </div>
   </div>
   <div class="nav">
@@ -263,7 +298,7 @@ function loadContratti(){
       h+='<tr><td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>'+(c.veicolo?c.veicolo.targa:'-')+'</td><td>'+dc+'</td><td>'+dr+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td>';
       h+='<td>';
       if(c.stato_contratto==='attivo'){h+='<button class="btn btn-success btn-sm" onclick="showCheckin('+c.id+')">Check-in</button> ';}
-      h+='<button class="btn btn-danger btn-sm" onclick="deleteContratto('+c.id+')">Elimina</button></td></tr>';
+      h+='<button class="btn btn-warning btn-sm" onclick="printContratto('+c.id+')">PDF</button> <button class="btn btn-danger btn-sm" onclick="deleteContratto('+c.id+')">Elimina</button></td></tr>';;
     });
     if(list.length===0){h+='<tr><td colspan="8" style="text-align:center;color:var(--grigio)">Nessun contratto</td></tr>';}
     h+='</tbody></table></div>';
@@ -553,6 +588,76 @@ function closeModal(){
   document.getElementById('modal').classList.add('hidden');
   document.getElementById('modal').innerHTML='';
 }
+// ===== NOTIFICHE =====
+document.getElementById('notif-btn').addEventListener('click',function(e){
+  e.stopPropagation();
+  var panel=document.getElementById('notif-panel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open'))loadNotifiche();
+});
+document.addEventListener('click',function(){document.getElementById('notif-panel').classList.remove('open');});
+
+function loadNotifiche(){
+  api('GET','/dashboard').then(function(d){
+    var notifs=[];
+    if(d.scadenze&&d.scadenze.length>0){
+      d.scadenze.forEach(function(s){
+        var dt=new Date(s.data_rientro_prevista);
+        var oggi=new Date();
+        var diff=Math.ceil((dt-oggi)/(1000*60*60*24));
+        var tipo=diff<=1?'urgent':'warning';
+        notifs.push({tipo:tipo,title:'Rientro: '+(s.veicolo?s.veicolo.targa:''),detail:s.numero_contratto+' - '+(s.cliente?s.cliente.cognome_nome:'-')+' - tra '+diff+' giorni'});
+      });
+    }
+    var badge=document.getElementById('notif-count');
+    var panel=document.getElementById('notif-panel');
+    if(notifs.length>0){
+      badge.textContent=notifs.length;
+      badge.classList.remove('hidden');
+      var h='<h4>Notifiche ('+notifs.length+')</h4>';
+      notifs.forEach(function(n){
+        h+='<div class="notif-item '+n.tipo+'"><div class="ni-title">'+n.title+'</div><div class="ni-detail">'+n.detail+'</div></div>';
+      });
+      panel.innerHTML=h;
+    } else {
+      badge.classList.add('hidden');
+      panel.innerHTML='<h4>Notifiche</h4><div class="notif-empty">Nessuna notifica</div>';
+    }
+  });
+}
+setInterval(function(){loadNotifiche();},60000);
+
+// ===== STAMPA PDF CONTRATTO =====
+function printContratto(id){
+  api('GET','/contratti/'+id).then(function(c){
+    if(!c||c.error){alert('Contratto non trovato');return;}
+    var cl=c.cliente||{};
+    var ve=c.veicolo||{};
+    var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'-';
+    var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
+    var h='<div class="print-overlay" id="print-overlay" onclick="closePrint()">';
+    h+='<div class="print-box" onclick="event.stopPropagation()">';
+    h+='<div class="pb-header"><img src="logo-bestrent.jpg" alt="BestRent" style="height:50px;margin-bottom:8px"><div style="font-size:22px;font-weight:800"><span style="color:#1A1A1A">BEST</span><span style="color:#CC1418">RENT</span> S.r.l.</div><div style="font-size:11px;color:#6B7280">Noleggi al miglior prezzo</div><div class="pb-title">CONTRATTO DI NOLEGGIO N. '+c.numero_contratto+'</div></div>';
+    h+='<div class="pb-section">Dati Cliente</div>';
+    h+='<div class="pb-grid"><div><span class="pb-label">Nome:</span> '+(cl.cognome_nome||'-')+'</div><div><span class="pb-label">Telefono:</span> '+(cl.telefono||'-')+'</div><div><span class="pb-label">Email:</span> '+(cl.email||'-')+'</div><div><span class="pb-label">Patente:</span> '+(cl.patente_nr||'-')+'</div></div>';
+    h+='<div class="pb-section">Dati Veicolo</div>';
+    h+='<div class="pb-grid"><div><span class="pb-label">Targa:</span> '+(ve.targa||'-')+'</div><div><span class="pb-label">Veicolo:</span> '+(ve.marca||'')+' '+(ve.modello||'')+'</div><div><span class="pb-label">Colore:</span> '+(ve.colore||'-')+'</div><div><span class="pb-label">Km:</span> '+(ve.km_attuali||'-')+'</div></div>';
+    h+='<div class="pb-section">Dati Noleggio</div>';
+    h+='<div class="pb-grid"><div><span class="pb-label">Consegna:</span> '+dc+'</div><div><span class="pb-label">Rientro:</span> '+dr+'</div><div><span class="pb-label">Giorni:</span> '+(c.giorni_noleggio||'-')+'</div><div><span class="pb-label">Tariffa/Giorno:</span> &euro;'+Number(c.tariffa_giornaliera||0).toFixed(2)+'</div><div><span class="pb-label">Totale:</span> <strong style="color:#CC1418;font-size:16px">&euro;'+Number(c.totale_documento||0).toFixed(2)+'</strong></div><div><span class="pb-label">Stato:</span> '+c.stato_contratto+'</div></div>';
+    h+='<div class="pb-section">Sede Operativa</div>';
+    h+='<div style="font-size:12px">BestRent S.r.l. - Via Europa 90, Lonate Pozzolo (VA)<br>Tel. +39 3500 300 197 | noleggibestrent@gmail.com</div>';
+    h+='<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:11px;color:#6B7280"><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Noleggiatore</div><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Cliente</div></div>';
+    h+='<div class="pb-actions"><button class="btn btn-primary btn-sm" style="width:auto" onclick="window.print()">Stampa / Salva PDF</button> <button class="btn btn-secondary btn-sm" onclick="closePrint()">Chiudi</button></div>';
+    h+='</div></div>';
+    document.body.insertAdjacentHTML('beforeend',h);
+  });
+}
+
+function closePrint(){
+  var el=document.getElementById('print-overlay');
+  if(el)el.remove();
+}
+
 </script>
 </body>
 </html>

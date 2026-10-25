@@ -132,10 +132,6 @@ tr:hover td{background:#FAFAFA}
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
-      <<img src="logo-dark.jpg" alt="BestRent" style="width:240px;margin-bottom:12px;border-radius:8px">
-<img src="logo-bestrent.jpg" alt="BestRent" style="height:38px;margin-right:8px"><span class="brand-best">BEST</span><span class="brand-rent">RENT</span>
-      <<img src="logo-bestrent.jpg" alt="BestRent" style="height:38px;margin-right:8px">
-
       <img src="logo-dark.jpg" alt="BestRent" style="width:240px;margin-bottom:12px;border-radius:8px">
       <div class="logo-slogan">Noleggi al miglior prezzo</div>
     </div>
@@ -156,7 +152,7 @@ tr:hover td{background:#FAFAFA}
   <div class="header">
     <div class="header-left">
       <div class="header-brand">
-        <span class="brand-best">BEST</span><span class="brand-rent">RENT</span>
+        <img src="logo-bestrent.jpg" alt="BestRent" style="height:38px;margin-right:8px"><span class="brand-best">BEST</span><span class="brand-rent">RENT</span>
         <span class="brand-slogan">Noleggi al miglior prezzo</span>
       </div>
     </div>
@@ -383,7 +379,7 @@ function saveCliente(){
   var nome=document.getElementById('m-nome').value;if(!nome){alert('Nome obbligatorio!');return}
   var data={cognome_nome:nome,telefono:document.getElementById('m-tel').value||null,email:document.getElementById('m-email').value||null,patente_nr:document.getElementById('m-pat').value||null,nazione:document.getElementById('m-naz').value||'Italia',indirizzo:document.getElementById('m-ind').value||null,codice_fiscale_piva:document.getElementById('m-cf').value||null};
   var patsc=document.getElementById('m-patsc').value;if(patsc)data.patente_valida_al=patsc;
-  api('POST','/clienti,data).then(function(r){if(r.error){alert(r.error)}else{closeModal();loadClienti()}});
+  api('POST','/'/clienti',data)).then(function(r){if(r.error){alert(r.error)}else{closeModal();loadClienti()}});
 }
 
 function editCliente(id){
@@ -488,5 +484,4 @@ function closeModal(){document.getElementById('modal').classList.add('hidden');d
 </script>
 </body>
 </html>
-Copy-Item "best4.JPG" -Destination "public\logo-bestrent.jpg"
-Copy-Item "$HOME\Downloads\best4.JPG" -Destination "public\logo-bestrent.jpg"
+

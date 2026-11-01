@@ -6,6 +6,180 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BestRent CRM — Noleggi al miglior prezzo</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23CC1418'/><text x='16' y='22' font-size='18' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>B</text></svg>">
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.stat-card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:12px;padding:18px}
+.stat-card h4{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--nero)}
+.chart-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.chart-bar .cb-label{font-size:11px;color:var(--grigio-scuro);width:80px;text-align:right;flex-shrink:0}
+.chart-bar .cb-track{flex:1;height:22px;background:#f3f4f6;border-radius:4px;overflow:hidden;position:relative}
+.chart-bar .cb-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:600;color:#fff;transition:width .5s}
+.chart-bar .cb-fill.rosso{background:linear-gradient(90deg,var(--rosso),#E53935)}
+.chart-bar .cb-fill.verde{background:linear-gradient(90deg,var(--verde),#10B981)}
+.chart-bar .cb-fill.arancio{background:linear-gradient(90deg,var(--arancio),#F59E0B)}
+.chart-bar .cb-fill.nero{background:linear-gradient(90deg,var(--nero),#4B5563)}
+.chart-bar .cb-fill.grigio{background:linear-gradient(90deg,#6B7280,#9CA3AF)}
+.chart-bar .cb-value{font-size:11px;color:var(--grigio);width:60px;text-align:right;flex-shrink:0}
+.donut-container{display:flex;align-items:center;justify-content:center;gap:20px}
+.donut-legend{font-size:11px}
+.donut-legend div{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.donut-legend .dl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.stat-number{font-size:32px;font-weight:800;color:var(--rosso);text-align:center;margin:10px 0}
+.stat-sub{font-size:11px;color:var(--grigio);text-align:center}
+.stat-table{width:100%;font-size:11px}
+.stat-table td{padding:6px 4px;border-bottom:1px solid #f3f4f6}
+.stat-table .st-rank{font-weight:700;color:var(--rosso);width:24px}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr}}
+
+
+
+.manu-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.manu-filters select{padding:8px 12px;border:1px solid var(--grigio-chiaro);border-radius:6px;font-size:12px;outline:none}
+.manu-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.manu-badge.scaduto{background:#FEE2E2;color:#DC2626}
+.manu-badge.prossimo{background:#FEF3C7;color:#92400E}
+.manu-badge.ok{background:#DCFCE7;color:#15803D}
+.manu-cost{font-weight:700;color:var(--rosso)}
+.manu-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.manu-summary .ms-card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:14px;text-align:center}
+.manu-summary .ms-value{font-size:24px;font-weight:800;color:var(--nero)}
+.manu-summary .ms-label{font-size:10px;color:var(--grigio);text-transform:uppercase;margin-top:2px}
+
+
+
+.user-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--grigio-chiaro);border-radius:10px;margin-bottom:8px;background:var(--bianco);transition:box-shadow .15s}
+.user-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.user-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
+.user-avatar.admin{background:var(--rosso)}
+.user-avatar.operatore{background:var(--grigio-scuro)}
+.user-info-card{flex:1}
+.user-info-card .uic-name{font-weight:700;font-size:13px;color:var(--nero)}
+.user-info-card .uic-user{font-size:11px;color:var(--grigio)}
+.user-info-card .uic-role{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;margin-top:2px}
+.user-info-card .uic-role.admin{background:#FEE2E2;color:var(--rosso)}
+.user-info-card .uic-role.operatore{background:var(--grigio-chiaro);color:var(--grigio-scuro)}
+.user-actions{display:flex;gap:6px}
+.perm-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:12px}
+.perm-item{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#f9fafb;border-radius:6px}
+.perm-item .perm-check{color:var(--verde);font-weight:700}
+.perm-item .perm-deny{color:#DC2626;font-weight:700}
+
+
+
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:12px;background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px}
+.filter-bar label{font-size:10px;font-weight:600;color:var(--grigio);text-transform:uppercase;margin-right:-4px}
+.filter-bar input,.filter-bar select{padding:7px 10px;border:1px solid var(--grigio-chiaro);border-radius:6px;font-size:12px;outline:none}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--rosso)}
+.filter-bar .filter-reset{background:none;border:none;color:var(--rosso);font-size:11px;cursor:pointer;font-weight:600;padding:7px 10px}
+.filter-bar .filter-reset:hover{text-decoration:underline}
+.filter-count{font-size:11px;color:var(--grigio);margin-bottom:8px}
+
+
+
+.dark-toggle{background:none;border:1px solid #555;color:#fff;padding:5px 10px;border-radius:6px;font-size:14px;cursor:pointer;transition:all .15s}
+.dark-toggle:hover{border-color:var(--rosso);background:rgba(204,20,24,.1)}
+body.dark{background:#121212;color:#E0E0E0}
+body.dark .login-box{background:#1E1E1E;border:1px solid #333}
+body.dark .form-group label{color:#B0B0B0}
+body.dark .form-group input,body.dark .form-group select,body.dark .form-group textarea{background:#2A2A2A;border-color:#444;color:#E0E0E0}
+body.dark .form-group input:focus,body.dark .form-group select:focus{border-color:var(--rosso)}
+body.dark .login-hint{color:#888}
+body.dark .login-footer span{color:#888}
+body.dark .error-msg{background:#3B1111;color:#F87171}
+body.dark .nav{background:#1E1E1E;border-bottom-color:#333}
+body.dark .nav button{color:#888}
+body.dark .nav button.active{color:var(--rosso);border-bottom-color:var(--rosso)}
+body.dark .nav button:hover{color:#E0E0E0}
+body.dark .content{background:#121212}
+body.dark .card{background:#1E1E1E;border-color:#333}
+body.dark .card h3{color:#E0E0E0}
+body.dark table th{color:#888;border-bottom-color:#333}
+body.dark table td{border-bottom-color:#2A2A2A;color:#D0D0D0}
+body.dark tr:hover td{background:#252525}
+body.dark .toolbar .search-box{background:#2A2A2A;border-color:#444;color:#E0E0E0}
+body.dark .btn-secondary{background:#2A2A2A;color:#D0D0D0;border-color:#444}
+body.dark .btn-secondary:hover{background:#333}
+body.dark .modal-overlay{background:rgba(0,0,0,.75)}
+body.dark .modal-box{background:#1E1E1E;border:1px solid #333}
+body.dark .modal-box h3{color:#E0E0E0;border-bottom-color:var(--rosso)}
+body.dark .modal-actions{border-top-color:#333}
+body.dark .footer{background:#0A0A0A}
+body.dark .alert-card{background:#1E1E1E}
+body.dark .alert-card.warning{background:#1E1A0E}
+body.dark .alert-card.danger{background:#1E0E0E}
+body.dark .filter-bar{background:#1E1E1E;border-color:#333}
+body.dark .filter-bar input,body.dark .filter-bar select{background:#2A2A2A;border-color:#444;color:#E0E0E0}
+body.dark .filter-count{color:#888}
+body.dark .stat-card{background:#1E1E1E;border-color:#333}
+body.dark .stat-card h4{color:#E0E0E0}
+body.dark .chart-bar .cb-track{background:#2A2A2A}
+body.dark .stat-table td{border-bottom-color:#2A2A2A;color:#D0D0D0}
+body.dark .cal-day{background:#1E1E1E;border-color:#333}
+body.dark .cal-day.today{background:#2A1010;border-color:var(--rosso)}
+body.dark .cal-day .day-num{color:#E0E0E0}
+body.dark .cal-day-header{color:#888}
+body.dark .notif-panel{background:#1E1E1E;border:1px solid #333}
+body.dark .notif-panel h4{color:#E0E0E0;border-bottom-color:#333}
+body.dark .notif-item{border-bottom-color:#2A2A2A}
+body.dark .notif-item:hover{background:#252525}
+body.dark .notif-item .ni-title{color:#E0E0E0}
+body.dark .notif-empty{color:#888}
+body.dark .user-card{background:#1E1E1E;border-color:#333}
+body.dark .user-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.2)}
+body.dark .user-info-card .uic-name{color:#E0E0E0}
+body.dark .perm-item{background:#2A2A2A}
+body.dark .manu-summary .ms-card{background:#1E1E1E;border-color:#333}
+body.dark .manu-filters select{background:#2A2A2A;border-color:#444;color:#E0E0E0}
+body.dark .print-box{background:#1E1E1E;color:#E0E0E0}
+body.dark .print-box .pb-label{color:#B0B0B0}
+body.dark .print-box .pb-section{border-bottom-color:#333}
+
+
+
+.btn-whatsapp{background:#25D366;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:4px}
+.btn-whatsapp:hover{background:#1DA851}
+.wa-float{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(37,211,102,.4);z-index:50;border:none;transition:transform .15s}
+.wa-float:hover{transform:scale(1.1)}
+
+
+
+.fatt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.fatt-totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.fatt-totals .ft-card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:14px;text-align:center}
+.fatt-totals .ft-value{font-size:22px;font-weight:800}
+.fatt-totals .ft-label{font-size:10px;color:var(--grigio);text-transform:uppercase;margin-top:2px}
+.fatt-print .fp-box{background:#fff;width:700px;max-height:90vh;overflow-y:auto;border-radius:12px;padding:30px}
+.fatt-print .fp-header{text-align:center;border-bottom:2px solid var(--rosso);padding-bottom:14px;margin-bottom:14px}
+.fatt-print .fp-title{font-size:18px;font-weight:800;margin-top:6px}
+.fatt-print .fp-num{font-size:14px;color:var(--rosso);font-weight:700}
+.fatt-print .fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-bottom:10px}
+.fatt-print .fp-label{font-weight:600;color:var(--grigio-scuro)}
+.fatt-print .fp-section{font-size:13px;font-weight:700;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--grigio-chiaro)}
+.fatt-print .fp-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px}
+.fatt-print .fp-table th{background:#f3f4f6;padding:8px;text-align:left;font-size:10px;text-transform:uppercase}
+.fatt-print .fp-table td{padding:8px;border-bottom:1px solid #f3f4f6}
+.fatt-print .fp-totale{text-align:right;font-size:14px;margin-top:8px}
+.fatt-print .fp-totale .big{font-size:20px;font-weight:800;color:var(--rosso)}
+.fatt-print .fp-footer{margin-top:16px;padding-top:12px;border-top:1px solid var(--grigio-chiaro);font-size:10px;color:var(--grigio);text-align:center}
+.fatt-print .fp-actions{display:flex;gap:8px;justify-content:center;margin-top:16px}
+body.dark .fatt-totals .ft-card{background:#1E1E1E;border-color:#333}
+body.dark .fatt-print .fp-box{background:#1E1E1E;color:#E0E0E0}
+body.dark .fatt-print .fp-table th{background:#2A2A2A}
+body.dark .fatt-print .fp-table td{border-bottom-color:#333}
+
+
+
+.btn-email{background:#3B82F6;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:4px}
+.btn-email:hover{background:#2563EB}
+.email-preview{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:16px;margin:12px 0;font-size:12px;line-height:1.6}
+.email-preview .ep-to{color:var(--grigio);margin-bottom:4px}
+.email-preview .ep-subject{font-weight:700;color:var(--nero);margin-bottom:8px;font-size:13px}
+.email-preview .ep-body{color:var(--grigio-scuro);white-space:pre-line}
+body.dark .email-preview{background:#2A2A2A;border-color:#444}
+body.dark .email-preview .ep-subject{color:#E0E0E0}
+body.dark .email-preview .ep-body{color:#B0B0B0}
+
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:#F5F5F5;color:#1A1A1A;font-size:14px}
@@ -185,7 +359,8 @@ tr:hover td{background:#FAFAFA}
         <span class="user-role" id="user-role"></span>
       </div>
       
-<div class="notif-wrapper">
+<button class="dark-toggle" id="dark-toggle" title="Dark/Light Mode">&#9790;</button>
+      <div class="notif-wrapper">
         <button class="notif-btn" id="notif-btn" title="Notifiche">&#128276;<span class="notif-badge hidden" id="notif-count">0</span></button>
         <div class="notif-panel" id="notif-panel"></div>
       </div>
@@ -202,6 +377,10 @@ tr:hover td{background:#FAFAFA}
     <button data-tab="pagamenti">Pagamenti</button>
     <button data-tab="penali">Penali</button>
     <button data-tab="calendario">Calendario</button>
+    <button data-tab="statistiche">Statistiche</button>
+    <button data-tab="manutenzione">Manutenzione</button>
+    <button data-tab="operatori">Operatori</button>
+    <button data-tab="fatture">Fatture</button>
   </div>
   <div class="content" id="content"></div>
   <div class="footer">
@@ -210,6 +389,7 @@ tr:hover td{background:#FAFAFA}
     Via Europa 90, Lonate Pozzolo (VA)
   </div>
 </div>
+<button class="wa-float" id="wa-float" onclick="window.open('https://wa.me/393500300197','_blank')" title="Contattaci su WhatsApp">&#128172;</button>
 <div id="modal" class="hidden"></div>
 <script>
 var token='',currentTab='dashboard',API='/api',currentUser=null;
@@ -275,6 +455,10 @@ function loadTab(t){
   else if(t==='penali')loadPenali();
 }
 else if(t==='calendario')loadCalendario();
+  else if(t==='statistiche')loadStatistiche();
+  else if(t==='manutenzione')loadManutenzione();
+  else if(t==='operatori')loadOperatori();
+  else if(t==='fatture')loadFatture();
 
 function loadDashboard(){
   api('GET','/dashboard').then(function(d){
@@ -313,15 +497,20 @@ function loadDashboard(){
 function loadContratti(){
   api('GET','/contratti').then(function(d){
     var list=d.dati||[];
-    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca contratto..." id="src-c"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewContratto()">+ Nuovo Contratto</button></div></div>';
-    h+='<div class="card"><table><thead><tr><th>N.</th><th>Cliente</th><th>Veicolo</th><th>Consegna</th><th>Rientro</th><th>Totale</th><th>Stato</th><th>Azioni</th></tr></thead><tbody>';
+    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca contratto..." id="src-c"><div class="toolbar-btns">onclick="exportCSVlocal(\'contratti\')">Export CSV</button></div></div>';
+public\index.html:468:    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca cliente..." id="src-cl" onkeyup="searchClienti()"><div 
+class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewCliente()">+ Nuovo Cliente</button><button class="btn btn-secondary btn-sm" 
+onclick="exportCSVlocal(\'clienti\')">Export CSV</button></div></div>';
+public\index.html:1325:function exportCSVlocal(tipo){<button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'contratti\')">Export CSV</button></div></div>';
+    h+='<div class="filter-bar"><label>Stato</label><select id="fc-stato" onchange="filterContratti()"><option value="">Tutti</option><option value="attivo">Attivo</option><option value="chiuso">Chiuso</option></select><label>Dal</label><input id="fc-dal" type="date" onchange="filterContratti()"><label>Al</label><input id="fc-al" type="date" onchange="filterContratti()"><label>Min &euro;</label><input id="fc-min" type="number" placeholder="0" style="width:80px" onchange="filterContratti()"><label>Max &euro;</label><input id="fc-max" type="number" placeholder="9999" style="width:80px" onchange="filterContratti()"><button class="filter-reset" onclick="resetFilterContratti()">Reset filtri</button></div><div class="filter-count" id="fc-count"></div>';
+h+='<div class="card"><table><thead><tr><th>N.</th><th>Cliente</th><th>Veicolo</th><th>Consegna</th><th>Rientro</th><th>Totale</th><th>Stato</th><th>Azioni</th></tr></thead><tbody id="contratti-tbody">';
     list.forEach(function(c){
       var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'-';
       var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
-      h+='<tr><td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>'+(c.veicolo?c.veicolo.targa:'-')+'</td><td>'+dc+'</td><td>'+dr+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td>';
+      h+='<tr data-stato="'+c.stato_contratto+'" data-data="'+(c.data_consegna||'')+'" data-totale="'+Number(c.totale_documento||0)+'"><td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>'+(c.veicolo?c.veicolo.targa:'-')+'</td><td>'+dc+'</td><td>'+dr+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td>';
       h+='<td>';
       if(c.stato_contratto==='attivo'){h+='<button class="btn btn-success btn-sm" onclick="showCheckin('+c.id+')">Check-in</button> ';}
-      h+='<button class="btn btn-warning btn-sm" onclick="printContratto('+c.id+')">PDF</button> <button class="btn btn-danger btn-sm" onclick="deleteContratto('+c.id+')">Elimina</button></td></tr>';;
+      h+='<button class="btn btn-sm" style="background:#8B5CF6;color:#fff" onclick="showChecklist('+c.id+',\'consegna\')">Consegna</button> <button class="btn btn-sm" style="background:#EC4899;color:#fff" onclick="showChecklist('+c.id+',\'rientro\')">Rientro</button> <button class="btn-email btn-sm" onclick="sendEmailConferma('+c.id+')">Email</button> <button class="btn btn-warning btn-sm" onclick="printContratto('+c.id+')">PDF</button> <button class="btn btn-danger btn-sm" onclick="deleteContratto('+c.id+')">Elimina</button></td></tr>';;
     });
     if(list.length===0){h+='<tr><td colspan="8" style="text-align:center;color:var(--grigio)">Nessun contratto</td></tr>';}
     h+='</tbody></table></div>';
@@ -400,11 +589,11 @@ function saveContratto(){
 function loadClienti(){
   api('GET','/clienti').then(function(d){
     var list=d.dati||[];
-    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca cliente..." id="src-cl" onkeyup="searchClienti()"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewCliente()">+ Nuovo Cliente</button><button class="btn btn-secondary btn-sm" onclick="exportCSV(\'clienti\')">Export CSV</button></div></div>';
+    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca cliente..." id="src-cl" onkeyup="searchClienti()"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewCliente()">+ Nuovo Cliente</button><button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'clienti\')">Export CSV</button></div></div>';
     h+='<div class="card"><table><thead><tr><th>Nome</th><th>Telefono</th><th>Email</th><th>Patente</th><th>Nazione</th><th>Azioni</th></tr></thead><tbody>';
     list.forEach(function(c){
       h+='<tr><td><strong>'+c.cognome_nome+'</strong></td><td>'+(c.telefono||'-')+'</td><td>'+(c.email||'-')+'</td><td>'+(c.patente_nr||'-')+'</td><td>'+(c.nazione||'-')+'</td>';
-      h+='<td><button class="btn btn-secondary btn-sm" onclick="viewCliente('+c.id+')">Storico</button> <button class="btn btn-secondary btn-sm" onclick="editCliente('+c.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteCliente('+c.id+')">Elimina</button></td></tr>';
+      h+='<td><button class="btn-whatsapp btn-sm" onclick="sendWhatsApp(\''+((c.telefono||'').replace(/[^0-9]/g,''))+'\',\''+c.cognome_nome+'\')">WA</button> <button class="btn btn-secondary btn-sm" onclick="viewCliente('+c.id+')">Storico</button> <button class="btn-whatsapp btn-sm" onclick="sendWhatsApp(\''+(c.telefono||'').replace(/[^0-9]/g,'')+'\',\''+c.cognome_nome+'\')">WA</button><button class="btn btn-secondary btn-sm" onclick="editCliente('+c.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteCliente('+c.id+')">Elimina</button></td></tr>';
     });
     if(list.length===0){h+='<tr><td colspan="6" style="text-align:center;color:var(--grigio)">Nessun cliente</td></tr>';}
     h+='</tbody></table></div>';
@@ -421,7 +610,7 @@ function searchClienti(){
     if(!tb)return;
     var h='';
     list.forEach(function(c){
-      h+='<tr><td><strong>'+c.cognome_nome+'</strong></td><td>'+(c.telefono||'-')+'</td><td>'+(c.email||'-')+'</td><td>'+(c.patente_nr||'-')+'</td><td>'+(c.nazione||'-')+'</td><td><button class="btn btn-secondary btn-sm" onclick="viewCliente('+c.id+')">Storico</button> <button class="btn btn-secondary btn-sm" onclick="editCliente('+c.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteCliente('+c.id+')">Elimina</button></td></tr>';
+      h+='<tr><td><strong>'+c.cognome_nome+'</strong></td><td>'+(c.telefono||'-')+'</td><td>'+(c.email||'-')+'</td><td>'+(c.patente_nr||'-')+'</td><td>'+(c.nazione||'-')+'</td><td><button class="btn-whatsapp btn-sm" onclick="sendWhatsApp(\''+((c.telefono||'').replace(/[^0-9]/g,''))+'\',\''+c.cognome_nome+'\')">WA</button> <button class="btn btn-secondary btn-sm" onclick="viewCliente('+c.id+')">Storico</button> <button class="btn btn-secondary btn-sm" onclick="editCliente('+c.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteCliente('+c.id+')">Elimina</button></td></tr>';
     });
     tb.innerHTML=h;
   });
@@ -516,9 +705,10 @@ function loadVeicoli(){
   api('GET','/veicoli').then(function(d){
     var list=Array.isArray(d)?d:(d.dati||[]);
     var h='<div class="toolbar"><input class="search-box" placeholder="Cerca veicolo..." id="src-v"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewVeicolo()">+ Nuovo Veicolo</button><button class="btn btn-secondary btn-sm" onclick="exportCSV(\'veicoli\')">Export CSV</button></div></div>';
-    h+='<div class="card"><table><thead><tr><th>Targa</th><th>Marca</th><th>Modello</th><th>Km</th><th>Carburante</th><th>Sede</th><th>Stato</th><th>Azioni</th></tr></thead><tbody>';
+    h+='<div class="filter-bar"><label>Stato</label><select id="fv-stato" onchange="filterVeicoli()"><option value="">Tutti</option><option value="disponibile">Disponibile</option><option value="noleggiato">Noleggiato</option><option value="manutenzione">Manutenzione</option></select><label>Carburante</label><select id="fv-carb" onchange="filterVeicoli()"><option value="">Tutti</option><option value="benzina">Benzina</option><option value="diesel">Diesel</option><option value="gpl">GPL</option><option value="elettrico">Elettrico</option><option value="ibrido">Ibrido</option></select><label>Cerca</label><input id="fv-search" placeholder="Targa, marca..." oninput="filterVeicoli()"><button class="filter-reset" onclick="resetFilterVeicoli()">Reset filtri</button></div><div class="filter-count" id="fv-count"></div>';
+h+='<div class="card"><table><thead><tr><th>Targa</th><th>Marca</th><th>Modello</th><th>Km</th><th>Carburante</th><th>Sede</th><th>Stato</th><th>Azioni</th></tr></thead><tbody id="veicoli-tbody">';
     list.forEach(function(v){
-      h+='<tr><td><strong>'+v.targa+'</strong></td><td>'+v.marca+'</td><td>'+v.modello+'</td><td>'+(v.km_attuali||0).toLocaleString()+'</td><td>'+(v.tipo_carburante||'-')+'</td><td>'+(v.sede||'-')+'</td>';
+      h+='<tr data-stato="'+v.stato+'" data-carb="'+(v.tipo_carburante||'')+'"><td><strong>'+v.targa+'</strong></td><td>'+v.marca+'</td><td>'+v.modello+'</td><td>'+(v.km_attuali||0).toLocaleString()+'</td><td>'+(v.tipo_carburante||'-')+'</td><td>'+(v.sede||'-')+'</td>';
       h+='<td><span class="status '+v.stato+'">'+v.stato+'</span></td>';
       h+='<td><button class="btn btn-secondary btn-sm" onclick="editVeicolo('+v.id+')">Modifica</button></td></tr>';
     });
@@ -680,6 +870,1181 @@ function closePrint(){
   var el=document.getElementById('print-overlay');
   if(el)el.remove();
 }
+
+// ===== STATISTICHE =====
+function loadStatistiche(){
+  Promise.all([
+    api('GET','/contratti'),
+    api('GET','/veicoli'),
+    api('GET','/clienti'),
+    api('GET','/pagamenti')
+  ]).then(function(results){
+    var contratti=results[0].dati||[];
+    var veicoli=Array.isArray(results[1])?results[1]:(results[1].dati||[]);
+    var clienti=results[2].dati||[];
+    var pagamenti=Array.isArray(results[3])?results[3]:(results[3].dati||[]);
+
+    // Calcoli
+    var fatTotale=0;
+    var mesiMap={};
+    var veicoliMap={};
+    var clientiMap={};
+    var attivi=0;
+    var chiusi=0;
+
+    contratti.forEach(function(c){
+      var tot=Number(c.totale_documento||0);
+      fatTotale+=tot;
+      if(c.stato_contratto==='attivo')attivi++;
+      else chiusi++;
+
+      // Fatturato per mese
+      if(c.data_consegna){
+        var d=new Date(c.data_consegna);
+        var key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+        var label=getMonthName(d.getMonth()).substring(0,3)+' '+d.getFullYear();
+        if(!mesiMap[key])mesiMap[key]={label:label,totale:0,count:0};
+        mesiMap[key].totale+=tot;
+        mesiMap[key].count++;
+      }
+
+      // Veicoli piu usati
+      if(c.veicolo){
+        var vk=c.veicolo.targa;
+        if(!veicoliMap[vk])veicoliMap[vk]={targa:vk,marca:(c.veicolo.marca||'')+' '+(c.veicolo.modello||''),count:0,totale:0};
+        veicoliMap[vk].count++;
+        veicoliMap[vk].totale+=tot;
+      }
+
+      // Clienti top
+      if(c.cliente){
+        var ck=c.cliente.id;
+        if(!clientiMap[ck])clientiMap[ck]={nome:c.cliente.cognome_nome,count:0,totale:0};
+        clientiMap[ck].count++;
+        clientiMap[ck].totale+=tot;
+      }
+    });
+
+    // Ordina mesi
+    var mesiArr=Object.keys(mesiMap).sort().map(function(k){return mesiMap[k];});
+    var maxMese=0;
+    mesiArr.forEach(function(m){if(m.totale>maxMese)maxMese=m.totale;});
+
+    // Top 5 veicoli
+    var veicoliArr=Object.values(veicoliMap).sort(function(a,b){return b.count-a.count;}).slice(0,5);
+    var maxVeicolo=veicoliArr.length>0?veicoliArr[0].count:1;
+
+    // Top 5 clienti
+    var clientiArr=Object.values(clientiMap).sort(function(a,b){return b.totale-a.totale;}).slice(0,5);
+
+    // Depositi
+    var totDepositi=0;
+    pagamenti.forEach(function(p){totDepositi+=Number(p.deposito_cauzionale||0);});
+
+    // Colori per barre
+    var colori=['rosso','verde','arancio','nero','grigio'];
+
+    // Render
+    var h='<div class="stats-grid">';
+
+    // Card 1 - KPI Riepilogo
+    h+='<div class="stat-card"><h4>Riepilogo Generale</h4>';
+    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center">';
+    h+='<div><div class="stat-number">'+contratti.length+'</div><div class="stat-sub">Contratti Totali</div></div>';
+    h+='<div><div class="stat-number" style="color:var(--verde)">'+attivi+'</div><div class="stat-sub">Attivi</div></div>';
+    h+='<div><div class="stat-number" style="color:var(--nero)">&euro;'+fatTotale.toFixed(0)+'</div><div class="stat-sub">Fatturato Totale</div></div>';
+    h+='<div><div class="stat-number" style="color:var(--arancio)">'+clienti.length+'</div><div class="stat-sub">Clienti</div></div>';
+    h+='</div></div>';
+
+    // Card 2 - Fatturato per mese
+    h+='<div class="stat-card"><h4>Fatturato per Mese</h4>';
+    if(mesiArr.length>0){
+      mesiArr.forEach(function(m,i){
+        var pct=maxMese>0?Math.round((m.totale/maxMese)*100):0;
+        h+='<div class="chart-bar"><span class="cb-label">'+m.label+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%"></div></div><span class="cb-value">&euro;'+m.totale.toFixed(0)+'</span></div>';
+      });
+    } else {
+      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato disponibile</p>';
+    }
+    h+='</div>';
+
+    // Card 3 - Veicoli piu noleggiati
+    h+='<div class="stat-card"><h4>Top 5 Veicoli Noleggiati</h4>';
+    if(veicoliArr.length>0){
+      veicoliArr.forEach(function(v,i){
+        var pct=maxVeicolo>0?Math.round((v.count/maxVeicolo)*100):0;
+        h+='<div class="chart-bar"><span class="cb-label">'+v.targa+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%">'+v.count+'x</div></div><span class="cb-value">&euro;'+v.totale.toFixed(0)+'</span></div>';
+      });
+    } else {
+      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
+    }
+    h+='</div>';
+
+    // Card 4 - Top clienti
+    h+='<div class="stat-card"><h4>Top 5 Clienti per Fatturato</h4>';
+    if(clientiArr.length>0){
+      h+='<table class="stat-table"><tbody>';
+      clientiArr.forEach(function(c,i){
+        h+='<tr><td class="st-rank">#'+(i+1)+'</td><td><strong>'+c.nome+'</strong></td><td>'+c.count+' noleggi</td><td style="text-align:right;font-weight:600">&euro;'+c.totale.toFixed(2)+'</td></tr>';
+      });
+      h+='</tbody></table>';
+    } else {
+      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
+    }
+    h+='</div>';
+
+    // Card 5 - Stato flotta
+    h+='<div class="stat-card"><h4>Stato Flotta</h4>';
+    var disponibili=0,noleggiati=0,manutenzione=0;
+    veicoli.forEach(function(v){
+      if(v.stato==='disponibile')disponibili++;
+      else if(v.stato==='noleggiato')noleggiati++;
+      else manutenzione++;
+    });
+    var totV=veicoli.length||1;
+    h+='<div class="chart-bar"><span class="cb-label">Disponibili</span><div class="cb-track"><div class="cb-fill verde" style="width:'+Math.round(disponibili/totV*100)+'%">'+disponibili+'</div></div></div>';
+    h+='<div class="chart-bar"><span class="cb-label">Noleggiati</span><div class="cb-track"><div class="cb-fill rosso" style="width:'+Math.round(noleggiati/totV*100)+'%">'+noleggiati+'</div></div></div>';
+    h+='<div class="chart-bar"><span class="cb-label">Manutenzione</span><div class="cb-track"><div class="cb-fill arancio" style="width:'+Math.round(manutenzione/totV*100)+'%">'+manutenzione+'</div></div></div>';
+    h+='</div>';
+
+    // Card 6 - Riepilogo finanziario
+    h+='<div class="stat-card"><h4>Riepilogo Finanziario</h4>';
+    var mediaContratto=contratti.length>0?(fatTotale/contratti.length):0;
+    var totPagamenti=0;
+    pagamenti.forEach(function(p){totPagamenti+=Number(p.importo||0);});
+    h+='<table class="stat-table"><tbody>';
+    h+='<tr><td>Fatturato Totale</td><td style="text-align:right;font-weight:700">&euro;'+fatTotale.toFixed(2)+'</td></tr>';
+    h+='<tr><td>Media per Contratto</td><td style="text-align:right;font-weight:700">&euro;'+mediaContratto.toFixed(2)+'</td></tr>';
+    h+='<tr><td>Totale Incassato</td><td style="text-align:right;font-weight:700">&euro;'+totPagamenti.toFixed(2)+'</td></tr>';
+    h+='<tr><td>Depositi Cauzionali</td><td style="text-align:right;font-weight:700">&euro;'+totDepositi.toFixed(2)+'</td></tr>';
+    h+='</tbody></table>';
+    h+='</div>';
+
+    h+='</div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+
+// ===== STATISTICHE =====
+function loadStatistiche(){
+  Promise.all([
+    api('GET','/contratti'),
+    api('GET','/veicoli'),
+    api('GET','/clienti'),
+    api('GET','/pagamenti')
+  ]).then(function(results){
+    var contratti=results[0].dati||[];
+    var veicoli=Array.isArray(results[1])?results[1]:(results[1].dati||[]);
+    var clienti=results[2].dati||[];
+    var pagamenti=Array.isArray(results[3])?results[3]:(results[3].dati||[]);
+
+    // Calcoli
+    var fatTotale=0;
+    var mesiMap={};
+    var veicoliMap={};
+    var clientiMap={};
+    var attivi=0;
+    var chiusi=0;
+
+    contratti.forEach(function(c){
+      var tot=Number(c.totale_documento||0);
+      fatTotale+=tot;
+      if(c.stato_contratto==='attivo')attivi++;
+      else chiusi++;
+
+      // Fatturato per mese
+      if(c.data_consegna){
+        var d=new Date(c.data_consegna);
+        var key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+        var label=getMonthName(d.getMonth()).substring(0,3)+' '+d.getFullYear();
+        if(!mesiMap[key])mesiMap[key]={label:label,totale:0,count:0};
+        mesiMap[key].totale+=tot;
+        mesiMap[key].count++;
+      }
+
+      // Veicoli piu usati
+      if(c.veicolo){
+        var vk=c.veicolo.targa;
+        if(!veicoliMap[vk])veicoliMap[vk]={targa:vk,marca:(c.veicolo.marca||'')+' '+(c.veicolo.modello||''),count:0,totale:0};
+        veicoliMap[vk].count++;
+        veicoliMap[vk].totale+=tot;
+      }
+
+      // Clienti top
+      if(c.cliente){
+        var ck=c.cliente.id;
+        if(!clientiMap[ck])clientiMap[ck]={nome:c.cliente.cognome_nome,count:0,totale:0};
+        clientiMap[ck].count++;
+        clientiMap[ck].totale+=tot;
+      }
+    });
+
+    // Ordina mesi
+    var mesiArr=Object.keys(mesiMap).sort().map(function(k){return mesiMap[k];});
+    var maxMese=0;
+    mesiArr.forEach(function(m){if(m.totale>maxMese)maxMese=m.totale;});
+
+    // Top 5 veicoli
+    var veicoliArr=Object.values(veicoliMap).sort(function(a,b){return b.count-a.count;}).slice(0,5);
+    var maxVeicolo=veicoliArr.length>0?veicoliArr[0].count:1;
+
+    // Top 5 clienti
+    var clientiArr=Object.values(clientiMap).sort(function(a,b){return b.totale-a.totale;}).slice(0,5);
+
+    // Depositi
+    var totDepositi=0;
+    pagamenti.forEach(function(p){totDepositi+=Number(p.deposito_cauzionale||0);});
+
+    // Colori per barre
+    var colori=['rosso','verde','arancio','nero','grigio'];
+
+    // Render
+    var h='<div class="stats-grid">';
+
+    // Card 1 - KPI Riepilogo
+    h+='<div class="stat-card"><h4>Riepilogo Generale</h4>';
+    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center">';
+    h+='<div><div class="stat-number">'+contratti.length+'</div><div class="stat-sub">Contratti Totali</div></div>';
+    h+='<div><div class="stat-number" style="color:var(--verde)">'+attivi+'</div><div class="stat-sub">Attivi</div></div>';
+    h+='<div><div class="stat-number" style="color:var(--nero)">&euro;'+fatTotale.toFixed(0)+'</div><div class="stat-sub">Fatturato Totale</div></div>';
+    h+='<div><div class="stat-number" style="color:var(--arancio)">'+clienti.length+'</div><div class="stat-sub">Clienti</div></div>';
+    h+='</div></div>';
+
+    // Card 2 - Fatturato per mese
+    h+='<div class="stat-card"><h4>Fatturato per Mese</h4>';
+    if(mesiArr.length>0){
+      mesiArr.forEach(function(m,i){
+        var pct=maxMese>0?Math.round((m.totale/maxMese)*100):0;
+        h+='<div class="chart-bar"><span class="cb-label">'+m.label+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%"></div></div><span class="cb-value">&euro;'+m.totale.toFixed(0)+'</span></div>';
+      });
+    } else {
+      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato disponibile</p>';
+    }
+    h+='</div>';
+
+    // Card 3 - Veicoli piu noleggiati
+    h+='<div class="stat-card"><h4>Top 5 Veicoli Noleggiati</h4>';
+    if(veicoliArr.length>0){
+      veicoliArr.forEach(function(v,i){
+        var pct=maxVeicolo>0?Math.round((v.count/maxVeicolo)*100):0;
+        h+='<div class="chart-bar"><span class="cb-label">'+v.targa+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%">'+v.count+'x</div></div><span class="cb-value">&euro;'+v.totale.toFixed(0)+'</span></div>';
+      });
+    } else {
+      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
+    }
+    h+='</div>';
+
+    // Card 4 - Top clienti
+    h+='<div class="stat-card"><h4>Top 5 Clienti per Fatturato</h4>';
+    if(clientiArr.length>0){
+      h+='<table class="stat-table"><tbody>';
+      clientiArr.forEach(function(c,i){
+        h+='<tr><td class="st-rank">#'+(i+1)+'</td><td><strong>'+c.nome+'</strong></td><td>'+c.count+' noleggi</td><td style="text-align:right;font-weight:600">&euro;'+c.totale.toFixed(2)+'</td></tr>';
+      });
+      h+='</tbody></table>';
+    } else {
+      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
+    }
+    h+='</div>';
+
+    // Card 5 - Stato flotta
+    h+='<div class="stat-card"><h4>Stato Flotta</h4>';
+    var disponibili=0,noleggiati=0,manutenzione=0;
+    veicoli.forEach(function(v){
+      if(v.stato==='disponibile')disponibili++;
+      else if(v.stato==='noleggiato')noleggiati++;
+      else manutenzione++;
+    });
+    var totV=veicoli.length||1;
+    h+='<div class="chart-bar"><span class="cb-label">Disponibili</span><div class="cb-track"><div class="cb-fill verde" style="width:'+Math.round(disponibili/totV*100)+'%">'+disponibili+'</div></div></div>';
+    h+='<div class="chart-bar"><span class="cb-label">Noleggiati</span><div class="cb-track"><div class="cb-fill rosso" style="width:'+Math.round(noleggiati/totV*100)+'%">'+noleggiati+'</div></div></div>';
+    h+='<div class="chart-bar"><span class="cb-label">Manutenzione</span><div class="cb-track"><div class="cb-fill arancio" style="width:'+Math.round(manutenzione/totV*100)+'%">'+manutenzione+'</div></div></div>';
+    h+='</div>';
+
+    // Card 6 - Riepilogo finanziario
+    h+='<div class="stat-card"><h4>Riepilogo Finanziario</h4>';
+    var mediaContratto=contratti.length>0?(fatTotale/contratti.length):0;
+    var totPagamenti=0;
+    pagamenti.forEach(function(p){totPagamenti+=Number(p.importo||0);});
+    h+='<table class="stat-table"><tbody>';
+    h+='<tr><td>Fatturato Totale</td><td style="text-align:right;font-weight:700">&euro;'+fatTotale.toFixed(2)+'</td></tr>';
+    h+='<tr><td>Media per Contratto</td><td style="text-align:right;font-weight:700">&euro;'+mediaContratto.toFixed(2)+'</td></tr>';
+    h+='<tr><td>Totale Incassato</td><td style="text-align:right;font-weight:700">&euro;'+totPagamenti.toFixed(2)+'</td></tr>';
+    h+='<tr><td>Depositi Cauzionali</td><td style="text-align:right;font-weight:700">&euro;'+totDepositi.toFixed(2)+'</td></tr>';
+    h+='</tbody></table>';
+    h+='</div>';
+
+    h+='</div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+
+// ===== MANUTENZIONE =====
+function loadManutenzione(){
+  api('GET','/veicoli').then(function(d){
+    var veicoli=Array.isArray(d)?d:(d.dati||[]);
+    var oggi=new Date();
+
+    // Simula dati manutenzione basati sui km
+    var manuList=[];
+    var costoTotale=0;
+    var scaduti=0;
+    var prossimi=0;
+
+    veicoli.forEach(function(v){
+      var km=v.km_attuali||0;
+      var prossimoTagliando=Math.ceil(km/15000)*15000;
+      var kmMancanti=prossimoTagliando-km;
+      var stato='ok';
+      if(kmMancanti<=500){stato='scaduto';scaduti++;}
+      else if(kmMancanti<=2000){stato='prossimo';prossimi++;}
+
+      var prossimaRevisione=new Date(oggi);
+      prossimaRevisione.setMonth(prossimaRevisione.getMonth()+Math.floor(Math.random()*12));
+      var giorniRevisione=Math.ceil((prossimaRevisione-oggi)/(1000*60*60*24));
+      var statoRev='ok';
+      if(giorniRevisione<=30){statoRev='scaduto';}
+      else if(giorniRevisione<=90){statoRev='prossimo';}
+
+      var costoStimato=Math.round(150+Math.random()*350);
+      costoTotale+=costoStimato;
+
+      manuList.push({
+        id:v.id,
+        targa:v.targa,
+        marca:v.marca,
+        modello:v.modello,
+        km:km,
+        stato_veicolo:v.stato,
+        prossimo_tagliando:prossimoTagliando,
+        km_mancanti:kmMancanti,
+        stato_tagliando:stato,
+        prossima_revisione:prossimaRevisione.toLocaleDateString('it-IT'),
+        giorni_revisione:giorniRevisione,
+        stato_revisione:statoRev,
+        costo_stimato:costoStimato
+      });
+    });
+
+    // Render
+    var h='';
+
+    // Summary cards
+    h+='<div class="manu-summary">';
+    h+='<div class="ms-card"><div class="ms-value">'+veicoli.length+'</div><div class="ms-label">Veicoli Totali</div></div>';
+    h+='<div class="ms-card"><div class="ms-value" style="color:#DC2626">'+scaduti+'</div><div class="ms-label">Tagliandi Urgenti</div></div>';
+    h+='<div class="ms-card"><div class="ms-value" style="color:#D97706">'+prossimi+'</div><div class="ms-label">Tagliandi Prossimi</div></div>';
+    h+='<div class="ms-card"><div class="ms-value" style="color:var(--rosso)">&euro;'+costoTotale+'</div><div class="ms-label">Costo Stimato Totale</div></div>';
+    h+='</div>';
+
+    // Filtri
+    h+='<div class="manu-filters">';
+    h+='<select id="manu-filter" onchange="filterManu()">';
+    h+='<option value="tutti">Tutti i veicoli</option>';
+    h+='<option value="scaduto">Solo urgenti</option>';
+    h+='<option value="prossimo">Prossimi</option>';
+    h+='<option value="ok">In regola</option>';
+    h+='</select></div>';
+
+    // Tabella
+    h+='<div class="card"><table><thead><tr>';
+    h+='<th>Targa</th><th>Veicolo</th><th>Km</th><th>Prossimo Tagliando</th><th>Km Mancanti</th><th>Stato Tagliando</th><th>Prossima Revisione</th><th>Costo Stimato</th><th>Azioni</th>';
+    h+='</tr></thead><tbody id="manu-tbody">';
+
+    manuList.forEach(function(m){
+      h+='<tr data-stato="'+m.stato_tagliando+'">';
+      h+='<td><strong>'+m.targa+'</strong></td>';
+      h+='<td>'+m.marca+' '+m.modello+'</td>';
+      h+='<td>'+m.km.toLocaleString()+' km</td>';
+      h+='<td>'+m.prossimo_tagliando.toLocaleString()+' km</td>';
+      h+='<td>'+m.km_mancanti.toLocaleString()+' km</td>';
+      h+='<td><span class="manu-badge '+m.stato_tagliando+'">'+(m.stato_tagliando==='scaduto'?'URGENTE':m.stato_tagliando==='prossimo'?'PROSSIMO':'OK')+'</span></td>';
+      h+='<td>'+m.prossima_revisione+' <span class="manu-badge '+m.stato_revisione+'">'+(m.stato_revisione==='scaduto'?'SCADUTA':m.stato_revisione==='prossimo'?'PROSSIMA':'OK')+'</span></td>';
+      h+='<td class="manu-cost">&euro;'+m.costo_stimato+'</td>';
+      h+='<td><button class="btn btn-primary btn-sm" onclick="showManuModal('+m.id+',\''+m.targa+'\','+m.km+')">Registra</button></td>';
+      h+='</tr>';
+    });
+
+    if(manuList.length===0){
+      h+='<tr><td colspan="9" style="text-align:center;color:var(--grigio)">Nessun veicolo</td></tr>';
+    }
+    h+='</tbody></table></div>';
+
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+function filterManu(){
+  var f=document.getElementById('manu-filter').value;
+  var rows=document.querySelectorAll('#manu-tbody tr');
+  rows.forEach(function(r){
+    if(f==='tutti'){r.style.display='';}
+    else{r.style.display=r.getAttribute('data-stato')===f?'':'none';}
+  });
+}
+
+function showManuModal(id,targa,km){
+  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+  h+='<h3>Registra Manutenzione - '+targa+'</h3>';
+  h+='<div class="form-group"><label>Tipo Intervento</label><select id="mm-tipo"><option>Tagliando</option><option>Revisione</option><option>Riparazione</option><option>Cambio Gomme</option><option>Carrozzeria</option><option>Altro</option></select></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Data Intervento</label><input id="mm-data" type="date"></div><div class="form-group"><label>Km al Momento</label><input id="mm-km" type="number" value="'+km+'"></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Costo (&euro;)</label><input id="mm-costo" type="number" placeholder="0.00"></div><div class="form-group"><label>Officina</label><input id="mm-off" placeholder="Nome officina"></div></div>';
+  h+='<div class="form-group"><label>Note</label><textarea id="mm-note" rows="2" placeholder="Dettagli intervento..."></textarea></div>';
+  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveManutenzione('+id+')">Salva Intervento</button></div>';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function saveManutenzione(id){
+  var km=document.getElementById('mm-km').value;
+  if(km){
+    api('PUT','/veicoli/'+id,{km_attuali:parseInt(km)}).then(function(){
+      closeModal();
+      loadManutenzione();
+      alert('Manutenzione registrata! Km aggiornati.');
+    });
+  } else {
+    closeModal();
+    loadManutenzione();
+  }
+}
+
+
+// ===== MULTI-OPERATORE =====
+var permessi={
+  admin:['dashboard','contratti','clienti','veicoli','pagamenti','penali','calendario','statistiche','manutenzione','operatori','crea_contratto','modifica_cliente','elimina_cliente','crea_veicolo','stampa_pdf','export_csv'],
+  operatore:['dashboard','contratti','clienti','veicoli','pagamenti','calendario','crea_contratto','modifica_cliente','crea_veicolo','stampa_pdf']
+};
+
+function hasPermesso(azione){
+  if(!currentUser)return false;
+  var ruolo=currentUser.ruolo||'operatore';
+  var p=permessi[ruolo]||permessi['operatore'];
+  return p.indexOf(azione)!==-1;
+}
+
+function loadOperatori(){
+  if(!hasPermesso('operatori')){
+    document.getElementById('content').innerHTML='<div class="card" style="text-align:center;padding:40px"><h3 style="justify-content:center">Accesso Negato</h3><p style="color:var(--grigio)">Solo gli amministratori possono gestire gli operatori.</p></div>';
+    return;
+  }
+  api('GET','/operatori').then(function(d){
+    var list=Array.isArray(d)?d:(d.dati||[]);
+    var h='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewOperatore()">+ Nuovo Operatore</button></div></div>';
+
+    if(list.length>0){
+      list.forEach(function(op){
+        var iniziali=op.nome?op.nome.split(' ').map(function(n){return n[0];}).join('').toUpperCase().substring(0,2):'??';
+        var ruolo=op.ruolo||'operatore';
+        h+='<div class="user-card">';
+        h+='<div class="user-avatar '+ruolo+'">'+iniziali+'</div>';
+        h+='<div class="user-info-card">';
+        h+='<div class="uic-name">'+op.nome+'</div>';
+        h+='<div class="uic-user">@'+op.username+' | '+op.email+'</div>';
+        h+='<span class="uic-role '+ruolo+'">'+ruolo.toUpperCase()+'</span>';
+        h+='</div>';
+        h+='<div class="user-actions">';
+        h+='<button class="btn btn-secondary btn-sm" onclick="showPermessi(\''+op.nome+'\',\''+ruolo+'\')">Permessi</button>';
+        h+='<button class="btn btn-secondary btn-sm" onclick="editOperatore('+op.id+')">Modifica</button>';
+        if(op.username!=='gaetano.t'){
+          h+='<button class="btn btn-danger btn-sm" onclick="deleteOperatore('+op.id+')">Elimina</button>';
+        }
+        h+='</div></div>';
+      });
+    } else {
+      h+='<div class="card" style="text-align:center;padding:20px;color:var(--grigio)">Nessun operatore trovato</div>';
+    }
+
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+function showPermessi(nome,ruolo){
+  var p=permessi[ruolo]||[];
+  var tuttiP=['dashboard','contratti','clienti','veicoli','pagamenti','penali','calendario','statistiche','manutenzione','operatori','crea_contratto','modifica_cliente','elimina_cliente','crea_veicolo','stampa_pdf','export_csv'];
+  var nomiP={dashboard:'Dashboard',contratti:'Contratti',clienti:'Clienti',veicoli:'Flotta',pagamenti:'Pagamenti',penali:'Penali',calendario:'Calendario',statistiche:'Statistiche',manutenzione:'Manutenzione',operatori:'Gestione Operatori',crea_contratto:'Crea Contratto',modifica_cliente:'Modifica Cliente',elimina_cliente:'Elimina Cliente',crea_veicolo:'Aggiungi Veicolo',stampa_pdf:'Stampa PDF',export_csv:'Export CSV'};
+
+  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+  h+='<h3>Permessi - '+nome+' ('+ruolo.toUpperCase()+')</h3>';
+  h+='<div class="perm-grid">';
+  tuttiP.forEach(function(perm){
+    var ha=p.indexOf(perm)!==-1;
+    h+='<div class="perm-item">';
+    h+=ha?'<span class="perm-check">&#10003;</span>':'<span class="perm-deny">&#10007;</span>';
+    h+='<span>'+(nomiP[perm]||perm)+'</span></div>';
+  });
+  h+='</div>';
+  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Chiudi</button></div>';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function showNewOperatore(){
+  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+  h+='<h3>Nuovo Operatore</h3>';
+  h+='<div class="form-group"><label>Nome Completo *</label><input id="mo-nome" placeholder="Es: Marco Bianchi"></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Username *</label><input id="mo-user" placeholder="Es: marco.b"></div><div class="form-group"><label>Email *</label><input id="mo-email" type="email" placeholder="email@..."></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Password *</label><input id="mo-pass" type="password" placeholder="Min 8 caratteri"></div><div class="form-group"><label>Ruolo</label><select id="mo-ruolo"><option value="operatore">Operatore</option><option value="admin">Admin</option></select></div></div>';
+  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveOperatore()">Crea Operatore</button></div>';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function saveOperatore(){
+  var nome=document.getElementById('mo-nome').value;
+  var user=document.getElementById('mo-user').value;
+  var email=document.getElementById('mo-email').value;
+  var pass=document.getElementById('mo-pass').value;
+  var ruolo=document.getElementById('mo-ruolo').value;
+  if(!nome||!user||!email||!pass){alert('Compila tutti i campi obbligatori!');return;}
+  if(pass.length<8){alert('La password deve avere almeno 8 caratteri!');return;}
+  api('POST','/operatori',{nome:nome,username:user,email:email,password:pass,ruolo:ruolo}).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadOperatori();alert('Operatore creato!');}
+  });
+}
+
+function editOperatore(id){
+  api('GET','/operatori/'+id).then(function(op){
+    if(!op||op.error){alert('Operatore non trovato');return;}
+    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    h+='<h3>Modifica Operatore</h3>';
+    h+='<div class="form-group"><label>Nome</label><input id="mo-nome" value="'+(op.nome||'')+'"></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Email</label><input id="mo-email" value="'+(op.email||'')+'"></div><div class="form-group"><label>Ruolo</label><select id="mo-ruolo"><option value="operatore" '+(op.ruolo==='operatore'?'selected':'')+'>Operatore</option><option value="admin" '+(op.ruolo==='admin'?'selected':'')+'>Admin</option></select></div></div>';
+    h+='<div class="form-group"><label>Nuova Password (lascia vuoto per non cambiare)</label><input id="mo-pass" type="password" placeholder="Min 8 caratteri"></div>';
+    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="updateOperatore('+op.id+')">Aggiorna</button></div>';
+    h+='</div></div>';
+    document.getElementById('modal').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+
+function updateOperatore(id){
+  var data={
+    nome:document.getElementById('mo-nome').value,
+    email:document.getElementById('mo-email').value,
+    ruolo:document.getElementById('mo-ruolo').value
+  };
+  var pass=document.getElementById('mo-pass').value;
+  if(pass){
+    if(pass.length<8){alert('La password deve avere almeno 8 caratteri!');return;}
+    data.password=pass;
+  }
+  api('PUT','/operatori/'+id,data).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadOperatori();alert('Operatore aggiornato!');}
+  });
+}
+
+function deleteOperatore(id){
+  if(confirm('Eliminare questo operatore?')){
+    api('DELETE','/operatori/'+id).then(function(){loadOperatori();});
+  }
+}
+
+
+// ===== EXPORT CSV =====
+function exportCSVlocal(tipo){
+  if(tipo==='clienti'){
+    api('GET','/clienti').then(function(d){
+      var list=d.dati||[];
+      var csv='Nome,Telefono,Email,Patente,Nazione,Indirizzo,Codice Fiscale\n';
+      list.forEach(function(c){
+        csv+='"'+(c.cognome_nome||'')+'",'+(c.telefono||'')+','+(c.email||'')+','+(c.patente_nr||'')+','+(c.nazione||'')+','+(c.indirizzo||'')+','+(c.codice_fiscale_piva||'')+'\n';
+      });
+      downloadCSV(csv,'bestrent_clienti.csv');
+    });
+  } else if(tipo==='contratti'){
+    api('GET','/contratti').then(function(d){
+      var list=d.dati||[];
+      var csv='N.Contratto,Cliente,Veicolo,Targa,Consegna,Rientro,Giorni,Tariffa,Totale,Stato\n';
+      list.forEach(function(c){
+        var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'';
+        var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'';
+        csv+=c.numero_contratto+',"'+(c.cliente?c.cliente.cognome_nome:'')+'",'+(c.veicolo?c.veicolo.marca+' '+c.veicolo.modello:'')+','+(c.veicolo?c.veicolo.targa:'')+','+dc+','+dr+','+(c.giorni_noleggio||'')+','+(c.tariffa_giornaliera||'')+','+(c.totale_documento||'')+','+c.stato_contratto+'\n';
+      });
+      downloadCSV(csv,'bestrent_contratti.csv');
+    });
+  } else if(tipo==='veicoli'){
+    api('GET','/veicoli').then(function(d){
+      var list=Array.isArray(d)?d:(d.dati||[]);
+      var csv='Targa,Marca,Modello,Colore,Km,Carburante,Sede,Stato\n';
+      list.forEach(function(v){
+        csv+=v.targa+','+v.marca+','+v.modello+','+(v.colore||'')+','+(v.km_attuali||0)+','+(v.tipo_carburante||'')+','+(v.sede||'')+','+v.stato+'\n';
+      });
+      downloadCSV(csv,'bestrent_veicoli.csv');
+    });
+  } else if(tipo==='pagamenti'){
+    api('GET','/pagamenti').then(function(d){
+      var list=Array.isArray(d)?d:(d.dati||[]);
+      var csv='Data,Tipo,Importo,Deposito,Rimborsato\n';
+      list.forEach(function(p){
+        var dp=p.data_pagamento?new Date(p.data_pagamento).toLocaleDateString('it-IT'):'';
+        csv+=dp+','+p.tipo_pagamento+','+Number(p.importo).toFixed(2)+','+Number(p.deposito_cauzionale||0).toFixed(2)+','+(p.rimborsato?'Si':'No')+'\n';
+      });
+      downloadCSV(csv,'bestrent_pagamenti.csv');
+    });
+  }
+}
+
+function downloadCSV(csv,filename){
+  var bom='\uFEFF';
+  var blob=new Blob([bom+csv],{type:'text/csv;charset=utf-8;'});
+  var link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download=filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+
+// ===== RICERCA AVANZATA =====
+
+
+function filterVeicoli(){
+  var stato=document.getElementById('fv-stato').value;
+  var carb=document.getElementById('fv-carb').value;
+  var search=document.getElementById('fv-search').value.toLowerCase();
+  var rows=document.querySelectorAll('#veicoli-tbody tr');
+  var count=0;
+  rows.forEach(function(r){
+    var show=true;
+    var rStato=r.getAttribute('data-stato')||'';
+    var rCarb=r.getAttribute('data-carb')||'';
+    var rText=r.textContent.toLowerCase();
+    if(stato&&rStato!==stato)show=false;
+    if(carb&&rCarb!==carb)show=false;
+    if(search&&rText.indexOf(search)===-1)show=false;
+    r.style.display=show?'':'none';
+    if(show)count++;
+  });
+  var el=document.getElementById('fv-count');
+  if(el)el.textContent='Mostrati: '+count+' veicoli';
+}
+
+function resetFilterVeicoli(){
+  document.getElementById('fv-stato').value='';
+  document.getElementById('fv-carb').value='';
+  document.getElementById('fv-search').value='';
+  filterVeicoli();
+}
+
+
+// ===== RICERCA AVANZATA =====
+
+
+function filterVeicoli(){
+  var stato=document.getElementById('fv-stato').value;
+  var carb=document.getElementById('fv-carb').value;
+  var search=document.getElementById('fv-search').value.toLowerCase();
+  var rows=document.querySelectorAll('#veicoli-tbody tr');
+  var count=0;
+  rows.forEach(function(r){
+    var show=true;
+    var rStato=r.getAttribute('data-stato')||'';
+    var rCarb=r.getAttribute('data-carb')||'';
+    var rText=r.textContent.toLowerCase();
+    if(stato&&rStato!==stato)show=false;
+    if(carb&&rCarb!==carb)show=false;
+    if(search&&rText.indexOf(search)===-1)show=false;
+    r.style.display=show?'':'none';
+    if(show)count++;
+  });
+  var el=document.getElementById('fv-count');
+  if(el)el.textContent='Mostrati: '+count+' veicoli';
+}
+
+function resetFilterVeicoli(){
+  document.getElementById('fv-stato').value='';
+  document.getElementById('fv-carb').value='';
+  document.getElementById('fv-search').value='';
+  filterVeicoli();
+}
+
+
+// ===== DARK MODE =====
+var darkMode=localStorage.getItem('bestrent-dark')==='true';
+if(darkMode)document.body.classList.add('dark');
+updateDarkIcon();
+
+document.getElementById('dark-toggle').addEventListener('click',function(){
+  darkMode=!darkMode;
+  document.body.classList.toggle('dark');
+  localStorage.setItem('bestrent-dark',darkMode);
+  updateDarkIcon();
+});
+
+function updateDarkIcon(){
+  var btn=document.getElementById('dark-toggle');
+  if(darkMode){
+    btn.innerHTML='&#9788;';
+    btn.title='Passa a Light Mode';
+  } else {
+    btn.innerHTML='&#9790;';
+    btn.title='Passa a Dark Mode';
+  }
+}
+
+
+// ===== WHATSAPP =====
+function sendWhatsApp(telefono,nome){
+  if(!telefono||telefono.length<8){
+    alert('Numero di telefono non disponibile per questo cliente');
+    return;
+  }
+  var tel=telefono.replace(/[^0-9]/g,'');
+  if(tel.charAt(0)==='0')tel='39'+tel.substring(1);
+  if(tel.substring(0,2)!=='39'&&tel.length<11)tel='39'+tel;
+  var msg='Gentile '+nome+', la contattiamo da BestRent S.r.l. riguardo il suo noleggio. Per info: +39 3500 300 197';
+  var url='https://wa.me/'+tel+'?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+
+function sendWhatsAppContratto(telefono,nome,contratto,targa){
+  if(!telefono||telefono.length<8){
+    alert('Numero di telefono non disponibile');
+    return;
+  }
+  var tel=telefono.replace(/[^0-9]/g,'');
+  if(tel.charAt(0)==='0')tel='39'+tel.substring(1);
+  if(tel.substring(0,2)!=='39'&&tel.length<11)tel='39'+tel;
+  var msg='Gentile '+nome+', le ricordiamo il rientro del veicolo '+targa+' (contratto '+contratto+'). Per info: +39 3500 300 197 - BestRent S.r.l.';
+  var url='https://wa.me/'+tel+'?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+
+
+// ===== FATTURAZIONE =====
+var fattureLocali=JSON.parse(localStorage.getItem('bestrent-fatture')||'[]');
+var nextNumFattura=parseInt(localStorage.getItem('bestrent-next-fatt')||'1');
+
+function loadFatture(){
+  api('GET','/contratti').then(function(d){
+    var contratti=d.dati||[];
+    var h='';
+
+    // Totali
+    var totFatturato=0;
+    var totIVA=0;
+    var numFatture=fattureLocali.length;
+    fattureLocali.forEach(function(f){totFatturato+=f.totale_lordo;totIVA+=f.iva;});
+
+    h+='<div class="fatt-totals">';
+    h+='<div class="ft-card"><div class="ft-value" style="color:var(--rosso)">'+numFatture+'</div><div class="ft-label">Fatture Emesse</div></div>';
+    h+='<div class="ft-card"><div class="ft-value" style="color:var(--nero)">&euro;'+totFatturato.toFixed(2)+'</div><div class="ft-label">Totale Fatturato</div></div>';
+    h+='<div class="ft-card"><div class="ft-value" style="color:var(--arancio)">&euro;'+totIVA.toFixed(2)+'</div><div class="ft-label">Totale IVA</div></div>';
+    h+='<div class="ft-card"><div class="ft-value" style="color:var(--verde)">&euro;'+(totFatturato-totIVA).toFixed(2)+'</div><div class="ft-label">Imponibile Totale</div></div>';
+    h+='</div>';
+
+    // Toolbar
+    h+='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewFattura()">+ Nuova Fattura</button><button class="btn btn-secondary btn-sm" onclick="exportFattureCSV()">Export CSV</button></div></div>';
+
+    // Tabella fatture emesse
+    h+='<div class="card"><h3>Fatture Emesse</h3><table><thead><tr><th>N. Fattura</th><th>Data</th><th>Cliente</th><th>Contratto</th><th>Imponibile</th><th>IVA 22%</th><th>Totale</th><th>Azioni</th></tr></thead><tbody>';
+    if(fattureLocali.length>0){
+      fattureLocali.slice().reverse().forEach(function(f){
+        h+='<tr><td><strong>'+f.numero+'</strong></td><td>'+f.data+'</td><td>'+f.cliente+'</td><td>'+f.contratto+'</td><td>&euro;'+f.imponibile.toFixed(2)+'</td><td>&euro;'+f.iva.toFixed(2)+'</td><td><strong>&euro;'+f.totale_lordo.toFixed(2)+'</strong></td>';
+        h+='<td><button class="btn btn-warning btn-sm" onclick="printFattura(\''+f.numero+'\')">Stampa</button> <button class="btn btn-danger btn-sm" onclick="deleteFattura(\''+f.numero+'\')">Elimina</button></td></tr>';
+      });
+    } else {
+      h+='<tr><td colspan="8" style="text-align:center;color:var(--grigio)">Nessuna fattura emessa</td></tr>';
+    }
+    h+='</tbody></table></div>';
+
+    // Contratti senza fattura
+    var fattContratti=fattureLocali.map(function(f){return f.contratto;});
+    var senzaFattura=contratti.filter(function(c){return fattContratti.indexOf(c.numero_contratto)===-1;});
+    if(senzaFattura.length>0){
+      h+='<div class="card"><h3>Contratti senza Fattura</h3><table><thead><tr><th>Contratto</th><th>Cliente</th><th>Totale</th><th>Stato</th><th>Azione</th></tr></thead><tbody>';
+      senzaFattura.forEach(function(c){
+        h+='<tr><td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td>';
+        h+='<td><button class="btn btn-primary btn-sm" onclick="generaFatturaDaContratto(\''+c.numero_contratto+'\',\''+(c.cliente?c.cliente.cognome_nome:'-')+'\','+Number(c.totale_documento||0)+')">Genera Fattura</button></td></tr>';
+      });
+      h+='</tbody></table></div>';
+    }
+
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+function generaFatturaDaContratto(numContratto,cliente,totale){
+  var imponibile=Math.round(totale/1.22*100)/100;
+  var iva=Math.round((totale-imponibile)*100)/100;
+  var oggi=new Date().toLocaleDateString('it-IT');
+  var numFatt='FT-'+String(nextNumFattura).padStart(4,'0')+'/'+new Date().getFullYear();
+
+  var fattura={
+    numero:numFatt,
+    data:oggi,
+    cliente:cliente,
+    contratto:numContratto,
+    imponibile:imponibile,
+    iva:iva,
+    totale_lordo:totale,
+    aliquota:22
+  };
+
+  fattureLocali.push(fattura);
+  nextNumFattura++;
+  localStorage.setItem('bestrent-fatture',JSON.stringify(fattureLocali));
+  localStorage.setItem('bestrent-next-fatt',nextNumFattura);
+  loadFatture();
+  alert('Fattura '+numFatt+' generata!');
+}
+
+function showNewFattura(){
+  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+  h+='<h3>Nuova Fattura Manuale</h3>';
+  h+='<div class="form-group"><label>Cliente *</label><input id="mf-cliente" placeholder="Nome cliente"></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Rif. Contratto</label><input id="mf-contratto" placeholder="Es: M165"></div><div class="form-group"><label>Data</label><input id="mf-data" type="date"></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Imponibile (&euro;) *</label><input id="mf-imp" type="number" placeholder="0.00"></div><div class="form-group"><label>Aliquota IVA %</label><input id="mf-iva" type="number" value="22"></div></div>';
+  h+='<div class="form-group"><label>Note</label><textarea id="mf-note" rows="2" placeholder="Note fattura..."></textarea></div>';
+  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveNewFattura()">Genera Fattura</button></div>';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function saveNewFattura(){
+  var cliente=document.getElementById('mf-cliente').value;
+  var imp=parseFloat(document.getElementById('mf-imp').value);
+  if(!cliente||!imp){alert('Cliente e imponibile obbligatori!');return;}
+  var aliquota=parseFloat(document.getElementById('mf-iva').value)||22;
+  var iva=Math.round(imp*aliquota/100*100)/100;
+  var totale=Math.round((imp+iva)*100)/100;
+  var data=document.getElementById('mf-data').value?new Date(document.getElementById('mf-data').value).toLocaleDateString('it-IT'):new Date().toLocaleDateString('it-IT');
+  var numFatt='FT-'+String(nextNumFattura).padStart(4,'0')+'/'+new Date().getFullYear();
+
+  fattureLocali.push({
+    numero:numFatt,
+    data:data,
+    cliente:cliente,
+    contratto:document.getElementById('mf-contratto').value||'-',
+    imponibile:imp,
+    iva:iva,
+    totale_lordo:totale,
+    aliquota:aliquota,
+    note:document.getElementById('mf-note').value||''
+  });
+  nextNumFattura++;
+  localStorage.setItem('bestrent-fatture',JSON.stringify(fattureLocali));
+  localStorage.setItem('bestrent-next-fatt',nextNumFattura);
+  closeModal();
+  loadFatture();
+  alert('Fattura '+numFatt+' generata!');
+}
+
+function deleteFattura(num){
+  if(confirm('Eliminare la fattura '+num+'?')){
+    fattureLocali=fattureLocali.filter(function(f){return f.numero!==num;});
+    localStorage.setItem('bestrent-fatture',JSON.stringify(fattureLocali));
+    loadFatture();
+  }
+}
+
+function printFattura(num){
+  var f=fattureLocali.find(function(x){return x.numero===num;});
+  if(!f){alert('Fattura non trovata');return;}
+  var h='<div class="print-overlay fatt-print" id="print-overlay" onclick="closePrint()">';
+  h+='<div class="fp-box" onclick="event.stopPropagation()">';
+  h+='<div class="fp-header"><img src="logo-bestrent.jpg" alt="BestRent" style="height:45px;margin-bottom:6px"><div style="font-size:20px;font-weight:800"><span style="color:#1A1A1A">BEST</span><span style="color:#CC1418">RENT</span> S.r.l.</div><div style="font-size:10px;color:#6B7280">Noleggi al miglior prezzo</div><div class="fp-title">FATTURA</div><div class="fp-num">'+f.numero+'</div></div>';
+  h+='<div class="fp-section">Dati Azienda</div>';
+  h+='<div class="fp-grid"><div><span class="fp-label">Ragione Sociale:</span> BestRent S.r.l.</div><div><span class="fp-label">Sede:</span> Via Europa 90, Lonate Pozzolo (VA)</div><div><span class="fp-label">P.IVA:</span> ______________</div><div><span class="fp-label">Tel:</span> +39 3500 300 197</div></div>';
+  h+='<div class="fp-section">Dati Cliente</div>';
+  h+='<div class="fp-grid"><div><span class="fp-label">Cliente:</span> '+f.cliente+'</div><div><span class="fp-label">Rif. Contratto:</span> '+f.contratto+'</div><div><span class="fp-label">Data Fattura:</span> '+f.data+'</div></div>';
+  h+='<div class="fp-section">Dettaglio Servizi</div>';
+  h+='<table class="fp-table"><thead><tr><th>Descrizione</th><th>Importo</th></tr></thead><tbody>';
+  h+='<tr><td>Servizio di noleggio veicolo - Contratto '+f.contratto+'</td><td>&euro;'+f.imponibile.toFixed(2)+'</td></tr>';
+  h+='</tbody></table>';
+  h+='<div class="fp-totale">Imponibile: &euro;'+f.imponibile.toFixed(2)+'<br>IVA '+f.aliquota+'%: &euro;'+f.iva.toFixed(2)+'<br><span class="big">TOTALE: &euro;'+f.totale_lordo.toFixed(2)+'</span></div>';
+  h+='<div class="fp-footer">BestRent S.r.l. - Via Europa 90, Lonate Pozzolo (VA) - Tel. +39 3500 300 197 - noleggibestrent@gmail.com<br>Pagamento: Bonifico Bancario | IBAN: ________________________</div>';
+  h+='<div class="fp-actions"><button class="btn btn-primary btn-sm" style="width:auto" onclick="window.print()">Stampa / Salva PDF</button> <button class="btn btn-secondary btn-sm" onclick="closePrint()">Chiudi</button></div>';
+  h+='</div></div>';
+  document.body.insertAdjacentHTML('beforeend',h);
+}
+
+function exportFattureCSV(){
+  if(fattureLocali.length===0){alert('Nessuna fattura da esportare');return;}
+  var csv='N.Fattura,Data,Cliente,Contratto,Imponibile,IVA,Totale\n';
+  fattureLocali.forEach(function(f){
+    csv+=f.numero+','+f.data+',"'+f.cliente+'",'+f.contratto+','+f.imponibile.toFixed(2)+','+f.iva.toFixed(2)+','+f.totale_lordo.toFixed(2)+'\n';
+  });
+  downloadCSV(csv,'bestrent_fatture.csv');
+}
+
+
+// ===== EMAIL AUTOMATICHE =====
+function sendEmailConferma(idContratto){
+  api('GET','/contratti/'+idContratto).then(function(c){
+    if(!c||c.error){alert('Contratto non trovato');return;}
+    var cl=c.cliente||{};
+    var ve=c.veicolo||{};
+    var email=cl.email||'';
+    var nome=cl.cognome_nome||'Cliente';
+    var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'-';
+    var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
+
+    var subject='Conferma Noleggio '+c.numero_contratto+' - BestRent S.r.l.';
+    var body='Gentile '+nome+',\n\n';
+    body+='Le confermiamo la prenotazione del seguente noleggio:\n\n';
+    body+='Contratto: '+c.numero_contratto+'\n';
+    body+='Veicolo: '+(ve.marca||'')+' '+(ve.modello||'')+' - Targa: '+(ve.targa||'')+'\n';
+    body+='Consegna: '+dc+'\n';
+    body+='Rientro previsto: '+dr+'\n';
+    body+='Tariffa giornaliera: EUR '+Number(c.tariffa_giornaliera||0).toFixed(2)+'\n';
+    body+='Totale: EUR '+Number(c.totale_documento||0).toFixed(2)+'\n\n';
+    body+='Sede ritiro: Via Europa 90, Lonate Pozzolo (VA)\n';
+    body+='Per qualsiasi informazione: +39 3500 300 197\n\n';
+    body+='Cordiali saluti,\nBestRent S.r.l.\nNoleggi al miglior prezzo';
+
+    showEmailPreview(email,subject,body,'Conferma Noleggio');
+  });
+}
+
+function sendEmailRientro(idContratto){
+  api('GET','/contratti/'+idContratto).then(function(c){
+    if(!c||c.error){alert('Contratto non trovato');return;}
+    var cl=c.cliente||{};
+    var ve=c.veicolo||{};
+    var email=cl.email||'';
+    var nome=cl.cognome_nome||'Cliente';
+    var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
+
+    var subject='Promemoria Rientro Veicolo - '+c.numero_contratto;
+    var body='Gentile '+nome+',\n\n';
+    body+='Le ricordiamo che il rientro del veicolo e\' previsto per il '+dr+'.\n\n';
+    body+='Dettagli:\n';
+    body+='Contratto: '+c.numero_contratto+'\n';
+    body+='Veicolo: '+(ve.marca||'')+' '+(ve.modello||'')+' - Targa: '+(ve.targa||'')+'\n';
+    body+='Data rientro: '+dr+'\n\n';
+    body+='La preghiamo di riconsegnare il veicolo con il pieno di carburante presso:\n';
+    body+='Via Europa 90, Lonate Pozzolo (VA)\n\n';
+    body+='Per modifiche o informazioni: +39 3500 300 197\n\n';
+    body+='Cordiali saluti,\nBestRent S.r.l.';
+
+    showEmailPreview(email,subject,body,'Promemoria Rientro');
+  });
+}
+
+function sendEmailRicevuta(idContratto){
+  api('GET','/contratti/'+idContratto).then(function(c){
+    if(!c||c.error){alert('Contratto non trovato');return;}
+    var cl=c.cliente||{};
+    var email=cl.email||'';
+    var nome=cl.cognome_nome||'Cliente';
+    var totale=Number(c.totale_documento||0);
+    var imponibile=Math.round(totale/1.22*100)/100;
+    var iva=Math.round((totale-imponibile)*100)/100;
+
+    var subject='Ricevuta Pagamento '+c.numero_contratto+' - BestRent S.r.l.';
+    var body='Gentile '+nome+',\n\n';
+    body+='Le confermiamo la ricezione del pagamento per il noleggio:\n\n';
+    body+='Contratto: '+c.numero_contratto+'\n';
+    body+='Imponibile: EUR '+imponibile.toFixed(2)+'\n';
+    body+='IVA 22%: EUR '+iva.toFixed(2)+'\n';
+    body+='Totale pagato: EUR '+totale.toFixed(2)+'\n\n';
+    body+='La ringraziamo per aver scelto BestRent.\n\n';
+    body+='Cordiali saluti,\nBestRent S.r.l.\nVia Europa 90, Lonate Pozzolo (VA)\nTel. +39 3500 300 197';
+
+    showEmailPreview(email,subject,body,'Ricevuta Pagamento');
+  });
+}
+
+function showEmailPreview(email,subject,body,tipo){
+  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+  h+='<h3>'+tipo+' - Anteprima Email</h3>';
+  h+='<div class="email-preview">';
+  h+='<div class="ep-to">A: <strong>'+(email||'email non disponibile')+'</strong></div>';
+  h+='<div class="ep-subject">Oggetto: '+subject+'</div>';
+  h+='<div class="ep-body">'+body.replace(/\n/g,'<br>')+'</div>';
+  h+='</div>';
+  h+='<div class="modal-actions">';
+  if(email){
+    h+='<button class="btn btn-primary btn-sm" onclick="window.open(\'mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)+'\')">Invia con Email</button>';
+  }
+  h+='<button class="btn btn-secondary btn-sm" onclick="copyEmailText(this)" data-body="'+body.replace(/"/g,'&quot;')+'">Copia Testo</button>';
+  h+='<button class="btn btn-secondary btn-sm" onclick="closeModal()">Chiudi</button>';
+  h+='</div></div></div>';
+  document.getElementById('modal').innerHTML=h;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function copyEmailText(btn){
+  var text=btn.getAttribute('data-body');
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent='Copiato!';
+    setTimeout(function(){btn.textContent='Copia Testo';},2000);
+  });
+}
+
+
+// ===== CHECKLIST CONSEGNA/RIENTRO =====
+var checklistData=JSON.parse(localStorage.getItem('bestrent-checklists')||'{}');
+
+function showChecklist(idContratto,tipo){
+  api('GET','/contratti/'+idContratto).then(function(c){
+    if(!c||c.error){alert('Contratto non trovato');return;}
+    var cl=c.cliente||{};
+    var ve=c.veicolo||{};
+    var key=c.numero_contratto+'_'+tipo;
+    var saved=checklistData[key]||{};
+    var titolo=tipo==='consegna'?'CHECKLIST CONSEGNA':'CHECKLIST RIENTRO';
+    var colore=tipo==='consegna'?'#8B5CF6':'#EC4899';
+
+    var items=[
+      {id:'carrozzeria',label:'Carrozzeria',icon:'&#128663;'},
+      {id:'pneumatici',label:'Pneumatici',icon:'&#9899;'},
+      {id:'finestrini',label:'Finestrini/Specchietti',icon:'&#128065;'},
+      {id:'luci',label:'Luci e Frecce',icon:'&#128161;'},
+      {id:'interni',label:'Interni/Sedili',icon:'&#128186;'},
+      {id:'cruscotto',label:'Cruscotto/Spie',icon:'&#9888;'},
+      {id:'documenti',label:'Documenti Veicolo',icon:'&#128196;'},
+      {id:'chiavi',label:'Chiavi (set completo)',icon:'&#128273;'},
+      {id:'ruota_scorta',label:'Ruota di Scorta',icon:'&#128736;'},
+      {id:'triangolo',label:'Triangolo/Giubbotto',icon:'&#9888;'},
+      {id:'navigatore',label:'Navigatore/Accessori',icon:'&#128225;'},
+      {id:'pulizia',label:'Pulizia Veicolo',icon:'&#10024;'}
+    ];
+
+    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" style="max-width:650px;max-height:90vh;overflow-y:auto" onclick="event.stopPropagation()">';
+    h+='<h3 style="color:'+colore+'">'+titolo+'</h3>';
+    h+='<div style="font-size:12px;color:var(--grigio);margin-bottom:12px">Contratto: <strong>'+c.numero_contratto+'</strong> | Cliente: <strong>'+(cl.cognome_nome||'-')+'</strong> | Veicolo: <strong>'+(ve.targa||'-')+' '+(ve.marca||'')+' '+(ve.modello||'')+'</strong></div>';
+
+    // Km e Carburante
+    h+='<div class="check-section"><h4>&#128663; Km e Carburante</h4>';
+    h+='<div class="form-row"><div class="form-group"><label>Km al momento</label><input id="ck-km" type="number" value="'+(saved.km||ve.km_attuali||0)+'"></div><div class="form-group"><label>Livello Carburante</label><select id="ck-fuel"><option value="100" '+(saved.fuel==='100'?'selected':'')+'>Pieno (100%)</option><option value="75" '+(saved.fuel==='75'?'selected':'')+'>3/4 (75%)</option><option value="50" '+(saved.fuel==='50'?'selected':'')+'>1/2 (50%)</option><option value="25" '+(saved.fuel==='25'?'selected':'')+'>1/4 (25%)</option><option value="10" '+(saved.fuel==='10'?'selected':'')+'>Riserva</option></select></div></div>';
+    h+='<div class="fuel-gauge"><span style="font-size:11px">&#9981;</span><div class="fuel-bar"><div class="fuel-fill full" id="ck-fuel-bar" style="width:'+(saved.fuel||'100')+'%"></div></div><span class="fuel-label" id="ck-fuel-label">'+(saved.fuel||'100')+'%</span></div>';
+    h+='</div>';
+
+    // Checklist items
+    h+='<div class="check-section"><h4>&#9989; Controlli Veicolo</h4>';
+    h+='<div class="check-grid" id="ck-grid">';
+    items.forEach(function(item){
+      var stato=saved['item_'+item.id]||'nd';
+      h+='<div class="check-item '+(stato==='ok'?'checked':stato==='problema'?'issue':'')+'" id="ck-'+item.id+'" onclick="toggleCheckItem(\''+item.id+'\')">';
+      h+='<span class="ci-icon">'+item.icon+'</span>';
+      h+='<span class="ci-label">'+item.label+'</span>';
+      h+='<span class="ci-status '+stato+'" id="ck-st-'+item.id+'">'+(stato==='ok'?'OK':stato==='problema'?'PROBLEMA':'N/D')+'</span>';
+      h+='</div>';
+    });
+    h+='</div></div>';
+
+    // Danni e note
+    h+='<div class="check-section"><h4>&#128221; Danni e Note</h4>';
+    h+='<textarea class="damage-note" id="ck-danni" placeholder="Descrivi eventuali danni, graffi, ammaccature...">'+(saved.danni||'')+'</textarea></div>';
+
+    // Note aggiuntive
+    h+='<div class="check-section"><h4>&#128172; Note Aggiuntive</h4>';
+    h+='<textarea class="damage-note" id="ck-note" placeholder="Altre osservazioni...">'+(saved.note||'')+'</textarea></div>';
+
+    // Firma
+    h+='<div class="check-section"><h4>&#9999; Firma</h4>';
+    h+='<div class="form-row"><div class="form-group"><label>Operatore</label><input id="ck-operatore" value="'+(saved.operatore||currentUser.nome||'')+'"></div><div class="form-group"><label>Data/Ora</label><input id="ck-data" value="'+(saved.data||new Date().toLocaleString('it-IT'))+'" readonly></div></div>';
+    h+='</div>';
+
+    h+='<div class="modal-actions">';
+    h+='<button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button>';
+    h+='<button class="btn btn-primary btn-sm" style="background:'+colore+'" onclick="saveChecklist(\''+c.numero_contratto+'\',\''+tipo+'\','+idContratto+')">Salva Checklist</button>';
+    h+='<button class="btn btn-warning btn-sm" onclick="printChecklist(\''+c.numero_contratto+'\',\''+tipo+'\')">Stampa</button>';
+    h+='</div></div></div>';
+
+    document.getElementById('modal').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+
+    document.getElementById('ck-fuel').addEventListener('change',function(){
+      var v=this.value;
+      var bar=document.getElementById('ck-fuel-bar');
+      var label=document.getElementById('ck-fuel-label');
+      bar.style.width=v+'%';
+      bar.className='fuel-fill '+(v>=75?'full':v>=50?'half':'low');
+      label.textContent=v+'%';
+    });
+  });
+}
+
+function toggleCheckItem(id){
+  var el=document.getElementById('ck-'+id);
+  var st=document.getElementById('ck-st-'+id);
+  var current=st.textContent;
+  if(current==='N/D'){
+    el.className='check-item checked';
+    st.className='ci-status ok';
+    st.textContent='OK';
+  } else if(current==='OK'){
+    el.className='check-item issue';
+    st.className='ci-status problema';
+    st.textContent='PROBLEMA';
+  } else {
+    el.className='check-item';
+    st.className='ci-status nd';
+    st.textContent='N/D';
+  }
+}
+
+function saveChecklist(numContratto,tipo,idContratto){
+  var key=numContratto+'_'+tipo;
+  var data={
+    km:document.getElementById('ck-km').value,
+    fuel:document.getElementById('ck-fuel').value,
+    danni:document.getElementById('ck-danni').value,
+    note:document.getElementById('ck-note').value,
+    operatore:document.getElementById('ck-operatore').value,
+    data:document.getElementById('ck-data').value
+  };
+
+  var items=['carrozzeria','pneumatici','finestrini','luci','interni','cruscotto','documenti','chiavi','ruota_scorta','triangolo','navigatore','pulizia'];
+  items.forEach(function(id){
+    var st=document.getElementById('ck-st-'+id);
+    if(st)data['item_'+id]=st.textContent==='OK'?'ok':st.textContent==='PROBLEMA'?'problema':'nd';
+  });
+
+  checklistData[key]=data;
+  localStorage.setItem('bestrent-checklists',JSON.stringify(checklistData));
+
+  if(data.km){
+    api('PUT','/veicoli/'+idContratto,{km_attuali:parseInt(data.km)});
+  }
+
+  closeModal();
+  alert('Checklist '+tipo+' salvata per '+numContratto+'!');
+}
+
+function printChecklist(numContratto,tipo){
+  var key=numContratto+'_'+tipo;
+  var saved=checklistData[key];
+  if(!saved){alert('Nessuna checklist salvata. Salva prima di stampare.');return;}
+
+  var titolo=tipo==='consegna'?'CHECKLIST CONSEGNA':'CHECKLIST RIENTRO';
+  var items=['carrozzeria','pneumatici','finestrini','luci','interni','cruscotto','documenti','chiavi','ruota_scorta','triangolo','navigatore','pulizia'];
+  var nomi={carrozzeria:'Carrozzeria',pneumatici:'Pneumatici',finestrini:'Finestrini/Specchietti',luci:'Luci e Frecce',interni:'Interni/Sedili',cruscotto:'Cruscotto/Spie',documenti:'Documenti',chiavi:'Chiavi',ruota_scorta:'Ruota Scorta',triangolo:'Triangolo/Giubbotto',navigatore:'Navigatore',pulizia:'Pulizia'};
+
+  var h='<div class="print-overlay" id="print-overlay" onclick="closePrint()">';
+  h+='<div class="print-box" onclick="event.stopPropagation()">';
+  h+='<div class="pb-header"><img src="logo-bestrent.jpg" alt="BestRent" style="height:40px;margin-bottom:6px"><div style="font-size:18px;font-weight:800"><span style="color:#1A1A1A">BEST</span><span style="color:#CC1418">RENT</span> S.r.l.</div><div class="pb-title">'+titolo+'</div><div style="font-size:12px;color:var(--grigio)">Contratto: '+numContratto+'</div></div>';
+
+  h+='<div class="check-summary"><h4>Stato Veicolo</h4>';
+  h+='<div class="cs-row"><span class="cs-label">Km</span><span class="cs-value">'+saved.km+'</span></div>';
+  h+='<div class="cs-row"><span class="cs-label">Carburante</span><span class="cs-value">'+saved.fuel+'%</span></div>';
+  items.forEach(function(id){
+    var stato=saved['item_'+id]||'N/D';
+    var color=stato==='ok'?'#15803D':stato==='problema'?'#DC2626':'#6B7280';
+    h+='<div class="cs-row"><span class="cs-label">'+nomi[id]+'</span><span class="cs-value" style="color:'+color+'">'+stato.toUpperCase()+'</span></div>';
+  });
+  if(saved.danni){h+='<div class="cs-row"><span class="cs-label">Danni</span><span class="cs-value">'+saved.danni+'</span></div>';}
+  if(saved.note){h+='<div class="cs-row"><span class="cs-label">Note</span><span class="cs-value">'+saved.note+'</span></div>';}
+  h+='<div class="cs-row"><span class="cs-label">Operatore</span><span class="cs-value">'+saved.operatore+'</span></div>';
+  h+='<div class="cs-row"><span class="cs-label">Data/Ora</span><span class="cs-value">'+saved.data+'</span></div>';
+  h+='</div>';
+
+  h+='<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:11px;color:#6B7280"><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Operatore</div><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Cliente</div></div>';
+  h+='<div class="pb-actions"><button class="btn btn-primary btn-sm" style="width:auto" onclick="window.print()">Stampa</button> <button class="btn btn-secondary btn-sm" onclick="closePrint()">Chiudi</button></div>';
+  h+='</div></div>';
+  document.body.insertAdjacentHTML('beforeend',h);
+}
+
 
 </script>
 </body>

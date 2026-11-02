@@ -445,7 +445,7 @@ function loadTab(t){
   currentTab=t;
   var el=document.getElementById('content');
   el.innerHTML='<p style="text-align:center;padding:40px;color:var(--grigio)">Caricamento...</p>';
-  else if(t==='dashboard')loadDashboard();
+  if(t==='dashboard')loadDashboard();
   else if(t==='contratti')loadContratti();
   else if(t==='clienti')loadClienti();
   else if(t==='veicoli')loadVeicoli();

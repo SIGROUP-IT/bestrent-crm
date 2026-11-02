@@ -445,14 +445,14 @@ function loadTab(t){
   currentTab=t;
   var el=document.getElementById('content');
   el.innerHTML='<p style="text-align:center;padding:40px;color:var(--grigio)">Caricamento...</p>';
-  if(t==='dashboard')loadDashboard();
+  else if(t==='dashboard')loadDashboard();
+
   else if(t==='contratti')loadContratti();
   else if(t==='clienti')loadClienti();
   else if(t==='veicoli')loadVeicoli();
   else if(t==='pagamenti')loadPagamenti();
   else if(t==='penali')loadPenali();
-}
-else if(t==='calendario')loadCalendario();
+  else if(t==='calendario')loadCalendario();
   else if(t==='statistiche')loadStatistiche();
   else if(t==='manutenzione')loadManutenzione();
   else if(t==='operatori')loadOperatori();

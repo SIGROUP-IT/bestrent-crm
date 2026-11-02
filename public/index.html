@@ -1,11 +1,123 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BestRent CRM — Noleggi al miglior prezzo</title>
+<title>BestRent CRM – Noleggi al miglior prezzo</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23CC1418'/><text x='16' y='22' font-size='18' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>B</text></svg>">
 <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:#F5F5F5;color:#1A1A1A;font-size:14px}
+:root{--rosso:#CC1418;--nero:#1A1A1A;--bianco:#FFFFFF;--grigio:#6B7280;--grigio-chiaro:#E5E7EB;--grigio-scuro:#374151;--verde:#059669;--arancio:#D97706;--sfondo:#F5F5F5}
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1A1A1A 0%,#2D2D2D 50%,#1A1A1A 100%)}
+.login-box{background:var(--bianco);border-radius:16px;padding:32px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-logo img{width:240px;margin-bottom:12px;border-radius:8px}
+.logo-srl{display:block;font-size:11px;color:var(--grigio);margin-top:4px}
+.logo-slogan{font-size:12px;color:var(--grigio);margin-top:2px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--grigio-scuro);margin-bottom:4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1px solid var(--grigio-chiaro);border-radius:8px;font-size:13px;outline:none;transition:border .15s}
+.form-group input:focus,.form-group select:focus{border-color:var(--rosso)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;padding:12px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--rosso);color:#fff}
+.btn-primary:hover{background:#A51015}
+.btn-secondary{background:var(--sfondo);color:var(--grigio-scuro);border:1px solid var(--grigio-chiaro)}
+.btn-secondary:hover{background:var(--grigio-chiaro)}
+.btn-danger{background:#DC2626;color:#fff}
+.btn-danger:hover{background:#B91C1C}
+.btn-warning{background:var(--arancio);color:#fff}
+.btn-warning:hover{background:#B45309}
+.btn-sm{padding:6px 12px;font-size:11px;width:auto;display:inline-block}
+.error-msg{display:none;background:#FEF2F2;color:#DC2626;padding:10px;border-radius:8px;font-size:12px;margin-bottom:12px}
+.error-msg.show{display:block}
+.login-hint{font-size:11px;color:var(--grigio);text-align:center;margin-top:12px}
+.login-footer{text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid var(--grigio-chiaro)}
+.login-footer span{font-size:11px;color:var(--grigio)}
+.hidden{display:none!important}
+.app{display:none}
+.header{background:var(--nero);color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.header .brand{display:flex;align-items:center;gap:10px}
+.header .brand img{height:36px;border-radius:4px}
+.brand-best{font-size:18px;font-weight:800;color:#fff}
+.brand-rent{font-size:18px;font-weight:800;color:var(--rosso)}
+.brand-srl{font-size:10px;color:var(--grigio);margin-left:4px}
+.brand-slogan{font-size:10px;color:var(--grigio);display:block}
+.header-right{display:flex;align-items:center;gap:12px}
+.user-info{font-size:12px;color:var(--grigio-chiaro)}
+.notif-wrapper{position:relative}
+.notif-btn{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;position:relative;padding:4px 8px}
+.notif-badge{position:absolute;top:-2px;right:-2px;background:var(--rosso);color:#fff;font-size:9px;font-weight:700;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.notif-panel{display:none;position:absolute;top:36px;right:0;width:300px;background:var(--bianco);border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.15);z-index:50;max-height:400px;overflow-y:auto}
+.notif-panel.open{display:block}
+.notif-panel h4{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--grigio-chiaro)}
+.notif-item{padding:10px 14px;border-bottom:1px solid #f3f4f6;font-size:12px}
+.notif-item:hover{background:#f9fafb}
+.notif-item.urgent{border-left:3px solid var(--rosso)}
+.notif-item.warning{border-left:3px solid var(--arancio)}
+.notif-item .ni-title{font-weight:600;color:var(--nero)}
+.notif-item .ni-detail{color:var(--grigio);font-size:11px;margin-top:2px}
+.notif-empty{padding:20px;text-align:center;color:var(--grigio);font-size:12px}
+.nav{display:flex;gap:0;border-bottom:2px solid var(--grigio-chiaro);background:var(--bianco);padding:0 16px;overflow-x:auto;position:sticky;top:56px;z-index:30}
+.nav button{padding:12px 16px;border:none;background:none;font-size:12px;font-weight:600;color:var(--grigio);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.nav button.active{color:var(--rosso);border-bottom-color:var(--rosso)}
+.nav button:hover{color:var(--nero)}
+.content{padding:16px;max-width:1200px;margin:0 auto}
+.card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:10px 8px;color:var(--grigio);font-size:10px;text-transform:uppercase;border-bottom:2px solid var(--grigio-chiaro)}
+td{padding:10px 8px;border-bottom:1px solid #f3f4f6}
+tr:hover td{background:#f9fafb}
+.status{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600}
+.status.attivo{background:#DCFCE7;color:#15803D}
+.status.chiuso{background:#FEE2E2;color:#DC2626}
+.status.disponibile{background:#DCFCE7;color:#15803D}
+.status.noleggiato{background:#FEF3C7;color:#92400E}
+.status.manutenzione{background:#FEE2E2;color:#DC2626}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.toolbar .search-box{padding:8px 14px;border:1px solid var(--grigio-chiaro);border-radius:8px;font-size:12px;outline:none;width:250px}
+.toolbar .search-box:focus{border-color:var(--rosso)}
+.toolbar-btns{display:flex;gap:6px}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal-box{background:var(--bianco);border-radius:14px;padding:24px;width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-box h3{font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--rosso)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:12px;border-top:1px solid var(--grigio-chiaro)}
+.footer{background:var(--nero);color:var(--grigio);text-align:center;padding:12px;font-size:11px;margin-top:20px}
+.alert-card{border:1px solid var(--grigio-chiaro);border-radius:10px;padding:14px;margin-bottom:10px}
+.alert-card.warning{border-color:var(--arancio);background:#FFFBEB}
+.alert-card.danger{border-color:var(--rosso);background:#FEF2F2}
+.alert-card .alert-title{font-weight:600;font-size:13px}
+.alert-card .alert-detail{font-size:11px;color:var(--grigio);margin-top:2px}
+.print-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:200}
+.print-box{background:#fff;width:700px;max-height:90vh;overflow-y:auto;border-radius:12px;padding:30px}
+.pb-header{text-align:center;border-bottom:2px solid var(--rosso);padding-bottom:14px;margin-bottom:14px}
+.pb-title{font-size:16px;font-weight:800;margin-top:8px}
+.pb-section{font-size:13px;font-weight:700;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--grigio-chiaro)}
+.pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px}
+.pb-label{font-weight:600;color:var(--grigio-scuro)}
+.pb-actions{display:flex;gap:8px;justify-content:center;margin-top:20px}
+@media print{.header,.nav,.footer,.pb-actions,.wa-float{display:none!important}.print-overlay{position:static;background:none}.print-box{width:100%;box-shadow:none;border-radius:0}}
+@media(max-width:768px){.form-row{grid-template-columns:1fr}.toolbar{flex-direction:column}.toolbar .search-box{width:100%}.pb-grid{grid-template-columns:1fr}.modal-box{width:95%;padding:16px}.login-box{width:95%;padding:20px}}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-header h3{margin:0;font-size:14px;font-weight:700}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{background:var(--sfondo);border:1px solid var(--grigio-chiaro);border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer}
+.cal-nav button:hover{background:var(--grigio-chiaro)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day-header{text-align:center;font-size:10px;font-weight:700;color:var(--grigio);padding:8px 0;text-transform:uppercase}
+.cal-day{min-height:80px;background:var(--bianco);border:1px solid #f3f4f6;border-radius:6px;padding:4px;font-size:11px;position:relative}
+.cal-day.today{border-color:var(--rosso);background:#FEF2F2}
+.cal-day.other-month{opacity:.4}
+.cal-day .day-num{font-weight:700;font-size:12px;color:var(--nero);margin-bottom:2px}
+.cal-event{padding:2px 4px;border-radius:3px;font-size:9px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.cal-event.consegna{background:#DCFCE7;color:#15803D}
+.cal-event.rientro{background:#FEE2E2;color:#CC1418}
+.cal-legend{display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--grigio)}
+.cal-legend span{display:flex;align-items:center;gap:4px}
+.cal-legend .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .stat-card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:12px;padding:18px}
 .stat-card h4{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--nero)}
@@ -19,19 +131,11 @@
 .chart-bar .cb-fill.nero{background:linear-gradient(90deg,var(--nero),#4B5563)}
 .chart-bar .cb-fill.grigio{background:linear-gradient(90deg,#6B7280,#9CA3AF)}
 .chart-bar .cb-value{font-size:11px;color:var(--grigio);width:60px;text-align:right;flex-shrink:0}
-.donut-container{display:flex;align-items:center;justify-content:center;gap:20px}
-.donut-legend{font-size:11px}
-.donut-legend div{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.donut-legend .dl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .stat-number{font-size:32px;font-weight:800;color:var(--rosso);text-align:center;margin:10px 0}
 .stat-sub{font-size:11px;color:var(--grigio);text-align:center}
 .stat-table{width:100%;font-size:11px}
 .stat-table td{padding:6px 4px;border-bottom:1px solid #f3f4f6}
 .stat-table .st-rank{font-weight:700;color:var(--rosso);width:24px}
-@media(max-width:768px){.stats-grid{grid-template-columns:1fr}}
-
-
-
 .manu-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .manu-filters select{padding:8px 12px;border:1px solid var(--grigio-chiaro);border-radius:6px;font-size:12px;outline:none}
 .manu-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
@@ -43,9 +147,6 @@
 .manu-summary .ms-card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:14px;text-align:center}
 .manu-summary .ms-value{font-size:24px;font-weight:800;color:var(--nero)}
 .manu-summary .ms-label{font-size:10px;color:var(--grigio);text-transform:uppercase;margin-top:2px}
-
-
-
 .user-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--grigio-chiaro);border-radius:10px;margin-bottom:8px;background:var(--bianco);transition:box-shadow .15s}
 .user-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .user-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
@@ -62,21 +163,68 @@
 .perm-item{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#f9fafb;border-radius:6px}
 .perm-item .perm-check{color:var(--verde);font-weight:700}
 .perm-item .perm-deny{color:#DC2626;font-weight:700}
-
-
-
 .filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:12px;background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px}
 .filter-bar label{font-size:10px;font-weight:600;color:var(--grigio);text-transform:uppercase;margin-right:-4px}
 .filter-bar input,.filter-bar select{padding:7px 10px;border:1px solid var(--grigio-chiaro);border-radius:6px;font-size:12px;outline:none}
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--rosso)}
 .filter-bar .filter-reset{background:none;border:none;color:var(--rosso);font-size:11px;cursor:pointer;font-weight:600;padding:7px 10px}
-.filter-bar .filter-reset:hover{text-decoration:underline}
 .filter-count{font-size:11px;color:var(--grigio);margin-bottom:8px}
-
-
-
 .dark-toggle{background:none;border:1px solid #555;color:#fff;padding:5px 10px;border-radius:6px;font-size:14px;cursor:pointer;transition:all .15s}
 .dark-toggle:hover{border-color:var(--rosso);background:rgba(204,20,24,.1)}
+.btn-whatsapp{background:#25D366;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:4px}
+.btn-whatsapp:hover{background:#1DA851}
+.wa-float{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(37,211,102,.4);z-index:50;border:none;transition:transform .15s}
+.wa-float:hover{transform:scale(1.1)}
+.fatt-totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.fatt-totals .ft-card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:14px;text-align:center}
+.fatt-totals .ft-value{font-size:22px;font-weight:800}
+.fatt-totals .ft-label{font-size:10px;color:var(--grigio);text-transform:uppercase;margin-top:2px}
+.fatt-print .fp-box{background:#fff;width:700px;max-height:90vh;overflow-y:auto;border-radius:12px;padding:30px}
+.fatt-print .fp-header{text-align:center;border-bottom:2px solid var(--rosso);padding-bottom:14px;margin-bottom:14px}
+.fatt-print .fp-title{font-size:18px;font-weight:800;margin-top:6px}
+.fatt-print .fp-num{font-size:14px;color:var(--rosso);font-weight:700}
+.fatt-print .fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-bottom:10px}
+.fatt-print .fp-label{font-weight:600;color:var(--grigio-scuro)}
+.fatt-print .fp-section{font-size:13px;font-weight:700;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--grigio-chiaro)}
+.fatt-print .fp-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px}
+.fatt-print .fp-table th{background:#f3f4f6;padding:8px;text-align:left;font-size:10px;text-transform:uppercase}
+.fatt-print .fp-table td{padding:8px;border-bottom:1px solid #f3f4f6}
+.fatt-print .fp-totale{text-align:right;font-size:14px;margin-top:8px}
+.fatt-print .fp-totale .big{font-size:20px;font-weight:800;color:var(--rosso)}
+.fatt-print .fp-footer{margin-top:16px;padding-top:12px;border-top:1px solid var(--grigio-chiaro);font-size:10px;color:var(--grigio);text-align:center}
+.fatt-print .fp-actions{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.btn-email{background:#3B82F6;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:4px}
+.btn-email:hover{background:#2563EB}
+.email-preview{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:16px;margin:12px 0;font-size:12px;line-height:1.6}
+.email-preview .ep-to{color:var(--grigio);margin-bottom:4px}
+.email-preview .ep-subject{font-weight:700;color:var(--nero);margin-bottom:8px;font-size:13px}
+.email-preview .ep-body{color:var(--grigio-scuro);white-space:pre-line}
+.check-section{margin-bottom:16px}
+.check-section h4{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--nero);display:flex;align-items:center;gap:6px}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f9fafb;border:1px solid var(--grigio-chiaro);border-radius:8px;font-size:12px;cursor:pointer;transition:all .15s}
+.check-item:hover{border-color:var(--rosso)}
+.check-item.checked{background:#DCFCE7;border-color:#15803D}
+.check-item.issue{background:#FEE2E2;border-color:#DC2626}
+.check-item .ci-icon{font-size:16px;flex-shrink:0}
+.check-item .ci-label{flex:1;font-weight:600}
+.check-item .ci-status{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
+.check-item .ci-status.ok{background:#DCFCE7;color:#15803D}
+.check-item .ci-status.problema{background:#FEE2E2;color:#DC2626}
+.check-item .ci-status.nd{background:#f3f4f6;color:#6B7280}
+.fuel-gauge{display:flex;align-items:center;gap:8px;margin:8px 0}
+.fuel-bar{flex:1;height:20px;background:#f3f4f6;border-radius:10px;overflow:hidden}
+.fuel-fill{height:100%;border-radius:10px;transition:width .3s}
+.fuel-fill.full{background:var(--verde)}
+.fuel-fill.half{background:var(--arancio)}
+.fuel-fill.low{background:var(--rosso)}
+.fuel-label{font-size:12px;font-weight:700;width:40px;text-align:right}
+.damage-note{width:100%;padding:8px;border:1px solid var(--grigio-chiaro);border-radius:6px;font-size:12px;resize:vertical;min-height:60px}
+.check-summary{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:16px;margin-top:12px}
+.check-summary h4{margin-bottom:8px}
+.check-summary .cs-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:12px}
+.check-summary .cs-label{color:var(--grigio-scuro)}
+.check-summary .cs-value{font-weight:700}
 body.dark{background:#121212;color:#E0E0E0}
 body.dark .login-box{background:#1E1E1E;border:1px solid #333}
 body.dark .form-group label{color:#B0B0B0}
@@ -132,242 +280,69 @@ body.dark .manu-filters select{background:#2A2A2A;border-color:#444;color:#E0E0E
 body.dark .print-box{background:#1E1E1E;color:#E0E0E0}
 body.dark .print-box .pb-label{color:#B0B0B0}
 body.dark .print-box .pb-section{border-bottom-color:#333}
-
-
-
-.btn-whatsapp{background:#25D366;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:4px}
-.btn-whatsapp:hover{background:#1DA851}
-.wa-float{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(37,211,102,.4);z-index:50;border:none;transition:transform .15s}
-.wa-float:hover{transform:scale(1.1)}
-
-
-
-.fatt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.fatt-totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
-.fatt-totals .ft-card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:14px;text-align:center}
-.fatt-totals .ft-value{font-size:22px;font-weight:800}
-.fatt-totals .ft-label{font-size:10px;color:var(--grigio);text-transform:uppercase;margin-top:2px}
-.fatt-print .fp-box{background:#fff;width:700px;max-height:90vh;overflow-y:auto;border-radius:12px;padding:30px}
-.fatt-print .fp-header{text-align:center;border-bottom:2px solid var(--rosso);padding-bottom:14px;margin-bottom:14px}
-.fatt-print .fp-title{font-size:18px;font-weight:800;margin-top:6px}
-.fatt-print .fp-num{font-size:14px;color:var(--rosso);font-weight:700}
-.fatt-print .fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-bottom:10px}
-.fatt-print .fp-label{font-weight:600;color:var(--grigio-scuro)}
-.fatt-print .fp-section{font-size:13px;font-weight:700;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--grigio-chiaro)}
-.fatt-print .fp-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px}
-.fatt-print .fp-table th{background:#f3f4f6;padding:8px;text-align:left;font-size:10px;text-transform:uppercase}
-.fatt-print .fp-table td{padding:8px;border-bottom:1px solid #f3f4f6}
-.fatt-print .fp-totale{text-align:right;font-size:14px;margin-top:8px}
-.fatt-print .fp-totale .big{font-size:20px;font-weight:800;color:var(--rosso)}
-.fatt-print .fp-footer{margin-top:16px;padding-top:12px;border-top:1px solid var(--grigio-chiaro);font-size:10px;color:var(--grigio);text-align:center}
-.fatt-print .fp-actions{display:flex;gap:8px;justify-content:center;margin-top:16px}
 body.dark .fatt-totals .ft-card{background:#1E1E1E;border-color:#333}
 body.dark .fatt-print .fp-box{background:#1E1E1E;color:#E0E0E0}
 body.dark .fatt-print .fp-table th{background:#2A2A2A}
 body.dark .fatt-print .fp-table td{border-bottom-color:#333}
-
-
-
-.btn-email{background:#3B82F6;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:4px}
-.btn-email:hover{background:#2563EB}
-.email-preview{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:10px;padding:16px;margin:12px 0;font-size:12px;line-height:1.6}
-.email-preview .ep-to{color:var(--grigio);margin-bottom:4px}
-.email-preview .ep-subject{font-weight:700;color:var(--nero);margin-bottom:8px;font-size:13px}
-.email-preview .ep-body{color:var(--grigio-scuro);white-space:pre-line}
 body.dark .email-preview{background:#2A2A2A;border-color:#444}
 body.dark .email-preview .ep-subject{color:#E0E0E0}
 body.dark .email-preview .ep-body{color:#B0B0B0}
-
-
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:#F5F5F5;color:#1A1A1A;font-size:14px}
-.hidden{display:none!important}
-:root{
-  --rosso:#CC1418;
-  --rosso-hover:#A8101A;
-  --nero:#1A1A1A;
-  --grigio-scuro:#333333;
-  --grigio:#6B7280;
-  --grigio-chiaro:#E8E8E8;
-  --sfondo:#F5F5F5;
-  --bianco:#FFFFFF;
-  --verde:#059669;
-  --arancio:#D97706;
-}
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--nero)}
-.login-box{background:var(--bianco);border-radius:16px;padding:40px;width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
-.login-logo{text-align:center;margin-bottom:24px}
-.login-logo .logo-slogan{font-size:12px;color:var(--grigio-scuro);margin-top:6px;font-style:italic}
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:12px;font-weight:600;color:var(--grigio-scuro);margin-bottom:4px}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1px solid var(--grigio-chiaro);border-radius:8px;font-size:13px;outline:none;font-family:inherit;transition:border .2s}
-.form-group input:focus,.form-group select:focus{border-color:var(--rosso);box-shadow:0 0 0 3px rgba(204,20,24,.1)}
-.btn{padding:11px 22px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
-.btn-primary{background:var(--rosso);color:var(--bianco);width:100%}.btn-primary:hover{background:var(--rosso-hover)}
-.btn-secondary{background:var(--sfondo);color:var(--grigio-scuro);border:1px solid var(--grigio-chiaro)}.btn-secondary:hover{background:var(--grigio-chiaro)}
-.btn-danger{background:#DC2626;color:#fff}.btn-danger:hover{background:#B91C1C}
-.btn-success{background:var(--verde);color:#fff}.btn-success:hover{background:#047857}
-.btn-warning{background:var(--arancio);color:#fff}.btn-warning:hover{background:#B45309}
-.btn-sm{padding:6px 12px;font-size:11px;width:auto}
-.error-msg{background:#FEE2E2;color:#DC2626;padding:10px;border-radius:8px;font-size:13px;margin-bottom:12px;text-align:center}
-.login-hint{text-align:center;font-size:11px;color:var(--grigio);margin-top:16px}
-.login-footer{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--grigio-chiaro)}
-.login-footer span{font-size:11px;color:var(--grigio)}
-.header{display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:var(--nero);color:var(--bianco);height:56px}
-.header-left{display:flex;align-items:center;gap:12px}
-.header-brand{display:flex;align-items:center;gap:8px}
-.header-brand .brand-best{font-size:18px;font-weight:800;color:var(--bianco)}
-.header-brand .brand-rent{font-size:18px;font-weight:800;color:var(--rosso)}
-.header-brand .brand-slogan{font-size:10px;color:var(--grigio);display:block;margin-top:-2px;letter-spacing:.5px}
-.header-right{display:flex;align-items:center;gap:14px}
-.header-right .user-info{font-size:12px;color:#D1D5DB}
-.header-right .user-role{font-size:10px;color:var(--rosso);font-weight:600}
-.btn-logout{background:#333;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:11px;cursor:pointer;transition:background .15s}
-.btn-logout:hover{background:var(--rosso)}
-.nav{display:flex;background:var(--bianco);border-bottom:2px solid var(--grigio-chiaro);padding:0 16px;overflow-x:auto}
-.nav button{padding:12px 16px;border:none;background:none;font-size:12px;font-weight:500;color:var(--grigio);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;margin-bottom:-2px}
-.nav button.active{color:var(--rosso);border-bottom-color:var(--rosso);font-weight:700}
-.nav button:hover{color:var(--nero)}
-.content{padding:20px;max-width:1300px;margin:0 auto}
-.card{background:var(--bianco);border:1px solid var(--grigio-chiaro);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.card h3{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--nero);display:flex;align-items:center;gap:8px}
-.card h3 .icon{font-size:16px}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
-.kpi{padding:18px;border-radius:12px;color:var(--bianco);position:relative;overflow:hidden}
-.kpi::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.08)}
-.kpi.rosso{background:linear-gradient(135deg,var(--rosso),#E53935)}
-.kpi.nero{background:linear-gradient(135deg,var(--nero),#333)}
-.kpi.grigio{background:linear-gradient(135deg,#4B5563,#6B7280)}
-.kpi.verde{background:linear-gradient(135deg,#059669,#10B981)}
-.kpi.arancio{background:linear-gradient(135deg,#D97706,#F59E0B)}
-.kpi.scuro{background:linear-gradient(135deg,#2D2D2D,#4B5563)}
-.kpi-label{font-size:11px;opacity:.85;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
-.kpi-value{font-size:28px;font-weight:800}
-table{width:100%;border-collapse:collapse}
-th{text-align:left;font-size:10px;color:var(--grigio);text-transform:uppercase;padding:10px 8px;border-bottom:2px solid var(--grigio-chiaro);letter-spacing:.5px}
-td{padding:10px 8px;border-bottom:1px solid #F3F4F6;font-size:12px}
-tr:hover td{background:#FAFAFA}
-.status{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600}
-.status.attivo{background:#DCFCE7;color:#15803D}
-.status.chiuso{background:var(--grigio-chiaro);color:var(--grigio-scuro)}
-.status.prenotato{background:#FEF3C7;color:#92400E}
-.status.disponibile{background:#DCFCE7;color:#15803D}
-.status.noleggiato{background:#FEE2E2;color:var(--rosso)}
-.status.manutenzione{background:#FEF3C7;color:#92400E}
-.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
-.search-box{padding:9px 14px;border:1px solid var(--grigio-chiaro);border-radius:8px;font-size:12px;width:280px;outline:none;transition:border .2s}
-.search-box:focus{border-color:var(--rosso);box-shadow:0 0 0 3px rgba(204,20,24,.08)}
-.toolbar-btns{display:flex;gap:6px;flex-wrap:wrap}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:100;display:flex;align-items:center;justify-content:center}
-.modal-box{background:var(--bianco);border-radius:16px;padding:24px;width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.modal-box h3{font-size:16px;font-weight:700;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--rosso);color:var(--nero)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:12px;border-top:1px solid var(--grigio-chiaro)}
-.footer{text-align:center;padding:16px;background:var(--nero);color:var(--grigio);font-size:11px;margin-top:20px}
-.footer a{color:var(--rosso);text-decoration:none}
-.footer .footer-brand{font-weight:700;color:var(--bianco)}
-.alert-card{border-left:4px solid;padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:8px;background:var(--bianco)}
-.alert-card.warning{border-color:var(--arancio);background:#FFFBEB}
-.alert-card.danger{border-color:var(--rosso);background:#FEF2F2}
-.alert-card .alert-title{font-weight:600;font-size:13px}
-.alert-card .alert-detail{font-size:12px;color:var(--grigio);margin-top:2px}
-
-.notif-wrapper{position:relative}
-.notif-btn{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;position:relative;padding:4px 8px}
-.notif-badge{position:absolute;top:-2px;right:-2px;background:var(--rosso);color:#fff;font-size:9px;font-weight:700;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center}
-.notif-panel{position:absolute;top:40px;right:0;width:340px;background:var(--bianco);border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);z-index:200;max-height:400px;overflow-y:auto;display:none}
-.notif-panel.open{display:block}
-.notif-panel h4{padding:14px 16px;margin:0;font-size:13px;border-bottom:1px solid var(--grigio-chiaro);color:var(--nero)}
-.notif-item{padding:10px 16px;border-bottom:1px solid #f3f4f6;font-size:12px;cursor:pointer;transition:background .1s}
-.notif-item:hover{background:#fafafa}
-.notif-item .ni-icon{margin-right:8px}
-.notif-item .ni-title{font-weight:600;color:var(--nero)}
-.notif-item .ni-detail{color:var(--grigio);margin-top:2px}
-.notif-item.urgent{border-left:3px solid var(--rosso)}
-.notif-item.warning{border-left:3px solid var(--arancio)}
-.notif-empty{padding:20px;text-align:center;color:var(--grigio);font-size:12px}
-.print-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:center;justify-content:center}
-.print-box{background:#fff;width:700px;max-height:90vh;overflow-y:auto;border-radius:12px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.print-box .pb-header{text-align:center;border-bottom:2px solid var(--rosso);padding-bottom:16px;margin-bottom:16px}
-.print-box .pb-logo{font-size:22px;font-weight:800}
-.print-box .pb-title{font-size:16px;font-weight:700;margin-top:8px}
-.print-box .pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-bottom:12px}
-.print-box .pb-label{font-weight:600;color:var(--grigio-scuro)}
-.print-box .pb-val{color:var(--nero)}
-.print-box .pb-section{font-size:13px;font-weight:700;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--grigio-chiaro)}
-.print-box .pb-actions{display:flex;gap:8px;justify-content:center;margin-top:20px}
-@media print{body *{visibility:hidden}.print-box,.print-box *{visibility:visible}.print-box{position:absolute;left:0;top:0;width:100%;box-shadow:none;border-radius:0}.print-box .pb-actions{display:none}.print-overlay{background:none}}
-
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.cal-header h3{margin:0;font-size:14px;font-weight:700}
-.cal-nav{display:flex;gap:6px}
-.cal-nav button{background:var(--sfondo);border:1px solid var(--grigio-chiaro);border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer}
-.cal-nav button:hover{background:var(--grigio-chiaro)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-day-header{text-align:center;font-size:10px;font-weight:700;color:var(--grigio);padding:8px 0;text-transform:uppercase}
-.cal-day{min-height:80px;background:var(--bianco);border:1px solid #f3f4f6;border-radius:6px;padding:4px;font-size:11px;position:relative}
-.cal-day.today{border-color:var(--rosso);background:#FEF2F2}
-.cal-day.other-month{opacity:.4}
-.cal-day .day-num{font-weight:700;font-size:12px;color:var(--nero);margin-bottom:2px}
-.cal-event{padding:2px 4px;border-radius:3px;font-size:9px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
-.cal-event.consegna{background:#DCFCE7;color:#15803D}
-.cal-event.rientro{background:#FEE2E2;color:#CC1418}
-.cal-event.prenotato{background:#FEF3C7;color:#92400E}
-.cal-legend{display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--grigio)}
-.cal-legend span{display:flex;align-items:center;gap:4px}
-.cal-legend .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
-
-
+body.dark .check-item{background:#2A2A2A;border-color:#444}
+body.dark .check-item.checked{background:#0F2A1A;border-color:#15803D}
+body.dark .check-item.issue{background:#2A0F0F;border-color:#DC2626}
+body.dark .damage-note{background:#2A2A2A;border-color:#444;color:#E0E0E0}
+body.dark .check-summary{background:#1E1E1E;border-color:#333}
+body.dark .check-summary .cs-row{border-bottom-color:#333}
+body.dark .fuel-bar{background:#333}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}}
 </style>
 </head>
 
 
 <body>
-<div id="login-screen">
+<!-- LOGIN -->
+<div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="login-logo">
       <img src="logo-dark.jpg" alt="BestRent" style="width:240px;margin-bottom:12px;border-radius:8px">
+      <span class="logo-srl">S.r.l.</span>
       <div class="logo-slogan">Noleggi al miglior prezzo</div>
     </div>
     <div id="login-error" class="error-msg hidden"></div>
-    <div class="form-group"><label>Username</label><input type="text" id="login-user" placeholder="Inserisci username" value="gaetano.t"></div>
-    <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Inserisci password" value="BestRent2026!"></div>
+    <div class="form-group"><label>Username</label><input id="login-user" placeholder="Inserisci username" value="gaetano.t"></div>
+    <div class="form-group"><label>Password</label><input id="login-pass" type="password" placeholder="Inserisci password" value="BestRent2026!"></div>
     <button class="btn btn-primary" id="btn-login">Accedi al CRM</button>
-    <p class="login-hint">Credenziali: gaetano.t / BestRent2026!</p>
+    <p class="login-hint">Demo: gaetano.t / BestRent2026!</p>
     <div class="login-footer">
-      <span>BestRent S.r.l. &mdash; Tel. +39 3500 300 197</span><br>
+      <span>BestRent S.r.l. — Tel. +39 3500 300 197</span><br>
       <span>noleggibestrent@gmail.com</span>
     </div>
   </div>
 </div>
-<div id="main-app" class="hidden">
+
+<!-- APP -->
+<div class="app" id="app">
   <div class="header">
-    <div class="header-left">
-      <div class="header-brand">
-        <img src="logo-bestrent.jpg" alt="BestRent" style="height:38px;margin-right:8px">
-        <div>
-          <span class="brand-best">BEST</span><span class="brand-rent">RENT</span>
-          <span class="brand-slogan">Noleggi al miglior prezzo</span>
-        </div>
+    <div class="brand">
+      <img src="logo-bestrent.jpg" alt="BestRent" style="height:36px;border-radius:4px">
+      <div>
+        <span class="brand-best">BEST</span><span class="brand-rent">RENT</span><span class="brand-srl">S.r.l.</span>
+        <span class="brand-slogan">Noleggi al miglior prezzo</span>
       </div>
     </div>
     <div class="header-right">
-      <div>
-        <span class="user-info" id="user-name"></span><br>
-        <span class="user-role" id="user-role"></span>
-      </div>
-      
-<button class="dark-toggle" id="dark-toggle" title="Dark/Light Mode">&#9790;</button>
+      <span class="user-info" id="user-name"></span><br>
+      <span class="user-info" id="user-role" style="font-size:10px"></span>
+      <button class="dark-toggle" id="dark-toggle" title="Dark/Light Mode">&#9790;</button>
       <div class="notif-wrapper">
-        <button class="notif-btn" id="notif-btn" title="Notifiche">&#128276;<span class="notif-badge hidden" id="notif-count">0</span></button>
+        <button class="notif-btn" id="notif-btn" onclick="toggleNotif()">&#128276;<span class="notif-badge" id="notif-count">0</span></button>
         <div class="notif-panel" id="notif-panel"></div>
       </div>
-      <button class="btn-logout" id="btn-logout">Esci</button>
-
-
+      <button class="btn btn-sm btn-secondary" onclick="logout()">Esci</button>
     </div>
   </div>
-  <div class="nav">
+
+  <div class="nav" id="nav">
     <button class="active" data-tab="dashboard">Dashboard</button>
     <button data-tab="contratti">Contratti</button>
     <button data-tab="clienti">Clienti</button>
@@ -380,59 +355,84 @@ tr:hover td{background:#FAFAFA}
     <button data-tab="operatori">Operatori</button>
     <button data-tab="fatture">Fatture</button>
   </div>
+
   <div class="content" id="content"></div>
+
   <div class="footer">
-    <span class="footer-brand">BEST</span><span style="color:#CC1418;font-weight:700">RENT</span> S.r.l. &mdash; Noleggi al miglior prezzo<br>
-    Tel. <a href="tel:+393500300197">+39 3500 300 197</a> | Email: <a href="mailto:noleggibestrent@gmail.com">noleggibestrent@gmail.com</a><br>
-    Via Europa 90, Lonate Pozzolo (VA)
+    BestRent S.r.l. — Via Europa 90, Lonate Pozzolo (VA) — Tel. +39 3500 300 197 — noleggibestrent@gmail.com
   </div>
 </div>
+
 <button class="wa-float" id="wa-float" onclick="window.open('https://wa.me/393500300197','_blank')" title="Contattaci su WhatsApp">&#128172;</button>
 <div id="modal" class="hidden"></div>
-<script>
-var token='',currentTab='dashboard',API='/api',currentUser=null;
 
-function api(m,p,b){
-  var o={method:m,headers:{'Content-Type':'application/json'}};
-  if(token)o.headers['Authorization']='Bearer '+token;
-  if(b)o.body=JSON.stringify(b);
-  return fetch(API+p,o).then(function(r){return r.json();});
+<script>
+// ===== CONFIG =====
+var API_BASE='/.netlify/functions/api';
+var currentUser=null;
+var token=localStorage.getItem('bestrent-token');
+
+function api(method,path,body){
+  var opts={method:method,headers:{'Content-Type':'application/json'}};
+  if(token)opts.headers['Authorization']='Bearer '+token;
+  if(body)opts.body=JSON.stringify(body);
+  return fetch(API_BASE+path,opts).then(function(r){return r.json();});
 }
 
-document.getElementById('btn-login').addEventListener('click',doLogin);
-document.getElementById('login-pass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
-
-function doLogin(){
+// ===== LOGIN =====
+document.getElementById('btn-login').addEventListener('click',function(){
   var u=document.getElementById('login-user').value;
   var p=document.getElementById('login-pass').value;
-  var err=document.getElementById('login-error');
-  err.classList.add('hidden');
-  api('POST','/auth/login',{username:u,password:p}).then(function(d){
-    if(d.token){
-      token=d.token;
-      currentUser=d.operatore;
-      document.getElementById('user-name').textContent=d.operatore.nome;
-      document.getElementById('user-role').textContent=d.operatore.ruolo.toUpperCase();
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('main-app').classList.remove('hidden');
-      loadTab('dashboard');
+  var errEl=document.getElementById('login-error');
+  if(!u||!p){errEl.textContent='Inserisci username e password';errEl.classList.remove('hidden');errEl.classList.add('show');return;}
+  api('POST','/auth/login',{username:u,password:p}).then(function(r){
+    if(r.token){
+      token=r.token;
+      currentUser=r.operatore;
+      localStorage.setItem('bestrent-token',token);
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('app').style.display='block';
+      document.getElementById('user-name').textContent=currentUser.nome;
+      document.getElementById('user-role').textContent=(currentUser.ruolo||'operatore').toUpperCase();
+      loadDashboard();
+      loadNotifiche();
     } else {
-      err.textContent=d.error||'Credenziali non valide';
-      err.classList.remove('hidden');
+      errEl.textContent=r.error||'Credenziali non valide';
+      errEl.classList.remove('hidden');
+      errEl.classList.add('show');
     }
   }).catch(function(){
-    err.textContent='Errore di connessione al server';
-    err.classList.remove('hidden');
+    errEl.textContent='Errore di connessione al server';
+    errEl.classList.remove('hidden');
+    errEl.classList.add('show');
   });
-}
-
-document.getElementById('btn-logout').addEventListener('click',function(){
-  token='';
-  currentUser=null;
-  document.getElementById('main-app').classList.add('hidden');
-  document.getElementById('login-screen').classList.remove('hidden');
 });
 
+// ===== LOGOUT =====
+function logout(){
+  token=null;currentUser=null;
+  localStorage.removeItem('bestrent-token');
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
+
+// ===== AUTO LOGIN =====
+if(token){
+  api('GET','/operatori').then(function(d){
+    var list=Array.isArray(d)?d:(d.dati||[]);
+    if(list.length>0){
+      currentUser=list[0];
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('app').style.display='block';
+      document.getElementById('user-name').textContent=currentUser.nome;
+      document.getElementById('user-role').textContent=(currentUser.ruolo||'operatore').toUpperCase();
+      loadDashboard();
+      loadNotifiche();
+    }
+  }).catch(function(){});
+}
+
+// ===== NAVIGATION =====
 document.querySelectorAll('.nav button').forEach(function(b){
   b.addEventListener('click',function(){
     document.querySelectorAll('.nav button').forEach(function(x){x.classList.remove('active');});
@@ -442,7 +442,6 @@ document.querySelectorAll('.nav button').forEach(function(b){
 });
 
 function loadTab(t){
-  currentTab=t;
   var el=document.getElementById('content');
   el.innerHTML='<p style="text-align:center;padding:40px;color:var(--grigio)">Caricamento...</p>';
   if(t==='dashboard')loadDashboard();
@@ -456,80 +455,138 @@ function loadTab(t){
   else if(t==='manutenzione')loadManutenzione();
   else if(t==='operatori')loadOperatori();
   else if(t==='fatture')loadFatture();
+}
 
+// ===== NOTIFICHE =====
+function toggleNotif(){
+  document.getElementById('notif-panel').classList.toggle('open');
+}
+function loadNotifiche(){
+  api('GET','/contratti').then(function(d){
+    var list=d.dati||[];
+    var notifs=[];
+    var oggi=new Date();
+    list.forEach(function(c){
+      if(c.data_rientro_prevista){
+        var dr=new Date(c.data_rientro_prevista);
+        var diff=Math.ceil((dr-oggi)/(1000*60*60*24));
+        if(diff<0)notifs.push({tipo:'urgent',titolo:'RIENTRO SCADUTO',dettaglio:c.numero_contratto+' - '+(c.cliente?c.cliente.cognome_nome:'-')+' ('+Math.abs(diff)+' giorni fa)'});
+        else if(diff<=3)notifs.push({tipo:'warning',titolo:'Rientro imminente',dettaglio:c.numero_contratto+' - '+(c.cliente?c.cliente.cognome_nome:'-')+' (tra '+diff+' giorni)'});
+      }
+    });
+    document.getElementById('notif-count').textContent=notifs.length;
+    var h='<h4>Notifiche ('+notifs.length+')</h4>';
+    if(notifs.length>0){
+      notifs.forEach(function(n){h+='<div class="notif-item '+n.tipo+'"><div class="ni-title">'+n.titolo+'</div><div class="ni-detail">'+n.dettaglio+'</div></div>';});
+    } else {
+      h+='<div class="notif-empty">Nessuna notifica</div>';
+    }
+    document.getElementById('notif-panel').innerHTML=h;
+  });
+}
+
+
+// ===== DASHBOARD =====
 function loadDashboard(){
-  api('GET','/dashboard').then(function(d){
-    if(d.error){document.getElementById('content').innerHTML='<p>'+d.error+'</p>';return;}
-    var k=d.kpi;
-    var h='<div class="kpi-grid">';
-    h+='<div class="card kpi rosso"><div class="kpi-label">Contratti Attivi</div><div class="kpi-value">'+k.contrattiAttivi+'</div></div>';
-    h+='<div class="card kpi nero"><div class="kpi-label">Clienti Totali</div><div class="kpi-value">'+k.totaleClienti+'</div></div>';
-    h+='<div class="card kpi grigio"><div class="kpi-label">Flotta Veicoli</div><div class="kpi-value">'+k.totaleVeicoli+'</div></div>';
-    h+='<div class="card kpi verde"><div class="kpi-label">Disponibili</div><div class="kpi-value">'+(k.veicoliDisponibili||0)+'</div></div>';
-    h+='<div class="card kpi scuro"><div class="kpi-label">Fatturato Totale</div><div class="kpi-value">&euro;'+Number(k.fatturato||0).toFixed(0)+'</div></div>';
-    h+='<div class="card kpi arancio"><div class="kpi-label">Fatturato Mese</div><div class="kpi-value">&euro;'+Number(k.fattuMese||0).toFixed(0)+'</div></div>';
-    h+='</div>';
-    if(d.scadenze&&d.scadenze.length>0){
-      h+='<div class="card"><h3><span class="icon">&#9200;</span> Rientri Prossimi 7 Giorni</h3>';
-      d.scadenze.forEach(function(s){
-        var dt=new Date(s.data_rientro_prevista).toLocaleDateString('it-IT');
-        h+='<div class="alert-card warning"><div class="alert-title">'+s.numero_contratto+' &mdash; '+(s.veicolo?s.veicolo.targa:'')+' &mdash; Rientro: '+dt+'</div><div class="alert-detail">Cliente: '+(s.cliente?s.cliente.cognome_nome:'-')+'</div></div>';
-      });
+  Promise.all([api('GET','/contratti'),api('GET','/clienti'),api('GET','/veicoli'),api('GET','/pagamenti')]).then(function(res){
+    var contratti=res[0].dati||[];
+    var clienti=res[1].dati||[];
+    var veicoli=Array.isArray(res[2])?res[2]:(res[2].dati||[]);
+    var pagamenti=Array.isArray(res[3])?res[3]:(res[3].dati||[]);
+    var attivi=contratti.filter(function(c){return c.stato_contratto==='attivo';}).length;
+    var totFatturato=0;
+    pagamenti.forEach(function(p){totFatturato+=Number(p.importo||0);});
+    var disponibili=veicoli.filter(function(v){return v.stato==='disponibile';}).length;
+    var h='<div class="card"><h3>Dashboard BestRent</h3>';
+    h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px">';
+    h+='<div class="alert-card"><div class="alert-title" style="font-size:28px;font-weight:800;color:var(--rosso)">'+contratti.length+'</div><div class="alert-detail">Contratti Totali</div></div>';
+    h+='<div class="alert-card"><div class="alert-title" style="font-size:28px;font-weight:800;color:var(--verde)">'+attivi+'</div><div class="alert-detail">Contratti Attivi</div></div>';
+    h+='<div class="alert-card"><div class="alert-title" style="font-size:28px;font-weight:800;color:var(--nero)">'+clienti.length+'</div><div class="alert-detail">Clienti</div></div>';
+    h+='<div class="alert-card"><div class="alert-title" style="font-size:28px;font-weight:800;color:var(--arancio)">'+veicoli.length+'</div><div class="alert-detail">Veicoli ('+disponibili+' disponibili)</div></div>';
+    h+='<div class="alert-card"><div class="alert-title" style="font-size:28px;font-weight:800;color:var(--verde)">&euro;'+totFatturato.toFixed(2)+'</div><div class="alert-detail">Fatturato Totale</div></div>';
+    h+='</div></div>';
+    // Alerts
+    var oggi=new Date();
+    var alerts=[];
+    contratti.forEach(function(c){
+      if(c.data_rientro_prevista){
+        var dr=new Date(c.data_rientro_prevista);
+        var diff=Math.ceil((dr-oggi)/(1000*60*60*24));
+        if(diff<0)alerts.push({tipo:'danger',titolo:'RIENTRO SCADUTO: '+c.numero_contratto,dettaglio:(c.cliente?c.cliente.cognome_nome:'-')+' - scaduto da '+Math.abs(diff)+' giorni'});
+        else if(diff<=3)alerts.push({tipo:'warning',titolo:'Rientro imminente: '+c.numero_contratto,dettaglio:(c.cliente?c.cliente.cognome_nome:'-')+' - tra '+diff+' giorni'});
+      }
+    });
+    if(alerts.length>0){
+      h+='<div class="card"><h3>Avvisi</h3>';
+      alerts.forEach(function(a){h+='<div class="alert-card '+a.tipo+'"><div class="alert-title">'+a.titolo+'</div><div class="alert-detail">'+a.dettaglio+'</div></div>';});
       h+='</div>';
     }
-    h+='<div class="card"><h3><span class="icon">&#128203;</span> Ultimi Contratti</h3><table><thead><tr><th>N.</th><th>Cliente</th><th>Veicolo</th><th>Consegna</th><th>Totale</th><th>Stato</th></tr></thead><tbody>';
-    if(d.ultimiContratti&&d.ultimiContratti.length>0){
-      d.ultimiContratti.forEach(function(c){
-        var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'-';
-        h+='<tr><td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>'+(c.veicolo?c.veicolo.targa:'-')+'</td><td>'+dc+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td></tr>';
-      });
-    } else {
-      h+='<tr><td colspan="6" style="text-align:center;color:var(--grigio)">Nessun contratto</td></tr>';
-    }
-    h+='</tbody></table></div>';
     document.getElementById('content').innerHTML=h;
   });
 }
 
+// ===== CONTRATTI =====
 function loadContratti(){
   api('GET','/contratti').then(function(d){
     var list=d.dati||[];
-    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca contratto..." id="src-c"><div class="toolbar-btns">onclick="exportCSVlocal(\'contratti\')">Export CSV</button></div></div>';
-public\index.html:468:    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca cliente..." id="src-cl" onkeyup="searchClienti()"><div 
-class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewCliente()">+ Nuovo Cliente</button><button class="btn btn-secondary btn-sm" 
-onclick="exportCSVlocal(\'clienti\')">Export CSV</button></div></div>';
-public\index.html:1325:function exportCSVlocal(tipo){<button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'contratti\')">Export CSV</button></div></div>';
+    var h='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewContratto()">+ Nuovo Contratto</button><button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'contratti\')">Export CSV</button></div></div>';
     h+='<div class="filter-bar"><label>Stato</label><select id="fc-stato" onchange="filterContratti()"><option value="">Tutti</option><option value="attivo">Attivo</option><option value="chiuso">Chiuso</option></select><label>Dal</label><input id="fc-dal" type="date" onchange="filterContratti()"><label>Al</label><input id="fc-al" type="date" onchange="filterContratti()"><label>Min &euro;</label><input id="fc-min" type="number" placeholder="0" style="width:80px" onchange="filterContratti()"><label>Max &euro;</label><input id="fc-max" type="number" placeholder="9999" style="width:80px" onchange="filterContratti()"><button class="filter-reset" onclick="resetFilterContratti()">Reset filtri</button></div><div class="filter-count" id="fc-count"></div>';
-h+='<div class="card"><table><thead><tr><th>N.</th><th>Cliente</th><th>Veicolo</th><th>Consegna</th><th>Rientro</th><th>Totale</th><th>Stato</th><th>Azioni</th></tr></thead><tbody id="contratti-tbody">';
+    h+='<div class="card"><table><thead><tr><th>N.</th><th>Cliente</th><th>Veicolo</th><th>Consegna</th><th>Rientro</th><th>Totale</th><th>Stato</th><th>Azioni</th></tr></thead><tbody id="contratti-tbody">';
     list.forEach(function(c){
-      var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'-';
-      var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
-      h+='<tr data-stato="'+c.stato_contratto+'" data-data="'+(c.data_consegna||'')+'" data-totale="'+Number(c.totale_documento||0)+'"><td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>'+(c.veicolo?c.veicolo.targa:'-')+'</td><td>'+dc+'</td><td>'+dr+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td>';
-      h+='<td>';
-      if(c.stato_contratto==='attivo'){h+='<button class="btn btn-success btn-sm" onclick="showCheckin('+c.id+')">Check-in</button> ';}
-      h+='<button class="btn btn-sm" style="background:#8B5CF6;color:#fff" onclick="showChecklist('+c.id+',\'consegna\')">Consegna</button> <button class="btn btn-sm" style="background:#EC4899;color:#fff" onclick="showChecklist('+c.id+',\'rientro\')">Rientro</button> <button class="btn-email btn-sm" onclick="sendEmailConferma('+c.id+')">Email</button> <button class="btn btn-warning btn-sm" onclick="printContratto('+c.id+')">PDF</button> <button class="btn btn-danger btn-sm" onclick="deleteContratto('+c.id+')">Elimina</button></td></tr>';;
+      var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'';
+      var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'';
+      h+='<tr data-stato="'+c.stato_contratto+'" data-data="'+(c.data_consegna||'')+'" data-totale="'+Number(c.totale_documento||0)+'">';
+      h+='<td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>'+(c.veicolo?c.veicolo.targa:'-')+'</td><td>'+dc+'</td><td>'+dr+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td>';
+      h+='<td><button class="btn btn-sm" style="background:#8B5CF6;color:#fff" onclick="showChecklist('+c.id+',\'consegna\')">Consegna</button> <button class="btn btn-sm" style="background:#EC4899;color:#fff" onclick="showChecklist('+c.id+',\'rientro\')">Rientro</button> <button class="btn-email btn-sm" onclick="sendEmailConferma('+c.id+')">Email</button> <button class="btn btn-warning btn-sm" onclick="printContratto('+c.id+')">PDF</button> <button class="btn btn-danger btn-sm" onclick="deleteContratto('+c.id+')">Elimina</button></td></tr>';
     });
-    if(list.length===0){h+='<tr><td colspan="8" style="text-align:center;color:var(--grigio)">Nessun contratto</td></tr>';}
     h+='</tbody></table></div>';
     document.getElementById('content').innerHTML=h;
   });
 }
 
-function showCheckin(id){
-  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>Check-in Veicolo</h3>';
-  h+='<div class="form-group"><label>Km al Rientro</label><input id="m-kmr" type="number" placeholder="Es: 148500"></div>';
-  h+='<div class="form-group"><label>Livello Carburante</label><select id="m-gasr"><option>47/47</option><option>40/47</option><option>30/47</option><option>20/47</option><option>10/47</option></select></div>';
-  h+='<div class="form-group"><label>Note Rientro</label><textarea id="m-noter" rows="3" placeholder="Danni, note..."></textarea></div>';
-  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-success btn-sm" onclick="doCheckin('+id+')">Conferma Check-in</button></div></div></div>';
-  document.getElementById('modal').innerHTML=h;
-  document.getElementById('modal').classList.remove('hidden');
+function showNewContratto(){
+  Promise.all([api('GET','/clienti'),api('GET','/veicoli')]).then(function(res){
+    var clienti=res[0].dati||[];
+    var veicoli=Array.isArray(res[1])?res[1]:(res[1].dati||[]);
+    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    h+='<h3>Nuovo Contratto</h3>';
+    h+='<div class="form-row"><div class="form-group"><label>N. Contratto *</label><input id="m-nc" placeholder="Es: M166"></div><div class="form-group"><label>Cliente *</label><select id="m-cl"><option value="">Seleziona...</option>';
+    clienti.forEach(function(c){h+='<option value="'+c.id+'">'+c.cognome_nome+'</option>';});
+    h+='</select></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Veicolo *</label><select id="m-ve"><option value="">Seleziona...</option>';
+    veicoli.forEach(function(v){h+='<option value="'+v.id+'">'+v.targa+' - '+v.marca+' '+v.modello+'</option>';});
+    h+='</select></div><div class="form-group"><label>Sede</label><input id="m-sede" value="Gallarate MXP"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Data Consegna</label><input id="m-dc" type="datetime-local"></div><div class="form-group"><label>Data Rientro</label><input id="m-dr" type="datetime-local"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Tariffa/giorno (&euro;)</label><input id="m-tg" type="number" value="45"></div><div class="form-group"><label>Giorni</label><input id="m-gg" type="number" value="1"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Sconto %</label><input id="m-sc" type="number" value="0"></div><div class="form-group"><label>Deposito (&euro;)</label><input id="m-dep" type="number" value="700"></div></div>';
+    h+='<div class="form-group"><label>Note</label><textarea id="m-note" rows="2"></textarea></div>';
+    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveContratto()">Crea Contratto</button></div>';
+    h+='</div></div>';
+    document.getElementById('modal').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+  });
 }
 
-function doCheckin(id){
-  api('PATCH','/contratti/'+id+'/checkin',{km_rientro:document.getElementById('m-kmr').value,gas_rientro:document.getElementById('m-gasr').value}).then(function(){
-    closeModal();
-    loadContratti();
-    alert('Check-in completato!');
+function saveContratto(){
+  var nc=document.getElementById('m-nc').value;
+  var cl=document.getElementById('m-cl').value;
+  var ve=document.getElementById('m-ve').value;
+  if(!nc||!cl||!ve){alert('Compila i campi obbligatori!');return;}
+  var tg=parseFloat(document.getElementById('m-tg').value)||45;
+  var gg=parseInt(document.getElementById('m-gg').value)||1;
+  var sc=parseFloat(document.getElementById('m-sc').value)||0;
+  var totale=tg*gg*(1-sc/100);
+  var data={
+    numero_contratto:nc,id_cliente:parseInt(cl),id_veicolo:parseInt(ve),
+    sede_noleggio:document.getElementById('m-sede').value,
+    data_consegna:document.getElementById('m-dc').value||new Date().toISOString(),
+    data_rientro_prevista:document.getElementById('m-dr').value||new Date().toISOString(),
+    tariffa_giornaliera:tg,giorni_noleggio:gg,sconto_percentuale:sc,
+    totale_documento:totale,deposito_cauzionale:parseFloat(document.getElementById('m-dep').value)||0,
+    note:document.getElementById('m-note').value
+  };
+  api('POST','/contratti',data).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadContratti();}
   });
 }
 
@@ -539,324 +596,20 @@ function deleteContratto(id){
   }
 }
 
-function showNewContratto(){
-  api('GET','/clienti').then(function(cd){
-    api('GET','/veicoli?stato=disponibile').then(function(vd){
-      var cl=cd.dati||[];
-      var ve=Array.isArray(vd)?vd:[];
-      var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>Nuovo Contratto</h3>';
-      h+='<div class="form-group"><label>N. Contratto *</label><input id="m-nc" placeholder="Es: M166"></div>';
-      h+='<div class="form-group"><label>Cliente *</label><select id="m-cl"><option value="">Seleziona cliente...</option>';
-      cl.forEach(function(c){h+='<option value="'+c.id+'">'+c.cognome_nome+'</option>';});
-      h+='</select></div>';
-      h+='<div class="form-group"><label>Veicolo *</label><select id="m-ve"><option value="">Seleziona veicolo...</option>';
-      ve.forEach(function(v){h+='<option value="'+v.id+'">'+v.targa+' - '+v.marca+' '+v.modello+'</option>';});
-      h+='</select></div>';
-      h+='<div class="form-row"><div class="form-group"><label>Data Consegna</label><input id="m-dc" type="date"></div><div class="form-group"><label>Data Rientro</label><input id="m-dr" type="date"></div></div>';
-      h+='<div class="form-row"><div class="form-group"><label>Tariffa/Giorno (&euro;)</label><input id="m-tar" type="number" value="45"></div><div class="form-group"><label>Giorni</label><input id="m-gg" type="number" value="1"></div></div>';
-      h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveContratto()">Crea Contratto</button></div></div></div>';
-      document.getElementById('modal').innerHTML=h;
-      document.getElementById('modal').classList.remove('hidden');
-    });
-  });
-}
-
-function saveContratto(){
-  var nc=document.getElementById('m-nc').value;
-  var cl=document.getElementById('m-cl').value;
-  var ve=document.getElementById('m-ve').value;
-  if(!nc||!cl||!ve){alert('Compila i campi obbligatori!');return;}
-  var tar=parseFloat(document.getElementById('m-tar').value)||45;
-  var gg=parseInt(document.getElementById('m-gg').value)||1;
-  api('POST','/contratti',{
-    numero_contratto:nc,
-    id_cliente:parseInt(cl),
-    id_veicolo:parseInt(ve),
-    data_consegna:document.getElementById('m-dc').value||new Date().toISOString(),
-    data_rientro_prevista:document.getElementById('m-dr').value||new Date().toISOString(),
-    tariffa_giornaliera:tar,
-    giorni_noleggio:gg,
-    totale_documento:tar*gg,
-    stato_contratto:'attivo'
-  }).then(function(r){
-    if(r.error){alert(r.error);}else{closeModal();loadContratti();}
-  });
-}
-
-function loadClienti(){
-  api('GET','/clienti').then(function(d){
-    var list=d.dati||[];
-    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca cliente..." id="src-cl" onkeyup="searchClienti()"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewCliente()">+ Nuovo Cliente</button><button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'clienti\')">Export CSV</button></div></div>';
-    h+='<div class="card"><table><thead><tr><th>Nome</th><th>Telefono</th><th>Email</th><th>Patente</th><th>Nazione</th><th>Azioni</th></tr></thead><tbody>';
-    list.forEach(function(c){
-      h+='<tr><td><strong>'+c.cognome_nome+'</strong></td><td>'+(c.telefono||'-')+'</td><td>'+(c.email||'-')+'</td><td>'+(c.patente_nr||'-')+'</td><td>'+(c.nazione||'-')+'</td>';
-      h+='<td><button class="btn-whatsapp btn-sm" onclick="sendWhatsApp(\''+((c.telefono||'').replace(/[^0-9]/g,''))+'\',\''+c.cognome_nome+'\')">WA</button> <button class="btn btn-secondary btn-sm" onclick="viewCliente('+c.id+')">Storico</button> <button class="btn-whatsapp btn-sm" onclick="sendWhatsApp(\''+(c.telefono||'').replace(/[^0-9]/g,'')+'\',\''+c.cognome_nome+'\')">WA</button><button class="btn btn-secondary btn-sm" onclick="editCliente('+c.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteCliente('+c.id+')">Elimina</button></td></tr>';
-    });
-    if(list.length===0){h+='<tr><td colspan="6" style="text-align:center;color:var(--grigio)">Nessun cliente</td></tr>';}
-    h+='</tbody></table></div>';
-    document.getElementById('content').innerHTML=h;
-  });
-}
-
-function searchClienti(){
-  var s=document.getElementById('src-cl').value;
-  if(s.length<2&&s.length>0)return;
-  api('GET','/clienti?search='+encodeURIComponent(s)).then(function(d){
-    var list=d.dati||[];
-    var tb=document.querySelector('tbody');
-    if(!tb)return;
-    var h='';
-    list.forEach(function(c){
-      h+='<tr><td><strong>'+c.cognome_nome+'</strong></td><td>'+(c.telefono||'-')+'</td><td>'+(c.email||'-')+'</td><td>'+(c.patente_nr||'-')+'</td><td>'+(c.nazione||'-')+'</td><td><button class="btn-whatsapp btn-sm" onclick="sendWhatsApp(\''+((c.telefono||'').replace(/[^0-9]/g,''))+'\',\''+c.cognome_nome+'\')">WA</button> <button class="btn btn-secondary btn-sm" onclick="viewCliente('+c.id+')">Storico</button> <button class="btn btn-secondary btn-sm" onclick="editCliente('+c.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteCliente('+c.id+')">Elimina</button></td></tr>';
-    });
-    tb.innerHTML=h;
-  });
-}
-
-function viewCliente(id){
-  api('GET','/clienti/'+id).then(function(c){
-    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>'+c.cognome_nome+' - Storico Noleggi</h3>';
-    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;font-size:12px">';
-    h+='<div><strong>Telefono:</strong> '+(c.telefono||'-')+'</div>';
-    h+='<div><strong>Email:</strong> '+(c.email||'-')+'</div>';
-    h+='<div><strong>Patente:</strong> '+(c.patente_nr||'-')+'</div>';
-    h+='<div><strong>Nazione:</strong> '+(c.nazione||'-')+'</div></div>';
-    if(c.contratti&&c.contratti.length>0){
-      h+='<table><thead><tr><th>Contratto</th><th>Veicolo</th><th>Data</th><th>Totale</th><th>Stato</th></tr></thead><tbody>';
-      c.contratti.forEach(function(ct){
-        h+='<tr><td>'+ct.numero_contratto+'</td><td>'+(ct.veicolo?ct.veicolo.targa:'-')+'</td><td>'+new Date(ct.data_consegna).toLocaleDateString('it-IT')+'</td><td>&euro;'+Number(ct.totale_documento||0).toFixed(2)+'</td><td><span class="status '+ct.stato_contratto+'">'+ct.stato_contratto+'</span></td></tr>';
-      });
-      h+='</tbody></table>';
-      h+='<p style="margin-top:10px;font-size:12px;color:var(--grigio)">Totale noleggi: <strong>'+c.contratti.length+'</strong></p>';
-    } else {
-      h+='<p style="color:var(--grigio)">Nessun noleggio registrato</p>';
-    }
-    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Chiudi</button></div></div></div>';
-    document.getElementById('modal').innerHTML=h;
-    document.getElementById('modal').classList.remove('hidden');
-  });
-}
-
-function showNewCliente(){
-  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>Nuovo Cliente</h3>';
-  h+='<div class="form-group"><label>Cognome e Nome *</label><input id="m-nome" placeholder="Es: Mario Rossi"></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Telefono</label><input id="m-tel" placeholder="+39..."></div><div class="form-group"><label>Email</label><input id="m-email" type="email" placeholder="email@..."></div></div>';
-  h+='<div class="form-row"><div class="form-group"><label>N. Patente</label><input id="m-pat"></div><div class="form-group"><label>Scadenza Patente</label><input id="m-patsc" type="date"></div></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Nazione</label><input id="m-naz" value="Italia"></div><div class="form-group"><label>Codice Fiscale / P.IVA</label><input id="m-cf"></div></div>';
-  h+='<div class="form-group"><label>Indirizzo</label><input id="m-ind" placeholder="Via, CAP, Citta"></div>';
-  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveCliente()">Salva Cliente</button></div></div></div>';
-  document.getElementById('modal').innerHTML=h;
-  document.getElementById('modal').classList.remove('hidden');
-}
-
-function saveCliente(){
-  var nome=document.getElementById('m-nome').value;
-  if(!nome){alert('Nome obbligatorio!');return;}
-  var data={
-    cognome_nome:nome,
-    telefono:document.getElementById('m-tel').value||null,
-    email:document.getElementById('m-email').value||null,
-    patente_nr:document.getElementById('m-pat').value||null,
-    nazione:document.getElementById('m-naz').value||'Italia',
-    indirizzo:document.getElementById('m-ind').value||null,
-    codice_fiscale_piva:document.getElementById('m-cf').value||null
-  };
-  var patsc=document.getElementById('m-patsc').value;
-  if(patsc){data.patente_valida_al=patsc;}
-  api('POST','/clienti',data).then(function(r){
-    if(r.error){alert(r.error);}else{closeModal();loadClienti();}
-  });
-}
-
-function editCliente(id){
-  api('GET','/clienti/'+id).then(function(c){
-    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>Modifica Cliente</h3>';
-    h+='<div class="form-group"><label>Cognome e Nome</label><input id="m-nome" value="'+(c.cognome_nome||'')+'"></div>';
-    h+='<div class="form-row"><div class="form-group"><label>Telefono</label><input id="m-tel" value="'+(c.telefono||'')+'"></div><div class="form-group"><label>Email</label><input id="m-email" value="'+(c.email||'')+'"></div></div>';
-    h+='<div class="form-row"><div class="form-group"><label>N. Patente</label><input id="m-pat" value="'+(c.patente_nr||'')+'"></div><div class="form-group"><label>Nazione</label><input id="m-naz" value="'+(c.nazione||'')+'"></div></div>';
-    h+='<div class="form-group"><label>Indirizzo</label><input id="m-ind" value="'+(c.indirizzo||'')+'"></div>';
-    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="updateCliente('+c.id+')">Aggiorna</button></div></div></div>';
-    document.getElementById('modal').innerHTML=h;
-    document.getElementById('modal').classList.remove('hidden');
-  });
-}
-
-function updateCliente(id){
-  api('PUT','/clienti/'+id,{
-    cognome_nome:document.getElementById('m-nome').value,
-    telefono:document.getElementById('m-tel').value||null,
-    email:document.getElementById('m-email').value||null,
-    patente_nr:document.getElementById('m-pat').value||null,
-    nazione:document.getElementById('m-naz').value||'Italia',
-    indirizzo:document.getElementById('m-ind').value||null
-  }).then(function(){closeModal();loadClienti();});
-}
-
-function deleteCliente(id){
-  if(confirm('Eliminare questo cliente?')){
-    api('DELETE','/clienti/'+id).then(function(){loadClienti();});
-  }
-}
-
-function loadVeicoli(){
-  api('GET','/veicoli').then(function(d){
-    var list=Array.isArray(d)?d:(d.dati||[]);
-    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca veicolo..." id="src-v"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewVeicolo()">+ Nuovo Veicolo</button><button class="btn btn-secondary btn-sm" onclick="exportCSV(\'veicoli\')">Export CSV</button></div></div>';
-    h+='<div class="filter-bar"><label>Stato</label><select id="fv-stato" onchange="filterVeicoli()"><option value="">Tutti</option><option value="disponibile">Disponibile</option><option value="noleggiato">Noleggiato</option><option value="manutenzione">Manutenzione</option></select><label>Carburante</label><select id="fv-carb" onchange="filterVeicoli()"><option value="">Tutti</option><option value="benzina">Benzina</option><option value="diesel">Diesel</option><option value="gpl">GPL</option><option value="elettrico">Elettrico</option><option value="ibrido">Ibrido</option></select><label>Cerca</label><input id="fv-search" placeholder="Targa, marca..." oninput="filterVeicoli()"><button class="filter-reset" onclick="resetFilterVeicoli()">Reset filtri</button></div><div class="filter-count" id="fv-count"></div>';
-h+='<div class="card"><table><thead><tr><th>Targa</th><th>Marca</th><th>Modello</th><th>Km</th><th>Carburante</th><th>Sede</th><th>Stato</th><th>Azioni</th></tr></thead><tbody id="veicoli-tbody">';
-    list.forEach(function(v){
-      h+='<tr data-stato="'+v.stato+'" data-carb="'+(v.tipo_carburante||'')+'"><td><strong>'+v.targa+'</strong></td><td>'+v.marca+'</td><td>'+v.modello+'</td><td>'+(v.km_attuali||0).toLocaleString()+'</td><td>'+(v.tipo_carburante||'-')+'</td><td>'+(v.sede||'-')+'</td>';
-      h+='<td><span class="status '+v.stato+'">'+v.stato+'</span></td>';
-      h+='<td><button class="btn btn-secondary btn-sm" onclick="editVeicolo('+v.id+')">Modifica</button></td></tr>';
-    });
-    if(list.length===0){h+='<tr><td colspan="8" style="text-align:center;color:var(--grigio)">Nessun veicolo</td></tr>';}
-    h+='</tbody></table></div>';
-    document.getElementById('content').innerHTML=h;
-  });
-}
-
-function showNewVeicolo(){
-  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>Nuovo Veicolo</h3>';
-  h+='<div class="form-row"><div class="form-group"><label>Targa *</label><input id="m-targa" placeholder="AA000BB"></div><div class="form-group"><label>Marca *</label><input id="m-marca"></div></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Modello *</label><input id="m-modello"></div><div class="form-group"><label>Colore</label><input id="m-colore"></div></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Km Attuali</label><input id="m-km" type="number" value="0"></div><div class="form-group"><label>Carburante</label><select id="m-carb"><option>benzina</option><option>diesel</option><option>gpl</option><option>elettrico</option><option>ibrido</option></select></div></div>';
-  h+='<div class="form-group"><label>Sede</label><input id="m-sede" value="Lonate Pozzolo"></div>';
-  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveVeicolo()">Salva Veicolo</button></div></div></div>';
-  document.getElementById('modal').innerHTML=h;
-  document.getElementById('modal').classList.remove('hidden');
-}
-
-function saveVeicolo(){
-  var t=document.getElementById('m-targa').value;
-  var ma=document.getElementById('m-marca').value;
-  var mo=document.getElementById('m-modello').value;
-  if(!t||!ma||!mo){alert('Targa, marca e modello obbligatori!');return;}
-  api('POST','/veicoli',{
-    targa:t,
-    marca:ma,
-    modello:mo,
-    colore:document.getElementById('m-colore').value||null,
-    km_attuali:parseInt(document.getElementById('m-km').value)||0,
-    tipo_carburante:document.getElementById('m-carb').value,
-    sede:document.getElementById('m-sede').value||null
-  }).then(function(r){
-    if(r.error){alert(r.error);}else{closeModal();loadVeicoli();}
-  });
-}
-
-function editVeicolo(id){
-  api('GET','/veicoli/'+id).then(function(v){
-    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3>Modifica Veicolo - '+v.targa+'</h3>';
-    h+='<div class="form-row"><div class="form-group"><label>Targa</label><input value="'+v.targa+'" readonly style="background:#f3f4f6"></div><div class="form-group"><label>Stato</label><select id="m-stato"><option '+(v.stato==='disponibile'?'selected':'')+'>disponibile</option><option '+(v.stato==='noleggiato'?'selected':'')+'>noleggiato</option><option '+(v.stato==='manutenzione'?'selected':'')+'>manutenzione</option></select></div></div>';
-    h+='<div class="form-row"><div class="form-group"><label>Km Attuali</label><input id="m-km" type="number" value="'+(v.km_attuali||0)+'"></div><div class="form-group"><label>Sede</label><input id="m-sede" value="'+(v.sede||'')+'"></div></div>';
-    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="updateVeicolo('+v.id+')">Aggiorna</button></div></div></div>';
-    document.getElementById('modal').innerHTML=h;
-    document.getElementById('modal').classList.remove('hidden');
-  });
-}
-
-function updateVeicolo(id){
-  api('PUT','/veicoli/'+id,{
-    stato:document.getElementById('m-stato').value,
-    km_attuali:parseInt(document.getElementById('m-km').value)||0,
-    sede:document.getElementById('m-sede').value||null
-  }).then(function(){closeModal();loadVeicoli();});
-}
-
-function loadPagamenti(){
-  api('GET','/pagamenti').then(function(d){
-    var list=Array.isArray(d)?d:(d.dati||[]);
-    var h='<div class="card"><h3><span class="icon">&#128176;</span> Registro Pagamenti</h3><table><thead><tr><th>Data</th><th>Tipo</th><th>Importo</th><th>Deposito</th><th>Rimborsato</th></tr></thead><tbody>';
-    list.forEach(function(p){
-      var dp=p.data_pagamento?new Date(p.data_pagamento).toLocaleDateString('it-IT'):'-';
-      h+='<tr><td>'+dp+'</td><td>'+p.tipo_pagamento+'</td><td>&euro;'+Number(p.importo).toFixed(2)+'</td><td>&euro;'+Number(p.deposito_cauzionale||0).toFixed(2)+'</td><td>'+(p.rimborsato?'<span class="status attivo">Si</span>':'<span class="status chiuso">No</span>')+'</td></tr>';
-    });
-    if(list.length===0){h+='<tr><td colspan="5" style="text-align:center;color:var(--grigio)">Nessun pagamento</td></tr>';}
-    h+='</tbody></table></div>';
-    document.getElementById('content').innerHTML=h;
-  });
-}
-
-function loadPenali(){
-  api('GET','/penali').then(function(d){
-    var list=Array.isArray(d)?d:[];
-    var h='<div class="card"><h3><span class="icon">&#9888;</span> Tariffario Penali e Servizi</h3><table><thead><tr><th>Codice</th><th>Descrizione</th><th>Importo</th><th>Categoria</th></tr></thead><tbody>';
-    list.forEach(function(p){
-      h+='<tr><td><strong>'+(p.codice||'-')+'</strong></td><td>'+p.descrizione+'</td><td>&euro;'+Number(p.importo).toFixed(2)+'</td><td><span class="status '+(p.categoria==='penale'?'noleggiato':'attivo')+'">'+p.categoria+'</span></td></tr>';
-    });
-    if(list.length===0){h+='<tr><td colspan="4" style="text-align:center;color:var(--grigio)">Nessuna penale configurata</td></tr>';}
-    h+='</tbody></table></div>';
-    document.getElementById('content').innerHTML=h;
-  });
-}
-
-function exportCSV(tipo){
-  window.open(API+'/export/'+tipo+'?token='+token,'_blank');
-}
-
-function closeModal(){
-  document.getElementById('modal').classList.add('hidden');
-  document.getElementById('modal').innerHTML='';
-}
-// ===== NOTIFICHE =====
-document.getElementById('notif-btn').addEventListener('click',function(e){
-  e.stopPropagation();
-  var panel=document.getElementById('notif-panel');
-  panel.classList.toggle('open');
-  if(panel.classList.contains('open'))loadNotifiche();
-});
-document.addEventListener('click',function(){document.getElementById('notif-panel').classList.remove('open');});
-
-function loadNotifiche(){
-  api('GET','/dashboard').then(function(d){
-    var notifs=[];
-    if(d.scadenze&&d.scadenze.length>0){
-      d.scadenze.forEach(function(s){
-        var dt=new Date(s.data_rientro_prevista);
-        var oggi=new Date();
-        var diff=Math.ceil((dt-oggi)/(1000*60*60*24));
-        var tipo=diff<=1?'urgent':'warning';
-        notifs.push({tipo:tipo,title:'Rientro: '+(s.veicolo?s.veicolo.targa:''),detail:s.numero_contratto+' - '+(s.cliente?s.cliente.cognome_nome:'-')+' - tra '+diff+' giorni'});
-      });
-    }
-    var badge=document.getElementById('notif-count');
-    var panel=document.getElementById('notif-panel');
-    if(notifs.length>0){
-      badge.textContent=notifs.length;
-      badge.classList.remove('hidden');
-      var h='<h4>Notifiche ('+notifs.length+')</h4>';
-      notifs.forEach(function(n){
-        h+='<div class="notif-item '+n.tipo+'"><div class="ni-title">'+n.title+'</div><div class="ni-detail">'+n.detail+'</div></div>';
-      });
-      panel.innerHTML=h;
-    } else {
-      badge.classList.add('hidden');
-      panel.innerHTML='<h4>Notifiche</h4><div class="notif-empty">Nessuna notifica</div>';
-    }
-  });
-}
-setInterval(function(){loadNotifiche();},60000);
-
-// ===== STAMPA PDF CONTRATTO =====
 function printContratto(id){
   api('GET','/contratti/'+id).then(function(c){
     if(!c||c.error){alert('Contratto non trovato');return;}
-    var cl=c.cliente||{};
-    var ve=c.veicolo||{};
-    var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'-';
-    var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
+    var cl=c.cliente||{};var ve=c.veicolo||{};
+    var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'';
+    var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'';
     var h='<div class="print-overlay" id="print-overlay" onclick="closePrint()">';
     h+='<div class="print-box" onclick="event.stopPropagation()">';
-    h+='<div class="pb-header"><img src="logo-bestrent.jpg" alt="BestRent" style="height:50px;margin-bottom:8px"><div style="font-size:22px;font-weight:800"><span style="color:#1A1A1A">BEST</span><span style="color:#CC1418">RENT</span> S.r.l.</div><div style="font-size:11px;color:#6B7280">Noleggi al miglior prezzo</div><div class="pb-title">CONTRATTO DI NOLEGGIO N. '+c.numero_contratto+'</div></div>';
-    h+='<div class="pb-section">Dati Cliente</div>';
-    h+='<div class="pb-grid"><div><span class="pb-label">Nome:</span> '+(cl.cognome_nome||'-')+'</div><div><span class="pb-label">Telefono:</span> '+(cl.telefono||'-')+'</div><div><span class="pb-label">Email:</span> '+(cl.email||'-')+'</div><div><span class="pb-label">Patente:</span> '+(cl.patente_nr||'-')+'</div></div>';
-    h+='<div class="pb-section">Dati Veicolo</div>';
-    h+='<div class="pb-grid"><div><span class="pb-label">Targa:</span> '+(ve.targa||'-')+'</div><div><span class="pb-label">Veicolo:</span> '+(ve.marca||'')+' '+(ve.modello||'')+'</div><div><span class="pb-label">Colore:</span> '+(ve.colore||'-')+'</div><div><span class="pb-label">Km:</span> '+(ve.km_attuali||'-')+'</div></div>';
-    h+='<div class="pb-section">Dati Noleggio</div>';
-    h+='<div class="pb-grid"><div><span class="pb-label">Consegna:</span> '+dc+'</div><div><span class="pb-label">Rientro:</span> '+dr+'</div><div><span class="pb-label">Giorni:</span> '+(c.giorni_noleggio||'-')+'</div><div><span class="pb-label">Tariffa/Giorno:</span> &euro;'+Number(c.tariffa_giornaliera||0).toFixed(2)+'</div><div><span class="pb-label">Totale:</span> <strong style="color:#CC1418;font-size:16px">&euro;'+Number(c.totale_documento||0).toFixed(2)+'</strong></div><div><span class="pb-label">Stato:</span> '+c.stato_contratto+'</div></div>';
-    h+='<div class="pb-section">Sede Operativa</div>';
-    h+='<div style="font-size:12px">BestRent S.r.l. - Via Europa 90, Lonate Pozzolo (VA)<br>Tel. +39 3500 300 197 | noleggibestrent@gmail.com</div>';
-    h+='<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:11px;color:#6B7280"><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Noleggiatore</div><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Cliente</div></div>';
+    h+='<div class="pb-header"><img src="logo-bestrent.jpg" alt="BestRent" style="height:50px;margin-bottom:8px"><div style="font-size:22px;font-weight:800"><span style="color:#1A1A1A">BEST</span><span style="color:#CC1418">RENT</span> S.r.l.</div><div style="font-size:11px;color:#6B7280">Noleggi al miglior prezzo</div><div class="pb-title">CONTRATTO DI NOLEGGIO</div><div style="font-size:14px;color:var(--rosso);font-weight:700">'+c.numero_contratto+'</div></div>';
+    h+='<div class="pb-section">Dati Noleggiatore</div><div class="pb-grid"><div><span class="pb-label">Nome:</span> '+(cl.cognome_nome||'-')+'</div><div><span class="pb-label">Telefono:</span> '+(cl.telefono||'-')+'</div><div><span class="pb-label">Email:</span> '+(cl.email||'-')+'</div><div><span class="pb-label">Patente:</span> '+(cl.patente_nr||'-')+'</div><div><span class="pb-label">Nazione:</span> '+(cl.nazione||'-')+'</div><div><span class="pb-label">Indirizzo:</span> '+(cl.indirizzo||'-')+'</div></div>';
+    h+='<div class="pb-section">Dati Veicolo</div><div class="pb-grid"><div><span class="pb-label">Targa:</span> '+(ve.targa||'-')+'</div><div><span class="pb-label">Veicolo:</span> '+(ve.marca||'')+' '+(ve.modello||'')+'</div><div><span class="pb-label">Colore:</span> '+(ve.colore||'-')+'</div><div><span class="pb-label">Km:</span> '+(ve.km_attuali||0)+'</div></div>';
+    h+='<div class="pb-section">Dettagli Noleggio</div><div class="pb-grid"><div><span class="pb-label">Sede:</span> '+(c.sede_noleggio||'-')+'</div><div><span class="pb-label">Consegna:</span> '+dc+'</div><div><span class="pb-label">Rientro:</span> '+dr+'</div><div><span class="pb-label">Giorni:</span> '+(c.giorni_noleggio||'-')+'</div><div><span class="pb-label">Tariffa/giorno:</span> &euro;'+Number(c.tariffa_giornaliera||0).toFixed(2)+'</div><div><span class="pb-label">Sconto:</span> '+(c.sconto_percentuale||0)+'%</div></div>';
+    h+='<div style="text-align:right;margin-top:16px;font-size:18px;font-weight:800">TOTALE: <span style="color:var(--rosso)">&euro;'+Number(c.totale_documento||0).toFixed(2)+'</span></div>';
+    h+='<div style="margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:11px;color:#6B7280"><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Noleggiatore</div><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma BestRent</div></div>';
     h+='<div class="pb-actions"><button class="btn btn-primary btn-sm" style="width:auto" onclick="window.print()">Stampa / Salva PDF</button> <button class="btn btn-secondary btn-sm" onclick="closePrint()">Chiudi</button></div>';
     h+='</div></div>';
     document.body.insertAdjacentHTML('beforeend',h);
@@ -868,525 +621,351 @@ function closePrint(){
   if(el)el.remove();
 }
 
-// ===== STATISTICHE =====
-function loadStatistiche(){
-  Promise.all([
-    api('GET','/contratti'),
-    api('GET','/veicoli'),
-    api('GET','/clienti'),
-    api('GET','/pagamenti')
-  ]).then(function(results){
-    var contratti=results[0].dati||[];
-    var veicoli=Array.isArray(results[1])?results[1]:(results[1].dati||[]);
-    var clienti=results[2].dati||[];
-    var pagamenti=Array.isArray(results[3])?results[3]:(results[3].dati||[]);
-
-    // Calcoli
-    var fatTotale=0;
-    var mesiMap={};
-    var veicoliMap={};
-    var clientiMap={};
-    var attivi=0;
-    var chiusi=0;
-
-    contratti.forEach(function(c){
-      var tot=Number(c.totale_documento||0);
-      fatTotale+=tot;
-      if(c.stato_contratto==='attivo')attivi++;
-      else chiusi++;
-
-      // Fatturato per mese
-      if(c.data_consegna){
-        var d=new Date(c.data_consegna);
-        var key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
-        var label=getMonthName(d.getMonth()).substring(0,3)+' '+d.getFullYear();
-        if(!mesiMap[key])mesiMap[key]={label:label,totale:0,count:0};
-        mesiMap[key].totale+=tot;
-        mesiMap[key].count++;
-      }
-
-      // Veicoli piu usati
-      if(c.veicolo){
-        var vk=c.veicolo.targa;
-        if(!veicoliMap[vk])veicoliMap[vk]={targa:vk,marca:(c.veicolo.marca||'')+' '+(c.veicolo.modello||''),count:0,totale:0};
-        veicoliMap[vk].count++;
-        veicoliMap[vk].totale+=tot;
-      }
-
-      // Clienti top
-      if(c.cliente){
-        var ck=c.cliente.id;
-        if(!clientiMap[ck])clientiMap[ck]={nome:c.cliente.cognome_nome,count:0,totale:0};
-        clientiMap[ck].count++;
-        clientiMap[ck].totale+=tot;
-      }
+// ===== CLIENTI =====
+function loadClienti(){
+  api('GET','/clienti').then(function(d){
+    var list=d.dati||[];
+    var h='<div class="toolbar"><input class="search-box" placeholder="Cerca cliente..." id="src-cl" onkeyup="searchClienti()"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewCliente()">+ Nuovo Cliente</button><button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'clienti\')">Export CSV</button></div></div>';
+    h+='<div class="card"><table><thead><tr><th>Nome</th><th>Telefono</th><th>Email</th><th>Patente</th><th>Nazione</th><th>Azioni</th></tr></thead><tbody id="clienti-tbody">';
+    list.forEach(function(c){
+      h+='<tr><td><strong>'+c.cognome_nome+'</strong></td><td>'+(c.telefono||'-')+'</td><td>'+(c.email||'-')+'</td><td>'+(c.patente_nr||'-')+'</td><td>'+(c.nazione||'-')+'</td>';
+      h+='<td><button class="btn btn-secondary btn-sm" onclick="viewCliente('+c.id+')">Storico</button> <button class="btn btn-secondary btn-sm" onclick="editCliente('+c.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteCliente('+c.id+')">Elimina</button></td></tr>';
     });
-
-    // Ordina mesi
-    var mesiArr=Object.keys(mesiMap).sort().map(function(k){return mesiMap[k];});
-    var maxMese=0;
-    mesiArr.forEach(function(m){if(m.totale>maxMese)maxMese=m.totale;});
-
-    // Top 5 veicoli
-    var veicoliArr=Object.values(veicoliMap).sort(function(a,b){return b.count-a.count;}).slice(0,5);
-    var maxVeicolo=veicoliArr.length>0?veicoliArr[0].count:1;
-
-    // Top 5 clienti
-    var clientiArr=Object.values(clientiMap).sort(function(a,b){return b.totale-a.totale;}).slice(0,5);
-
-    // Depositi
-    var totDepositi=0;
-    pagamenti.forEach(function(p){totDepositi+=Number(p.deposito_cauzionale||0);});
-
-    // Colori per barre
-    var colori=['rosso','verde','arancio','nero','grigio'];
-
-    // Render
-    var h='<div class="stats-grid">';
-
-    // Card 1 - KPI Riepilogo
-    h+='<div class="stat-card"><h4>Riepilogo Generale</h4>';
-    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center">';
-    h+='<div><div class="stat-number">'+contratti.length+'</div><div class="stat-sub">Contratti Totali</div></div>';
-    h+='<div><div class="stat-number" style="color:var(--verde)">'+attivi+'</div><div class="stat-sub">Attivi</div></div>';
-    h+='<div><div class="stat-number" style="color:var(--nero)">&euro;'+fatTotale.toFixed(0)+'</div><div class="stat-sub">Fatturato Totale</div></div>';
-    h+='<div><div class="stat-number" style="color:var(--arancio)">'+clienti.length+'</div><div class="stat-sub">Clienti</div></div>';
-    h+='</div></div>';
-
-    // Card 2 - Fatturato per mese
-    h+='<div class="stat-card"><h4>Fatturato per Mese</h4>';
-    if(mesiArr.length>0){
-      mesiArr.forEach(function(m,i){
-        var pct=maxMese>0?Math.round((m.totale/maxMese)*100):0;
-        h+='<div class="chart-bar"><span class="cb-label">'+m.label+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%"></div></div><span class="cb-value">&euro;'+m.totale.toFixed(0)+'</span></div>';
-      });
-    } else {
-      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato disponibile</p>';
-    }
-    h+='</div>';
-
-    // Card 3 - Veicoli piu noleggiati
-    h+='<div class="stat-card"><h4>Top 5 Veicoli Noleggiati</h4>';
-    if(veicoliArr.length>0){
-      veicoliArr.forEach(function(v,i){
-        var pct=maxVeicolo>0?Math.round((v.count/maxVeicolo)*100):0;
-        h+='<div class="chart-bar"><span class="cb-label">'+v.targa+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%">'+v.count+'x</div></div><span class="cb-value">&euro;'+v.totale.toFixed(0)+'</span></div>';
-      });
-    } else {
-      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
-    }
-    h+='</div>';
-
-    // Card 4 - Top clienti
-    h+='<div class="stat-card"><h4>Top 5 Clienti per Fatturato</h4>';
-    if(clientiArr.length>0){
-      h+='<table class="stat-table"><tbody>';
-      clientiArr.forEach(function(c,i){
-        h+='<tr><td class="st-rank">#'+(i+1)+'</td><td><strong>'+c.nome+'</strong></td><td>'+c.count+' noleggi</td><td style="text-align:right;font-weight:600">&euro;'+c.totale.toFixed(2)+'</td></tr>';
-      });
-      h+='</tbody></table>';
-    } else {
-      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
-    }
-    h+='</div>';
-
-    // Card 5 - Stato flotta
-    h+='<div class="stat-card"><h4>Stato Flotta</h4>';
-    var disponibili=0,noleggiati=0,manutenzione=0;
-    veicoli.forEach(function(v){
-      if(v.stato==='disponibile')disponibili++;
-      else if(v.stato==='noleggiato')noleggiati++;
-      else manutenzione++;
-    });
-    var totV=veicoli.length||1;
-    h+='<div class="chart-bar"><span class="cb-label">Disponibili</span><div class="cb-track"><div class="cb-fill verde" style="width:'+Math.round(disponibili/totV*100)+'%">'+disponibili+'</div></div></div>';
-    h+='<div class="chart-bar"><span class="cb-label">Noleggiati</span><div class="cb-track"><div class="cb-fill rosso" style="width:'+Math.round(noleggiati/totV*100)+'%">'+noleggiati+'</div></div></div>';
-    h+='<div class="chart-bar"><span class="cb-label">Manutenzione</span><div class="cb-track"><div class="cb-fill arancio" style="width:'+Math.round(manutenzione/totV*100)+'%">'+manutenzione+'</div></div></div>';
-    h+='</div>';
-
-    // Card 6 - Riepilogo finanziario
-    h+='<div class="stat-card"><h4>Riepilogo Finanziario</h4>';
-    var mediaContratto=contratti.length>0?(fatTotale/contratti.length):0;
-    var totPagamenti=0;
-    pagamenti.forEach(function(p){totPagamenti+=Number(p.importo||0);});
-    h+='<table class="stat-table"><tbody>';
-    h+='<tr><td>Fatturato Totale</td><td style="text-align:right;font-weight:700">&euro;'+fatTotale.toFixed(2)+'</td></tr>';
-    h+='<tr><td>Media per Contratto</td><td style="text-align:right;font-weight:700">&euro;'+mediaContratto.toFixed(2)+'</td></tr>';
-    h+='<tr><td>Totale Incassato</td><td style="text-align:right;font-weight:700">&euro;'+totPagamenti.toFixed(2)+'</td></tr>';
-    h+='<tr><td>Depositi Cauzionali</td><td style="text-align:right;font-weight:700">&euro;'+totDepositi.toFixed(2)+'</td></tr>';
-    h+='</tbody></table>';
-    h+='</div>';
-
-    h+='</div>';
-    document.getElementById('content').innerHTML=h;
-  });
-}
-
-
-// ===== STATISTICHE =====
-function loadStatistiche(){
-  Promise.all([
-    api('GET','/contratti'),
-    api('GET','/veicoli'),
-    api('GET','/clienti'),
-    api('GET','/pagamenti')
-  ]).then(function(results){
-    var contratti=results[0].dati||[];
-    var veicoli=Array.isArray(results[1])?results[1]:(results[1].dati||[]);
-    var clienti=results[2].dati||[];
-    var pagamenti=Array.isArray(results[3])?results[3]:(results[3].dati||[]);
-
-    // Calcoli
-    var fatTotale=0;
-    var mesiMap={};
-    var veicoliMap={};
-    var clientiMap={};
-    var attivi=0;
-    var chiusi=0;
-
-    contratti.forEach(function(c){
-      var tot=Number(c.totale_documento||0);
-      fatTotale+=tot;
-      if(c.stato_contratto==='attivo')attivi++;
-      else chiusi++;
-
-      // Fatturato per mese
-      if(c.data_consegna){
-        var d=new Date(c.data_consegna);
-        var key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
-        var label=getMonthName(d.getMonth()).substring(0,3)+' '+d.getFullYear();
-        if(!mesiMap[key])mesiMap[key]={label:label,totale:0,count:0};
-        mesiMap[key].totale+=tot;
-        mesiMap[key].count++;
-      }
-
-      // Veicoli piu usati
-      if(c.veicolo){
-        var vk=c.veicolo.targa;
-        if(!veicoliMap[vk])veicoliMap[vk]={targa:vk,marca:(c.veicolo.marca||'')+' '+(c.veicolo.modello||''),count:0,totale:0};
-        veicoliMap[vk].count++;
-        veicoliMap[vk].totale+=tot;
-      }
-
-      // Clienti top
-      if(c.cliente){
-        var ck=c.cliente.id;
-        if(!clientiMap[ck])clientiMap[ck]={nome:c.cliente.cognome_nome,count:0,totale:0};
-        clientiMap[ck].count++;
-        clientiMap[ck].totale+=tot;
-      }
-    });
-
-    // Ordina mesi
-    var mesiArr=Object.keys(mesiMap).sort().map(function(k){return mesiMap[k];});
-    var maxMese=0;
-    mesiArr.forEach(function(m){if(m.totale>maxMese)maxMese=m.totale;});
-
-    // Top 5 veicoli
-    var veicoliArr=Object.values(veicoliMap).sort(function(a,b){return b.count-a.count;}).slice(0,5);
-    var maxVeicolo=veicoliArr.length>0?veicoliArr[0].count:1;
-
-    // Top 5 clienti
-    var clientiArr=Object.values(clientiMap).sort(function(a,b){return b.totale-a.totale;}).slice(0,5);
-
-    // Depositi
-    var totDepositi=0;
-    pagamenti.forEach(function(p){totDepositi+=Number(p.deposito_cauzionale||0);});
-
-    // Colori per barre
-    var colori=['rosso','verde','arancio','nero','grigio'];
-
-    // Render
-    var h='<div class="stats-grid">';
-
-    // Card 1 - KPI Riepilogo
-    h+='<div class="stat-card"><h4>Riepilogo Generale</h4>';
-    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center">';
-    h+='<div><div class="stat-number">'+contratti.length+'</div><div class="stat-sub">Contratti Totali</div></div>';
-    h+='<div><div class="stat-number" style="color:var(--verde)">'+attivi+'</div><div class="stat-sub">Attivi</div></div>';
-    h+='<div><div class="stat-number" style="color:var(--nero)">&euro;'+fatTotale.toFixed(0)+'</div><div class="stat-sub">Fatturato Totale</div></div>';
-    h+='<div><div class="stat-number" style="color:var(--arancio)">'+clienti.length+'</div><div class="stat-sub">Clienti</div></div>';
-    h+='</div></div>';
-
-    // Card 2 - Fatturato per mese
-    h+='<div class="stat-card"><h4>Fatturato per Mese</h4>';
-    if(mesiArr.length>0){
-      mesiArr.forEach(function(m,i){
-        var pct=maxMese>0?Math.round((m.totale/maxMese)*100):0;
-        h+='<div class="chart-bar"><span class="cb-label">'+m.label+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%"></div></div><span class="cb-value">&euro;'+m.totale.toFixed(0)+'</span></div>';
-      });
-    } else {
-      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato disponibile</p>';
-    }
-    h+='</div>';
-
-    // Card 3 - Veicoli piu noleggiati
-    h+='<div class="stat-card"><h4>Top 5 Veicoli Noleggiati</h4>';
-    if(veicoliArr.length>0){
-      veicoliArr.forEach(function(v,i){
-        var pct=maxVeicolo>0?Math.round((v.count/maxVeicolo)*100):0;
-        h+='<div class="chart-bar"><span class="cb-label">'+v.targa+'</span><div class="cb-track"><div class="cb-fill '+colori[i%colori.length]+'" style="width:'+pct+'%">'+v.count+'x</div></div><span class="cb-value">&euro;'+v.totale.toFixed(0)+'</span></div>';
-      });
-    } else {
-      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
-    }
-    h+='</div>';
-
-    // Card 4 - Top clienti
-    h+='<div class="stat-card"><h4>Top 5 Clienti per Fatturato</h4>';
-    if(clientiArr.length>0){
-      h+='<table class="stat-table"><tbody>';
-      clientiArr.forEach(function(c,i){
-        h+='<tr><td class="st-rank">#'+(i+1)+'</td><td><strong>'+c.nome+'</strong></td><td>'+c.count+' noleggi</td><td style="text-align:right;font-weight:600">&euro;'+c.totale.toFixed(2)+'</td></tr>';
-      });
-      h+='</tbody></table>';
-    } else {
-      h+='<p style="color:var(--grigio);font-size:12px;text-align:center">Nessun dato</p>';
-    }
-    h+='</div>';
-
-    // Card 5 - Stato flotta
-    h+='<div class="stat-card"><h4>Stato Flotta</h4>';
-    var disponibili=0,noleggiati=0,manutenzione=0;
-    veicoli.forEach(function(v){
-      if(v.stato==='disponibile')disponibili++;
-      else if(v.stato==='noleggiato')noleggiati++;
-      else manutenzione++;
-    });
-    var totV=veicoli.length||1;
-    h+='<div class="chart-bar"><span class="cb-label">Disponibili</span><div class="cb-track"><div class="cb-fill verde" style="width:'+Math.round(disponibili/totV*100)+'%">'+disponibili+'</div></div></div>';
-    h+='<div class="chart-bar"><span class="cb-label">Noleggiati</span><div class="cb-track"><div class="cb-fill rosso" style="width:'+Math.round(noleggiati/totV*100)+'%">'+noleggiati+'</div></div></div>';
-    h+='<div class="chart-bar"><span class="cb-label">Manutenzione</span><div class="cb-track"><div class="cb-fill arancio" style="width:'+Math.round(manutenzione/totV*100)+'%">'+manutenzione+'</div></div></div>';
-    h+='</div>';
-
-    // Card 6 - Riepilogo finanziario
-    h+='<div class="stat-card"><h4>Riepilogo Finanziario</h4>';
-    var mediaContratto=contratti.length>0?(fatTotale/contratti.length):0;
-    var totPagamenti=0;
-    pagamenti.forEach(function(p){totPagamenti+=Number(p.importo||0);});
-    h+='<table class="stat-table"><tbody>';
-    h+='<tr><td>Fatturato Totale</td><td style="text-align:right;font-weight:700">&euro;'+fatTotale.toFixed(2)+'</td></tr>';
-    h+='<tr><td>Media per Contratto</td><td style="text-align:right;font-weight:700">&euro;'+mediaContratto.toFixed(2)+'</td></tr>';
-    h+='<tr><td>Totale Incassato</td><td style="text-align:right;font-weight:700">&euro;'+totPagamenti.toFixed(2)+'</td></tr>';
-    h+='<tr><td>Depositi Cauzionali</td><td style="text-align:right;font-weight:700">&euro;'+totDepositi.toFixed(2)+'</td></tr>';
-    h+='</tbody></table>';
-    h+='</div>';
-
-    h+='</div>';
-    document.getElementById('content').innerHTML=h;
-  });
-}
-
-
-// ===== MANUTENZIONE =====
-function loadManutenzione(){
-  api('GET','/veicoli').then(function(d){
-    var veicoli=Array.isArray(d)?d:(d.dati||[]);
-    var oggi=new Date();
-
-    // Simula dati manutenzione basati sui km
-    var manuList=[];
-    var costoTotale=0;
-    var scaduti=0;
-    var prossimi=0;
-
-    veicoli.forEach(function(v){
-      var km=v.km_attuali||0;
-      var prossimoTagliando=Math.ceil(km/15000)*15000;
-      var kmMancanti=prossimoTagliando-km;
-      var stato='ok';
-      if(kmMancanti<=500){stato='scaduto';scaduti++;}
-      else if(kmMancanti<=2000){stato='prossimo';prossimi++;}
-
-      var prossimaRevisione=new Date(oggi);
-      prossimaRevisione.setMonth(prossimaRevisione.getMonth()+Math.floor(Math.random()*12));
-      var giorniRevisione=Math.ceil((prossimaRevisione-oggi)/(1000*60*60*24));
-      var statoRev='ok';
-      if(giorniRevisione<=30){statoRev='scaduto';}
-      else if(giorniRevisione<=90){statoRev='prossimo';}
-
-      var costoStimato=Math.round(150+Math.random()*350);
-      costoTotale+=costoStimato;
-
-      manuList.push({
-        id:v.id,
-        targa:v.targa,
-        marca:v.marca,
-        modello:v.modello,
-        km:km,
-        stato_veicolo:v.stato,
-        prossimo_tagliando:prossimoTagliando,
-        km_mancanti:kmMancanti,
-        stato_tagliando:stato,
-        prossima_revisione:prossimaRevisione.toLocaleDateString('it-IT'),
-        giorni_revisione:giorniRevisione,
-        stato_revisione:statoRev,
-        costo_stimato:costoStimato
-      });
-    });
-
-    // Render
-    var h='';
-
-    // Summary cards
-    h+='<div class="manu-summary">';
-    h+='<div class="ms-card"><div class="ms-value">'+veicoli.length+'</div><div class="ms-label">Veicoli Totali</div></div>';
-    h+='<div class="ms-card"><div class="ms-value" style="color:#DC2626">'+scaduti+'</div><div class="ms-label">Tagliandi Urgenti</div></div>';
-    h+='<div class="ms-card"><div class="ms-value" style="color:#D97706">'+prossimi+'</div><div class="ms-label">Tagliandi Prossimi</div></div>';
-    h+='<div class="ms-card"><div class="ms-value" style="color:var(--rosso)">&euro;'+costoTotale+'</div><div class="ms-label">Costo Stimato Totale</div></div>';
-    h+='</div>';
-
-    // Filtri
-    h+='<div class="manu-filters">';
-    h+='<select id="manu-filter" onchange="filterManu()">';
-    h+='<option value="tutti">Tutti i veicoli</option>';
-    h+='<option value="scaduto">Solo urgenti</option>';
-    h+='<option value="prossimo">Prossimi</option>';
-    h+='<option value="ok">In regola</option>';
-    h+='</select></div>';
-
-    // Tabella
-    h+='<div class="card"><table><thead><tr>';
-    h+='<th>Targa</th><th>Veicolo</th><th>Km</th><th>Prossimo Tagliando</th><th>Km Mancanti</th><th>Stato Tagliando</th><th>Prossima Revisione</th><th>Costo Stimato</th><th>Azioni</th>';
-    h+='</tr></thead><tbody id="manu-tbody">';
-
-    manuList.forEach(function(m){
-      h+='<tr data-stato="'+m.stato_tagliando+'">';
-      h+='<td><strong>'+m.targa+'</strong></td>';
-      h+='<td>'+m.marca+' '+m.modello+'</td>';
-      h+='<td>'+m.km.toLocaleString()+' km</td>';
-      h+='<td>'+m.prossimo_tagliando.toLocaleString()+' km</td>';
-      h+='<td>'+m.km_mancanti.toLocaleString()+' km</td>';
-      h+='<td><span class="manu-badge '+m.stato_tagliando+'">'+(m.stato_tagliando==='scaduto'?'URGENTE':m.stato_tagliando==='prossimo'?'PROSSIMO':'OK')+'</span></td>';
-      h+='<td>'+m.prossima_revisione+' <span class="manu-badge '+m.stato_revisione+'">'+(m.stato_revisione==='scaduto'?'SCADUTA':m.stato_revisione==='prossimo'?'PROSSIMA':'OK')+'</span></td>';
-      h+='<td class="manu-cost">&euro;'+m.costo_stimato+'</td>';
-      h+='<td><button class="btn btn-primary btn-sm" onclick="showManuModal('+m.id+',\''+m.targa+'\','+m.km+')">Registra</button></td>';
-      h+='</tr>';
-    });
-
-    if(manuList.length===0){
-      h+='<tr><td colspan="9" style="text-align:center;color:var(--grigio)">Nessun veicolo</td></tr>';
-    }
     h+='</tbody></table></div>';
-
     document.getElementById('content').innerHTML=h;
   });
 }
 
-function filterManu(){
-  var f=document.getElementById('manu-filter').value;
-  var rows=document.querySelectorAll('#manu-tbody tr');
-  rows.forEach(function(r){
-    if(f==='tutti'){r.style.display='';}
-    else{r.style.display=r.getAttribute('data-stato')===f?'':'none';}
-  });
+function searchClienti(){
+  var s=document.getElementById('src-cl').value.toLowerCase();
+  var rows=document.querySelectorAll('#clienti-tbody tr');
+  rows.forEach(function(r){r.style.display=r.textContent.toLowerCase().indexOf(s)!==-1?'':'none';});
 }
 
-function showManuModal(id,targa,km){
+function showNewCliente(){
   var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
-  h+='<h3>Registra Manutenzione - '+targa+'</h3>';
-  h+='<div class="form-group"><label>Tipo Intervento</label><select id="mm-tipo"><option>Tagliando</option><option>Revisione</option><option>Riparazione</option><option>Cambio Gomme</option><option>Carrozzeria</option><option>Altro</option></select></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Data Intervento</label><input id="mm-data" type="date"></div><div class="form-group"><label>Km al Momento</label><input id="mm-km" type="number" value="'+km+'"></div></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Costo (&euro;)</label><input id="mm-costo" type="number" placeholder="0.00"></div><div class="form-group"><label>Officina</label><input id="mm-off" placeholder="Nome officina"></div></div>';
-  h+='<div class="form-group"><label>Note</label><textarea id="mm-note" rows="2" placeholder="Dettagli intervento..."></textarea></div>';
-  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveManutenzione('+id+')">Salva Intervento</button></div>';
+  h+='<h3>Nuovo Cliente</h3>';
+  h+='<div class="form-group"><label>Nome e Cognome *</label><input id="m-nome" placeholder="Es: Mario Rossi"></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Telefono</label><input id="m-tel" placeholder="+39..."></div><div class="form-group"><label>Email</label><input id="m-email" type="email"></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>N. Patente</label><input id="m-pat"></div><div class="form-group"><label>Patente valida al</label><input id="m-patsc" type="date"></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Nazione</label><input id="m-naz" value="IT"></div><div class="form-group"><label>Codice Fiscale / P.IVA</label><input id="m-cf"></div></div>';
+  h+='<div class="form-group"><label>Indirizzo</label><input id="m-ind"></div>';
+  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveCliente()">Salva Cliente</button></div>';
   h+='</div></div>';
   document.getElementById('modal').innerHTML=h;
   document.getElementById('modal').classList.remove('hidden');
 }
 
-function saveManutenzione(id){
-  var km=document.getElementById('mm-km').value;
-  if(km){
-    api('PUT','/veicoli/'+id,{km_attuali:parseInt(km)}).then(function(){
-      closeModal();
-      loadManutenzione();
-      alert('Manutenzione registrata! Km aggiornati.');
+function saveCliente(){
+  var nome=document.getElementById('m-nome').value;
+  if(!nome){alert('Nome obbligatorio!');return;}
+  var data={cognome_nome:nome,telefono:document.getElementById('m-tel').value,email:document.getElementById('m-email').value,patente_nr:document.getElementById('m-pat').value,nazione:document.getElementById('m-naz').value,codice_fiscale_piva:document.getElementById('m-cf').value,indirizzo:document.getElementById('m-ind').value};
+  var patsc=document.getElementById('m-patsc').value;
+  if(patsc)data.patente_valida_al=patsc;
+  api('POST','/clienti',data).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadClienti();}
+  });
+}
+
+function editCliente(id){
+  api('GET','/clienti/'+id).then(function(c){
+    if(!c||c.error){alert('Cliente non trovato');return;}
+    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    h+='<h3>Modifica Cliente</h3>';
+    h+='<div class="form-group"><label>Nome e Cognome</label><input id="m-nome" value="'+c.cognome_nome+'"></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Telefono</label><input id="m-tel" value="'+(c.telefono||'')+'"></div><div class="form-group"><label>Email</label><input id="m-email" value="'+(c.email||'')+'"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>N. Patente</label><input id="m-pat" value="'+(c.patente_nr||'')+'"></div><div class="form-group"><label>Nazione</label><input id="m-naz" value="'+(c.nazione||'')+'"></div></div>';
+    h+='<div class="form-group"><label>Indirizzo</label><input id="m-ind" value="'+(c.indirizzo||'')+'"></div>';
+    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="updateCliente('+c.id+')">Aggiorna</button></div>';
+    h+='</div></div>';
+    document.getElementById('modal').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+
+function updateCliente(id){
+  var data={cognome_nome:document.getElementById('m-nome').value,telefono:document.getElementById('m-tel').value,email:document.getElementById('m-email').value,patente_nr:document.getElementById('m-pat').value,nazione:document.getElementById('m-naz').value,indirizzo:document.getElementById('m-ind').value};
+  api('PUT','/clienti/'+id,data).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadClienti();}
+  });
+}
+
+function viewCliente(id){
+  api('GET','/clienti/'+id).then(function(c){
+    if(!c||c.error){alert('Cliente non trovato');return;}
+    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    h+='<h3>Storico - '+c.cognome_nome+'</h3>';
+    h+='<p style="color:var(--grigio);font-size:12px">Tel: '+(c.telefono||'-')+' | Email: '+(c.email||'-')+' | Patente: '+(c.patente_nr||'-')+'</p>';
+    if(c.contratti&&c.contratti.length>0){
+      h+='<table><thead><tr><th>Contratto</th><th>Veicolo</th><th>Periodo</th><th>Totale</th></tr></thead><tbody>';
+      c.contratti.forEach(function(ct){
+        var dc=ct.data_consegna?new Date(ct.data_consegna).toLocaleDateString('it-IT'):'';
+        var dr=ct.data_rientro_prevista?new Date(ct.data_rientro_prevista).toLocaleDateString('it-IT'):'';
+        h+='<tr><td>'+ct.numero_contratto+'</td><td>'+(ct.veicolo?ct.veicolo.targa:'-')+'</td><td>'+dc+' - '+dr+'</td><td>&euro;'+Number(ct.totale_documento||0).toFixed(2)+'</td></tr>';
+      });
+      h+='</tbody></table>';
+    } else {h+='<p style="color:var(--grigio);margin-top:10px">Nessun contratto</p>';}
+    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Chiudi</button></div>';
+    h+='</div></div>';
+    document.getElementById('modal').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+
+function deleteCliente(id){
+  if(confirm('Eliminare questo cliente?')){
+    api('DELETE','/clienti/'+id).then(function(){loadClienti();});
+  }
+}
+
+// ===== VEICOLI =====
+function loadVeicoli(){
+  api('GET','/veicoli').then(function(d){
+    var list=Array.isArray(d)?d:(d.dati||[]);
+    var h='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewVeicolo()">+ Nuovo Veicolo</button><button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'veicoli\')">Export CSV</button></div></div>';
+    h+='<div class="filter-bar"><label>Stato</label><select id="fv-stato" onchange="filterVeicoli()"><option value="">Tutti</option><option value="disponibile">Disponibile</option><option value="noleggiato">Noleggiato</option><option value="manutenzione">Manutenzione</option></select><label>Carburante</label><select id="fv-carb" onchange="filterVeicoli()"><option value="">Tutti</option><option value="benzina">Benzina</option><option value="diesel">Diesel</option><option value="gpl">GPL</option><option value="elettrico">Elettrico</option><option value="ibrido">Ibrido</option></select><label>Cerca</label><input id="fv-search" placeholder="Targa, marca..." oninput="filterVeicoli()"><button class="filter-reset" onclick="resetFilterVeicoli()">Reset filtri</button></div><div class="filter-count" id="fv-count"></div>';
+    h+='<div class="card"><table><thead><tr><th>Targa</th><th>Marca</th><th>Modello</th><th>Km</th><th>Carburante</th><th>Sede</th><th>Stato</th><th>Azioni</th></tr></thead><tbody id="veicoli-tbody">';
+    list.forEach(function(v){
+      h+='<tr data-stato="'+v.stato+'" data-carb="'+(v.tipo_carburante||'')+'">';
+      h+='<td><strong>'+v.targa+'</strong></td><td>'+v.marca+'</td><td>'+v.modello+'</td><td>'+(v.km_attuali||0).toLocaleString()+'</td><td>'+(v.tipo_carburante||'-')+'</td><td>'+(v.sede||'-')+'</td>';
+      h+='<td><span class="status '+v.stato+'">'+v.stato+'</span></td>';
+      h+='<td><button class="btn btn-secondary btn-sm" onclick="editVeicolo('+v.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteVeicolo('+v.id+')">Elimina</button></td></tr>';
     });
-  } else {
-    closeModal();
+    h+='</tbody></table></div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+function showNewVeicolo(){
+  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+  h+='<h3>Nuovo Veicolo</h3>';
+  h+='<div class="form-row"><div class="form-group"><label>Targa *</label><input id="mv-targa"></div><div class="form-group"><label>Marca *</label><input id="mv-marca"></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Modello *</label><input id="mv-modello"></div><div class="form-group"><label>Colore</label><input id="mv-colore"></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Km attuali</label><input id="mv-km" type="number" value="0"></div><div class="form-group"><label>Carburante</label><select id="mv-carb"><option>benzina</option><option>diesel</option><option>gpl</option><option>elettrico</option><option>ibrido</option></select></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Sede</label><input id="mv-sede" value="Gallarate MXP"></div><div class="form-group"><label>Stato</label><select id="mv-stato"><option>disponibile</option><option>noleggiato</option><option>manutenzione</option></select></div></div>';
+  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveVeicolo()">Salva Veicolo</button></div>';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function saveVeicolo(){
+  var targa=document.getElementById('mv-targa').value;
+  var marca=document.getElementById('mv-marca').value;
+  var modello=document.getElementById('mv-modello').value;
+  if(!targa||!marca||!modello){alert('Targa, marca e modello obbligatori!');return;}
+  api('POST','/veicoli',{targa:targa,marca:marca,modello:modello,colore:document.getElementById('mv-colore').value,km_attuali:parseInt(document.getElementById('mv-km').value)||0,tipo_carburante:document.getElementById('mv-carb').value,sede:document.getElementById('mv-sede').value,stato:document.getElementById('mv-stato').value}).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadVeicoli();}
+  });
+}
+
+function editVeicolo(id){
+  api('GET','/veicoli/'+id).then(function(v){
+    if(!v||v.error){alert('Veicolo non trovato');return;}
+    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    h+='<h3>Modifica Veicolo</h3>';
+    h+='<div class="form-row"><div class="form-group"><label>Targa</label><input id="mv-targa" value="'+v.targa+'"></div><div class="form-group"><label>Marca</label><input id="mv-marca" value="'+v.marca+'"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Modello</label><input id="mv-modello" value="'+v.modello+'"></div><div class="form-group"><label>Colore</label><input id="mv-colore" value="'+(v.colore||'')+'"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Km</label><input id="mv-km" type="number" value="'+(v.km_attuali||0)+'"></div><div class="form-group"><label>Stato</label><select id="mv-stato"><option '+(v.stato==='disponibile'?'selected':'')+'>disponibile</option><option '+(v.stato==='noleggiato'?'selected':'')+'>noleggiato</option><option '+(v.stato==='manutenzione'?'selected':'')+'>manutenzione</option></select></div></div>';
+    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="updateVeicolo('+v.id+')">Aggiorna</button></div>';
+    h+='</div></div>';
+    document.getElementById('modal').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+
+function updateVeicolo(id){
+  api('PUT','/veicoli/'+id,{targa:document.getElementById('mv-targa').value,marca:document.getElementById('mv-marca').value,modello:document.getElementById('mv-modello').value,colore:document.getElementById('mv-colore').value,km_attuali:parseInt(document.getElementById('mv-km').value)||0,stato:document.getElementById('mv-stato').value}).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadVeicoli();}
+  });
+}
+
+function deleteVeicolo(id){
+  if(confirm('Eliminare questo veicolo?')){
+    api('DELETE','/veicoli/'+id).then(function(){loadVeicoli();});
+  }
+}
+
+// ===== PAGAMENTI =====
+function loadPagamenti(){
+  api('GET','/pagamenti').then(function(d){
+    var list=Array.isArray(d)?d:(d.dati||[]);
+    var h='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-secondary btn-sm" onclick="exportCSVlocal(\'pagamenti\')">Export CSV</button></div></div>';
+    h+='<div class="card"><table><thead><tr><th>Data</th><th>Tipo</th><th>Importo</th><th>Deposito</th><th>Rimborsato</th></tr></thead><tbody>';
+    list.forEach(function(p){
+      var dp=p.data_pagamento?new Date(p.data_pagamento).toLocaleDateString('it-IT'):'';
+      h+='<tr><td>'+dp+'</td><td>'+p.tipo_pagamento+'</td><td>&euro;'+Number(p.importo||0).toFixed(2)+'</td><td>&euro;'+Number(p.deposito_cauzionale||0).toFixed(2)+'</td><td>'+(p.rimborsato?'Si':'No')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+// ===== PENALI =====
+function loadPenali(){
+  api('GET','/penali').then(function(d){
+    var list=Array.isArray(d)?d:(d.dati||[]);
+    var h='<div class="card"><table><thead><tr><th>Codice</th><th>Descrizione</th><th>Importo</th></tr></thead><tbody>';
+    list.forEach(function(p){
+      h+='<tr><td><strong>'+(p.codice||'-')+'</strong></td><td>'+p.descrizione+'</td><td>&euro;'+Number(p.importo||0).toFixed(2)+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+// ===== CALENDARIO =====
+var calMonth=new Date().getMonth();
+var calYear=new Date().getFullYear();
+
+function loadCalendario(){
+  api('GET','/contratti').then(function(d){
+    var list=d.dati||[];
+    var h='<div class="cal-header"><div class="cal-nav"><button onclick="calMonth--;if(calMonth<0){calMonth=11;calYear--;}loadCalendario();">&larr;</button></div><h3>'+['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'][calMonth]+' '+calYear+'</h3><div class="cal-nav"><button onclick="calMonth++;if(calMonth>11){calMonth=0;calYear++;}loadCalendario();">&rarr;</button></div></div>';
+    var giorni=['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+    h+='<div class="cal-grid">';
+    giorni.forEach(function(g){h+='<div class="cal-day-header">'+g+'</div>';});
+    var primo=new Date(calYear,calMonth,1);
+    var ultimoGiorno=new Date(calYear,calMonth+1,0).getDate();
+    var startDay=(primo.getDay()+6)%7;
+    var oggi=new Date();
+    for(var i=0;i<startDay;i++){h+='<div class="cal-day other-month"></div>';}
+    for(var d2=1;d2<=ultimoGiorno;d2++){
+      var isToday=d2===oggi.getDate()&&calMonth===oggi.getMonth()&&calYear===oggi.getFullYear();
+      h+='<div class="cal-day'+(isToday?' today':'')+'"><div class="day-num">'+d2+'</div>';
+      var dataStr=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d2).padStart(2,'0');
+      list.forEach(function(c){
+        if(c.data_consegna&&c.data_consegna.substring(0,10)===dataStr){h+='<div class="cal-event consegna" title="Consegna: '+c.numero_contratto+'">C: '+c.numero_contratto+'</div>';}
+        if(c.data_rientro_prevista&&c.data_rientro_prevista.substring(0,10)===dataStr){h+='<div class="cal-event rientro" title="Rientro: '+c.numero_contratto+'">R: '+c.numero_contratto+'</div>';}
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+    h+='<div class="cal-legend"><span><span class="dot" style="background:#DCFCE7"></span> Consegna</span><span><span class="dot" style="background:#FEE2E2"></span> Rientro</span></div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+// ===== STATISTICHE =====
+function loadStatistiche(){
+  Promise.all([api('GET','/contratti'),api('GET','/clienti'),api('GET','/veicoli'),api('GET','/pagamenti')]).then(function(res){
+    var contratti=res[0].dati||[];
+    var clienti=res[1].dati||[];
+    var veicoli=Array.isArray(res[2])?res[2]:(res[2].dati||[]);
+    var pagamenti=Array.isArray(res[3])?res[3]:(res[3].dati||[]);
+    var totFatturato=0;pagamenti.forEach(function(p){totFatturato+=Number(p.importo||0);});
+    var attivi=contratti.filter(function(c){return c.stato_contratto==='attivo';}).length;
+    var chiusi=contratti.filter(function(c){return c.stato_contratto==='chiuso';}).length;
+    var disponibili=veicoli.filter(function(v){return v.stato==='disponibile';}).length;
+    var noleggiati=veicoli.filter(function(v){return v.stato==='noleggiato';}).length;
+    var inManu=veicoli.filter(function(v){return v.stato==='manutenzione';}).length;
+    var maxC=Math.max(attivi,chiusi,1);
+    var maxV=Math.max(disponibili,noleggiati,inManu,1);
+    var h='<div class="stats-grid">';
+    h+='<div class="stat-card"><h4>Contratti per Stato</h4>';
+    h+='<div class="chart-bar"><span class="cb-label">Attivi</span><div class="cb-track"><div class="cb-fill verde" style="width:'+Math.round(attivi/maxC*100)+'%">'+attivi+'</div></div><span class="cb-value">'+attivi+'</span></div>';
+    h+='<div class="chart-bar"><span class="cb-label">Chiusi</span><div class="cb-track"><div class="cb-fill rosso" style="width:'+Math.round(chiusi/maxC*100)+'%">'+chiusi+'</div></div><span class="cb-value">'+chiusi+'</span></div>';
+    h+='</div>';
+    h+='<div class="stat-card"><h4>Flotta per Stato</h4>';
+    h+='<div class="chart-bar"><span class="cb-label">Disponibili</span><div class="cb-track"><div class="cb-fill verde" style="width:'+Math.round(disponibili/maxV*100)+'%">'+disponibili+'</div></div><span class="cb-value">'+disponibili+'</span></div>';
+    h+='<div class="chart-bar"><span class="cb-label">Noleggiati</span><div class="cb-track"><div class="cb-fill arancio" style="width:'+Math.round(noleggiati/maxV*100)+'%">'+noleggiati+'</div></div><span class="cb-value">'+noleggiati+'</span></div>';
+    h+='<div class="chart-bar"><span class="cb-label">Manutenzione</span><div class="cb-track"><div class="cb-fill rosso" style="width:'+Math.round(inManu/maxV*100)+'%">'+inManu+'</div></div><span class="cb-value">'+inManu+'</span></div>';
+    h+='</div>';
+    h+='<div class="stat-card"><h4>Fatturato Totale</h4><div class="stat-number">&euro;'+totFatturato.toFixed(2)+'</div><div class="stat-sub">da '+pagamenti.length+' pagamenti</div></div>';
+    h+='<div class="stat-card"><h4>Riepilogo</h4><table class="stat-table"><tr><td>Contratti totali</td><td style="text-align:right;font-weight:700">'+contratti.length+'</td></tr><tr><td>Clienti registrati</td><td style="text-align:right;font-weight:700">'+clienti.length+'</td></tr><tr><td>Veicoli in flotta</td><td style="text-align:right;font-weight:700">'+veicoli.length+'</td></tr><tr><td>Tariffa media/giorno</td><td style="text-align:right;font-weight:700">&euro;'+(contratti.length>0?(contratti.reduce(function(a,c){return a+Number(c.tariffa_giornaliera||0);},0)/contratti.length).toFixed(2):'0')+'</td></tr></table></div>';
+    h+='</div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+// ===== MANUTENZIONE =====
+var manutenzioni=JSON.parse(localStorage.getItem('bestrent-manu')||'[]');
+
+function loadManutenzione(){
+  api('GET','/veicoli').then(function(d){
+    var veicoli=Array.isArray(d)?d:(d.dati||[]);
+    var totCosto=0;var scadute=0;var prossime=0;
+    manutenzioni.forEach(function(m){totCosto+=Number(m.costo||0);if(m.stato==='scaduto')scadute++;if(m.stato==='prossimo')prossime++;});
+    var h='<div class="manu-summary"><div class="ms-card"><div class="ms-value">'+manutenzioni.length+'</div><div class="ms-label">Totale Manutenzioni</div></div><div class="ms-card"><div class="ms-value" style="color:var(--rosso)">'+scadute+'</div><div class="ms-label">Scadute</div></div><div class="ms-card"><div class="ms-value" style="color:var(--arancio)">'+prossime+'</div><div class="ms-label">Prossime</div></div><div class="ms-card"><div class="ms-value" style="color:var(--verde)">&euro;'+totCosto.toFixed(2)+'</div><div class="ms-label">Costo Totale</div></div></div>';
+    h+='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewManutenzione()">+ Nuova Manutenzione</button></div></div>';
+    h+='<div class="card"><table><thead><tr><th>Veicolo</th><th>Tipo</th><th>Data</th><th>Prossima</th><th>Costo</th><th>Stato</th><th>Note</th><th>Azioni</th></tr></thead><tbody>';
+    if(manutenzioni.length>0){
+      manutenzioni.forEach(function(m,i){
+        h+='<tr><td><strong>'+m.targa+'</strong></td><td>'+m.tipo+'</td><td>'+m.data+'</td><td>'+(m.prossima||'-')+'</td><td class="manu-cost">&euro;'+Number(m.costo||0).toFixed(2)+'</td><td><span class="manu-badge '+m.stato+'">'+m.stato+'</span></td><td>'+(m.note||'-')+'</td>';
+        h+='<td><button class="btn btn-danger btn-sm" onclick="deleteManutenzione('+i+')">Elimina</button></td></tr>';
+      });
+    } else {
+      h+='<tr><td colspan="8" style="text-align:center;color:var(--grigio)">Nessuna manutenzione registrata</td></tr>';
+    }
+    h+='</tbody></table></div>';
+    document.getElementById('content').innerHTML=h;
+  });
+}
+
+function showNewManutenzione(){
+  api('GET','/veicoli').then(function(d){
+    var veicoli=Array.isArray(d)?d:(d.dati||[]);
+    var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    h+='<h3>Nuova Manutenzione</h3>';
+    h+='<div class="form-group"><label>Veicolo *</label><select id="mm-veicolo"><option value="">Seleziona...</option>';
+    veicoli.forEach(function(v){h+='<option value="'+v.targa+'">'+v.targa+' - '+v.marca+' '+v.modello+'</option>';});
+    h+='</select></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Tipo *</label><select id="mm-tipo"><option>Tagliando</option><option>Revisione</option><option>Gomme</option><option>Freni</option><option>Olio</option><option>Carrozzeria</option><option>Altro</option></select></div><div class="form-group"><label>Data *</label><input id="mm-data" type="date"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Prossima scadenza</label><input id="mm-prossima" type="date"></div><div class="form-group"><label>Costo (&euro;)</label><input id="mm-costo" type="number" value="0"></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Stato</label><select id="mm-stato"><option value="ok">OK</option><option value="prossimo">Prossimo</option><option value="scaduto">Scaduto</option></select></div></div>';
+    h+='<div class="form-group"><label>Note</label><textarea id="mm-note" rows="2"></textarea></div>';
+    h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveManutenzione()">Salva</button></div>';
+    h+='</div></div>';
+    document.getElementById('modal').innerHTML=h;
+    document.getElementById('modal').classList.remove('hidden');
+  });
+}
+
+function saveManutenzione(){
+  var targa=document.getElementById('mm-veicolo').value;
+  var data=document.getElementById('mm-data').value;
+  if(!targa||!data){alert('Veicolo e data obbligatori!');return;}
+  manutenzioni.push({targa:targa,tipo:document.getElementById('mm-tipo').value,data:data,prossima:document.getElementById('mm-prossima').value,costo:parseFloat(document.getElementById('mm-costo').value)||0,stato:document.getElementById('mm-stato').value,note:document.getElementById('mm-note').value});
+  localStorage.setItem('bestrent-manu',JSON.stringify(manutenzioni));
+  closeModal();
+  loadManutenzione();
+}
+
+function deleteManutenzione(i){
+  if(confirm('Eliminare questa manutenzione?')){
+    manutenzioni.splice(i,1);
+    localStorage.setItem('bestrent-manu',JSON.stringify(manutenzioni));
     loadManutenzione();
   }
 }
 
 
-// ===== MULTI-OPERATORE =====
-var permessi={
-  admin:['dashboard','contratti','clienti','veicoli','pagamenti','penali','calendario','statistiche','manutenzione','operatori','crea_contratto','modifica_cliente','elimina_cliente','crea_veicolo','stampa_pdf','export_csv'],
-  operatore:['dashboard','contratti','clienti','veicoli','pagamenti','calendario','crea_contratto','modifica_cliente','crea_veicolo','stampa_pdf']
-};
-
-function hasPermesso(azione){
-  if(!currentUser)return false;
-  var ruolo=currentUser.ruolo||'operatore';
-  var p=permessi[ruolo]||permessi['operatore'];
-  return p.indexOf(azione)!==-1;
-}
-
+// ===== OPERATORI =====
 function loadOperatori(){
-  if(!hasPermesso('operatori')){
-    document.getElementById('content').innerHTML='<div class="card" style="text-align:center;padding:40px"><h3 style="justify-content:center">Accesso Negato</h3><p style="color:var(--grigio)">Solo gli amministratori possono gestire gli operatori.</p></div>';
-    return;
-  }
   api('GET','/operatori').then(function(d){
     var list=Array.isArray(d)?d:(d.dati||[]);
     var h='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewOperatore()">+ Nuovo Operatore</button></div></div>';
-
+    h+='<div class="card">';
     if(list.length>0){
       list.forEach(function(op){
-        var iniziali=op.nome?op.nome.split(' ').map(function(n){return n[0];}).join('').toUpperCase().substring(0,2):'??';
-        var ruolo=op.ruolo||'operatore';
-        h+='<div class="user-card">';
-        h+='<div class="user-avatar '+ruolo+'">'+iniziali+'</div>';
-        h+='<div class="user-info-card">';
-        h+='<div class="uic-name">'+op.nome+'</div>';
-        h+='<div class="uic-user">@'+op.username+' | '+op.email+'</div>';
-        h+='<span class="uic-role '+ruolo+'">'+ruolo.toUpperCase()+'</span>';
-        h+='</div>';
-        h+='<div class="user-actions">';
-        h+='<button class="btn btn-secondary btn-sm" onclick="showPermessi(\''+op.nome+'\',\''+ruolo+'\')">Permessi</button>';
-        h+='<button class="btn btn-secondary btn-sm" onclick="editOperatore('+op.id+')">Modifica</button>';
-        if(op.username!=='gaetano.t'){
-          h+='<button class="btn btn-danger btn-sm" onclick="deleteOperatore('+op.id+')">Elimina</button>';
-        }
-        h+='</div></div>';
+        var iniziali=(op.nome||'??').split(' ').map(function(w){return w.charAt(0);}).join('').substring(0,2).toUpperCase();
+        h+='<div class="user-card"><div class="user-avatar '+(op.ruolo||'operatore')+'">'+iniziali+'</div><div class="user-info-card"><div class="uic-name">'+op.nome+'</div><div class="uic-user">@'+op.username+'</div><span class="uic-role '+(op.ruolo||'operatore')+'">'+(op.ruolo||'operatore')+'</span></div><div class="user-actions"><button class="btn btn-secondary btn-sm" onclick="editOperatore('+op.id+')">Modifica</button> <button class="btn btn-danger btn-sm" onclick="deleteOperatore('+op.id+')">Elimina</button></div></div>';
       });
     } else {
-      h+='<div class="card" style="text-align:center;padding:20px;color:var(--grigio)">Nessun operatore trovato</div>';
+      h+='<p style="text-align:center;color:var(--grigio)">Nessun operatore</p>';
     }
-
+    h+='</div>';
     document.getElementById('content').innerHTML=h;
   });
-}
-
-function showPermessi(nome,ruolo){
-  var p=permessi[ruolo]||[];
-  var tuttiP=['dashboard','contratti','clienti','veicoli','pagamenti','penali','calendario','statistiche','manutenzione','operatori','crea_contratto','modifica_cliente','elimina_cliente','crea_veicolo','stampa_pdf','export_csv'];
-  var nomiP={dashboard:'Dashboard',contratti:'Contratti',clienti:'Clienti',veicoli:'Flotta',pagamenti:'Pagamenti',penali:'Penali',calendario:'Calendario',statistiche:'Statistiche',manutenzione:'Manutenzione',operatori:'Gestione Operatori',crea_contratto:'Crea Contratto',modifica_cliente:'Modifica Cliente',elimina_cliente:'Elimina Cliente',crea_veicolo:'Aggiungi Veicolo',stampa_pdf:'Stampa PDF',export_csv:'Export CSV'};
-
-  var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
-  h+='<h3>Permessi - '+nome+' ('+ruolo.toUpperCase()+')</h3>';
-  h+='<div class="perm-grid">';
-  tuttiP.forEach(function(perm){
-    var ha=p.indexOf(perm)!==-1;
-    h+='<div class="perm-item">';
-    h+=ha?'<span class="perm-check">&#10003;</span>':'<span class="perm-deny">&#10007;</span>';
-    h+='<span>'+(nomiP[perm]||perm)+'</span></div>';
-  });
-  h+='</div>';
-  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Chiudi</button></div>';
-  h+='</div></div>';
-  document.getElementById('modal').innerHTML=h;
-  document.getElementById('modal').classList.remove('hidden');
 }
 
 function showNewOperatore(){
   var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
   h+='<h3>Nuovo Operatore</h3>';
-  h+='<div class="form-group"><label>Nome Completo *</label><input id="mo-nome" placeholder="Es: Marco Bianchi"></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Username *</label><input id="mo-user" placeholder="Es: marco.b"></div><div class="form-group"><label>Email *</label><input id="mo-email" type="email" placeholder="email@..."></div></div>';
-  h+='<div class="form-row"><div class="form-group"><label>Password *</label><input id="mo-pass" type="password" placeholder="Min 8 caratteri"></div><div class="form-group"><label>Ruolo</label><select id="mo-ruolo"><option value="operatore">Operatore</option><option value="admin">Admin</option></select></div></div>';
-  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveOperatore()">Crea Operatore</button></div>';
+  h+='<div class="form-group"><label>Nome completo *</label><input id="mo-nome" placeholder="Es: Mario Rossi"></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Username *</label><input id="mo-user" placeholder="mario.r"></div><div class="form-group"><label>Password *</label><input id="mo-pass" type="password" placeholder="Min 6 caratteri"></div></div>';
+  h+='<div class="form-row"><div class="form-group"><label>Email</label><input id="mo-email" type="email"></div><div class="form-group"><label>Ruolo</label><select id="mo-ruolo"><option value="operatore">Operatore</option><option value="admin">Admin</option></select></div></div>';
+  h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="saveOperatore()">Salva</button></div>';
   h+='</div></div>';
   document.getElementById('modal').innerHTML=h;
   document.getElementById('modal').classList.remove('hidden');
@@ -1395,13 +974,10 @@ function showNewOperatore(){
 function saveOperatore(){
   var nome=document.getElementById('mo-nome').value;
   var user=document.getElementById('mo-user').value;
-  var email=document.getElementById('mo-email').value;
   var pass=document.getElementById('mo-pass').value;
-  var ruolo=document.getElementById('mo-ruolo').value;
-  if(!nome||!user||!email||!pass){alert('Compila tutti i campi obbligatori!');return;}
-  if(pass.length<8){alert('La password deve avere almeno 8 caratteri!');return;}
-  api('POST','/operatori',{nome:nome,username:user,email:email,password:pass,ruolo:ruolo}).then(function(r){
-    if(r.error){alert(r.error);}else{closeModal();loadOperatori();alert('Operatore creato!');}
+  if(!nome||!user||!pass){alert('Nome, username e password obbligatori!');return;}
+  api('POST','/operatori',{nome:nome,username:user,password:pass,email:document.getElementById('mo-email').value,ruolo:document.getElementById('mo-ruolo').value}).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadOperatori();}
   });
 }
 
@@ -1410,9 +986,8 @@ function editOperatore(id){
     if(!op||op.error){alert('Operatore non trovato');return;}
     var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
     h+='<h3>Modifica Operatore</h3>';
-    h+='<div class="form-group"><label>Nome</label><input id="mo-nome" value="'+(op.nome||'')+'"></div>';
+    h+='<div class="form-group"><label>Nome</label><input id="mo-nome" value="'+op.nome+'"></div>';
     h+='<div class="form-row"><div class="form-group"><label>Email</label><input id="mo-email" value="'+(op.email||'')+'"></div><div class="form-group"><label>Ruolo</label><select id="mo-ruolo"><option value="operatore" '+(op.ruolo==='operatore'?'selected':'')+'>Operatore</option><option value="admin" '+(op.ruolo==='admin'?'selected':'')+'>Admin</option></select></div></div>';
-    h+='<div class="form-group"><label>Nuova Password (lascia vuoto per non cambiare)</label><input id="mo-pass" type="password" placeholder="Min 8 caratteri"></div>';
     h+='<div class="modal-actions"><button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button><button class="btn btn-primary btn-sm" onclick="updateOperatore('+op.id+')">Aggiorna</button></div>';
     h+='</div></div>';
     document.getElementById('modal').innerHTML=h;
@@ -1421,18 +996,8 @@ function editOperatore(id){
 }
 
 function updateOperatore(id){
-  var data={
-    nome:document.getElementById('mo-nome').value,
-    email:document.getElementById('mo-email').value,
-    ruolo:document.getElementById('mo-ruolo').value
-  };
-  var pass=document.getElementById('mo-pass').value;
-  if(pass){
-    if(pass.length<8){alert('La password deve avere almeno 8 caratteri!');return;}
-    data.password=pass;
-  }
-  api('PUT','/operatori/'+id,data).then(function(r){
-    if(r.error){alert(r.error);}else{closeModal();loadOperatori();alert('Operatore aggiornato!');}
+  api('PUT','/operatori/'+id,{nome:document.getElementById('mo-nome').value,email:document.getElementById('mo-email').value,ruolo:document.getElementById('mo-ruolo').value}).then(function(r){
+    if(r.error){alert(r.error);}else{closeModal();loadOperatori();}
   });
 }
 
@@ -1442,178 +1007,6 @@ function deleteOperatore(id){
   }
 }
 
-
-// ===== EXPORT CSV =====
-function exportCSVlocal(tipo){
-  if(tipo==='clienti'){
-    api('GET','/clienti').then(function(d){
-      var list=d.dati||[];
-      var csv='Nome,Telefono,Email,Patente,Nazione,Indirizzo,Codice Fiscale\n';
-      list.forEach(function(c){
-        csv+='"'+(c.cognome_nome||'')+'",'+(c.telefono||'')+','+(c.email||'')+','+(c.patente_nr||'')+','+(c.nazione||'')+','+(c.indirizzo||'')+','+(c.codice_fiscale_piva||'')+'\n';
-      });
-      downloadCSV(csv,'bestrent_clienti.csv');
-    });
-  } else if(tipo==='contratti'){
-    api('GET','/contratti').then(function(d){
-      var list=d.dati||[];
-      var csv='N.Contratto,Cliente,Veicolo,Targa,Consegna,Rientro,Giorni,Tariffa,Totale,Stato\n';
-      list.forEach(function(c){
-        var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'';
-        var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'';
-        csv+=c.numero_contratto+',"'+(c.cliente?c.cliente.cognome_nome:'')+'",'+(c.veicolo?c.veicolo.marca+' '+c.veicolo.modello:'')+','+(c.veicolo?c.veicolo.targa:'')+','+dc+','+dr+','+(c.giorni_noleggio||'')+','+(c.tariffa_giornaliera||'')+','+(c.totale_documento||'')+','+c.stato_contratto+'\n';
-      });
-      downloadCSV(csv,'bestrent_contratti.csv');
-    });
-  } else if(tipo==='veicoli'){
-    api('GET','/veicoli').then(function(d){
-      var list=Array.isArray(d)?d:(d.dati||[]);
-      var csv='Targa,Marca,Modello,Colore,Km,Carburante,Sede,Stato\n';
-      list.forEach(function(v){
-        csv+=v.targa+','+v.marca+','+v.modello+','+(v.colore||'')+','+(v.km_attuali||0)+','+(v.tipo_carburante||'')+','+(v.sede||'')+','+v.stato+'\n';
-      });
-      downloadCSV(csv,'bestrent_veicoli.csv');
-    });
-  } else if(tipo==='pagamenti'){
-    api('GET','/pagamenti').then(function(d){
-      var list=Array.isArray(d)?d:(d.dati||[]);
-      var csv='Data,Tipo,Importo,Deposito,Rimborsato\n';
-      list.forEach(function(p){
-        var dp=p.data_pagamento?new Date(p.data_pagamento).toLocaleDateString('it-IT'):'';
-        csv+=dp+','+p.tipo_pagamento+','+Number(p.importo).toFixed(2)+','+Number(p.deposito_cauzionale||0).toFixed(2)+','+(p.rimborsato?'Si':'No')+'\n';
-      });
-      downloadCSV(csv,'bestrent_pagamenti.csv');
-    });
-  }
-}
-
-function downloadCSV(csv,filename){
-  var bom='\uFEFF';
-  var blob=new Blob([bom+csv],{type:'text/csv;charset=utf-8;'});
-  var link=document.createElement('a');
-  link.href=URL.createObjectURL(blob);
-  link.download=filename;
-  link.click();
-  URL.revokeObjectURL(link.href);
-}
-
-
-// ===== RICERCA AVANZATA =====
-
-
-function filterVeicoli(){
-  var stato=document.getElementById('fv-stato').value;
-  var carb=document.getElementById('fv-carb').value;
-  var search=document.getElementById('fv-search').value.toLowerCase();
-  var rows=document.querySelectorAll('#veicoli-tbody tr');
-  var count=0;
-  rows.forEach(function(r){
-    var show=true;
-    var rStato=r.getAttribute('data-stato')||'';
-    var rCarb=r.getAttribute('data-carb')||'';
-    var rText=r.textContent.toLowerCase();
-    if(stato&&rStato!==stato)show=false;
-    if(carb&&rCarb!==carb)show=false;
-    if(search&&rText.indexOf(search)===-1)show=false;
-    r.style.display=show?'':'none';
-    if(show)count++;
-  });
-  var el=document.getElementById('fv-count');
-  if(el)el.textContent='Mostrati: '+count+' veicoli';
-}
-
-function resetFilterVeicoli(){
-  document.getElementById('fv-stato').value='';
-  document.getElementById('fv-carb').value='';
-  document.getElementById('fv-search').value='';
-  filterVeicoli();
-}
-
-
-// ===== RICERCA AVANZATA =====
-
-
-function filterVeicoli(){
-  var stato=document.getElementById('fv-stato').value;
-  var carb=document.getElementById('fv-carb').value;
-  var search=document.getElementById('fv-search').value.toLowerCase();
-  var rows=document.querySelectorAll('#veicoli-tbody tr');
-  var count=0;
-  rows.forEach(function(r){
-    var show=true;
-    var rStato=r.getAttribute('data-stato')||'';
-    var rCarb=r.getAttribute('data-carb')||'';
-    var rText=r.textContent.toLowerCase();
-    if(stato&&rStato!==stato)show=false;
-    if(carb&&rCarb!==carb)show=false;
-    if(search&&rText.indexOf(search)===-1)show=false;
-    r.style.display=show?'':'none';
-    if(show)count++;
-  });
-  var el=document.getElementById('fv-count');
-  if(el)el.textContent='Mostrati: '+count+' veicoli';
-}
-
-function resetFilterVeicoli(){
-  document.getElementById('fv-stato').value='';
-  document.getElementById('fv-carb').value='';
-  document.getElementById('fv-search').value='';
-  filterVeicoli();
-}
-
-
-// ===== DARK MODE =====
-var darkMode=localStorage.getItem('bestrent-dark')==='true';
-if(darkMode)document.body.classList.add('dark');
-updateDarkIcon();
-
-document.getElementById('dark-toggle').addEventListener('click',function(){
-  darkMode=!darkMode;
-  document.body.classList.toggle('dark');
-  localStorage.setItem('bestrent-dark',darkMode);
-  updateDarkIcon();
-});
-
-function updateDarkIcon(){
-  var btn=document.getElementById('dark-toggle');
-  if(darkMode){
-    btn.innerHTML='&#9788;';
-    btn.title='Passa a Light Mode';
-  } else {
-    btn.innerHTML='&#9790;';
-    btn.title='Passa a Dark Mode';
-  }
-}
-
-
-// ===== WHATSAPP =====
-function sendWhatsApp(telefono,nome){
-  if(!telefono||telefono.length<8){
-    alert('Numero di telefono non disponibile per questo cliente');
-    return;
-  }
-  var tel=telefono.replace(/[^0-9]/g,'');
-  if(tel.charAt(0)==='0')tel='39'+tel.substring(1);
-  if(tel.substring(0,2)!=='39'&&tel.length<11)tel='39'+tel;
-  var msg='Gentile '+nome+', la contattiamo da BestRent S.r.l. riguardo il suo noleggio. Per info: +39 3500 300 197';
-  var url='https://wa.me/'+tel+'?text='+encodeURIComponent(msg);
-  window.open(url,'_blank');
-}
-
-function sendWhatsAppContratto(telefono,nome,contratto,targa){
-  if(!telefono||telefono.length<8){
-    alert('Numero di telefono non disponibile');
-    return;
-  }
-  var tel=telefono.replace(/[^0-9]/g,'');
-  if(tel.charAt(0)==='0')tel='39'+tel.substring(1);
-  if(tel.substring(0,2)!=='39'&&tel.length<11)tel='39'+tel;
-  var msg='Gentile '+nome+', le ricordiamo il rientro del veicolo '+targa+' (contratto '+contratto+'). Per info: +39 3500 300 197 - BestRent S.r.l.';
-  var url='https://wa.me/'+tel+'?text='+encodeURIComponent(msg);
-  window.open(url,'_blank');
-}
-
-
 // ===== FATTURAZIONE =====
 var fattureLocali=JSON.parse(localStorage.getItem('bestrent-fatture')||'[]');
 var nextNumFattura=parseInt(localStorage.getItem('bestrent-next-fatt')||'1');
@@ -1621,25 +1014,15 @@ var nextNumFattura=parseInt(localStorage.getItem('bestrent-next-fatt')||'1');
 function loadFatture(){
   api('GET','/contratti').then(function(d){
     var contratti=d.dati||[];
-    var h='';
-
-    // Totali
-    var totFatturato=0;
-    var totIVA=0;
-    var numFatture=fattureLocali.length;
+    var totFatturato=0;var totIVA=0;var numFatture=fattureLocali.length;
     fattureLocali.forEach(function(f){totFatturato+=f.totale_lordo;totIVA+=f.iva;});
-
-    h+='<div class="fatt-totals">';
+    var h='<div class="fatt-totals">';
     h+='<div class="ft-card"><div class="ft-value" style="color:var(--rosso)">'+numFatture+'</div><div class="ft-label">Fatture Emesse</div></div>';
     h+='<div class="ft-card"><div class="ft-value" style="color:var(--nero)">&euro;'+totFatturato.toFixed(2)+'</div><div class="ft-label">Totale Fatturato</div></div>';
     h+='<div class="ft-card"><div class="ft-value" style="color:var(--arancio)">&euro;'+totIVA.toFixed(2)+'</div><div class="ft-label">Totale IVA</div></div>';
     h+='<div class="ft-card"><div class="ft-value" style="color:var(--verde)">&euro;'+(totFatturato-totIVA).toFixed(2)+'</div><div class="ft-label">Imponibile Totale</div></div>';
     h+='</div>';
-
-    // Toolbar
     h+='<div class="toolbar"><div class="toolbar-btns"><button class="btn btn-primary btn-sm" onclick="showNewFattura()">+ Nuova Fattura</button><button class="btn btn-secondary btn-sm" onclick="exportFattureCSV()">Export CSV</button></div></div>';
-
-    // Tabella fatture emesse
     h+='<div class="card"><h3>Fatture Emesse</h3><table><thead><tr><th>N. Fattura</th><th>Data</th><th>Cliente</th><th>Contratto</th><th>Imponibile</th><th>IVA 22%</th><th>Totale</th><th>Azioni</th></tr></thead><tbody>';
     if(fattureLocali.length>0){
       fattureLocali.slice().reverse().forEach(function(f){
@@ -1650,19 +1033,16 @@ function loadFatture(){
       h+='<tr><td colspan="8" style="text-align:center;color:var(--grigio)">Nessuna fattura emessa</td></tr>';
     }
     h+='</tbody></table></div>';
-
-    // Contratti senza fattura
     var fattContratti=fattureLocali.map(function(f){return f.contratto;});
     var senzaFattura=contratti.filter(function(c){return fattContratti.indexOf(c.numero_contratto)===-1;});
     if(senzaFattura.length>0){
       h+='<div class="card"><h3>Contratti senza Fattura</h3><table><thead><tr><th>Contratto</th><th>Cliente</th><th>Totale</th><th>Stato</th><th>Azione</th></tr></thead><tbody>';
       senzaFattura.forEach(function(c){
         h+='<tr><td><strong>'+c.numero_contratto+'</strong></td><td>'+(c.cliente?c.cliente.cognome_nome:'-')+'</td><td>&euro;'+Number(c.totale_documento||0).toFixed(2)+'</td><td><span class="status '+c.stato_contratto+'">'+c.stato_contratto+'</span></td>';
-        h+='<td><button class="btn btn-primary btn-sm" onclick="generaFatturaDaContratto(\''+c.numero_contratto+'\',\''+(c.cliente?c.cliente.cognome_nome:'-')+'\','+Number(c.totale_documento||0)+')">Genera Fattura</button></td></tr>';
+        h+='<td><button class="btn btn-primary btn-sm" onclick="generaFatturaDaContratto(\''+c.numero_contratto+'\',\''+(c.cliente?c.cliente.cognome_nome:'-').replace(/'/g,"\\'")+'\','+Number(c.totale_documento||0)+')">Genera Fattura</button></td></tr>';
       });
       h+='</tbody></table></div>';
     }
-
     document.getElementById('content').innerHTML=h;
   });
 }
@@ -1672,19 +1052,7 @@ function generaFatturaDaContratto(numContratto,cliente,totale){
   var iva=Math.round((totale-imponibile)*100)/100;
   var oggi=new Date().toLocaleDateString('it-IT');
   var numFatt='FT-'+String(nextNumFattura).padStart(4,'0')+'/'+new Date().getFullYear();
-
-  var fattura={
-    numero:numFatt,
-    data:oggi,
-    cliente:cliente,
-    contratto:numContratto,
-    imponibile:imponibile,
-    iva:iva,
-    totale_lordo:totale,
-    aliquota:22
-  };
-
-  fattureLocali.push(fattura);
+  fattureLocali.push({numero:numFatt,data:oggi,cliente:cliente,contratto:numContratto,imponibile:imponibile,iva:iva,totale_lordo:totale,aliquota:22});
   nextNumFattura++;
   localStorage.setItem('bestrent-fatture',JSON.stringify(fattureLocali));
   localStorage.setItem('bestrent-next-fatt',nextNumFattura);
@@ -1714,18 +1082,7 @@ function saveNewFattura(){
   var totale=Math.round((imp+iva)*100)/100;
   var data=document.getElementById('mf-data').value?new Date(document.getElementById('mf-data').value).toLocaleDateString('it-IT'):new Date().toLocaleDateString('it-IT');
   var numFatt='FT-'+String(nextNumFattura).padStart(4,'0')+'/'+new Date().getFullYear();
-
-  fattureLocali.push({
-    numero:numFatt,
-    data:data,
-    cliente:cliente,
-    contratto:document.getElementById('mf-contratto').value||'-',
-    imponibile:imp,
-    iva:iva,
-    totale_lordo:totale,
-    aliquota:aliquota,
-    note:document.getElementById('mf-note').value||''
-  });
+  fattureLocali.push({numero:numFatt,data:data,cliente:cliente,contratto:document.getElementById('mf-contratto').value||'-',imponibile:imp,iva:iva,totale_lordo:totale,aliquota:aliquota,note:document.getElementById('mf-note').value||''});
   nextNumFattura++;
   localStorage.setItem('bestrent-fatture',JSON.stringify(fattureLocali));
   localStorage.setItem('bestrent-next-fatt',nextNumFattura);
@@ -1766,37 +1123,117 @@ function printFattura(num){
 function exportFattureCSV(){
   if(fattureLocali.length===0){alert('Nessuna fattura da esportare');return;}
   var csv='N.Fattura,Data,Cliente,Contratto,Imponibile,IVA,Totale\n';
-  fattureLocali.forEach(function(f){
-    csv+=f.numero+','+f.data+',"'+f.cliente+'",'+f.contratto+','+f.imponibile.toFixed(2)+','+f.iva.toFixed(2)+','+f.totale_lordo.toFixed(2)+'\n';
-  });
+  fattureLocali.forEach(function(f){csv+=f.numero+','+f.data+',"'+f.cliente+'",'+f.contratto+','+f.imponibile.toFixed(2)+','+f.iva.toFixed(2)+','+f.totale_lordo.toFixed(2)+'\n';});
   downloadCSV(csv,'bestrent_fatture.csv');
 }
 
+// ===== EXPORT CSV =====
+function exportCSVlocal(tipo){
+  if(tipo==='contratti'){
+    api('GET','/contratti').then(function(d){
+      var list=d.dati||[];
+      var csv='Contratto,Cliente,Veicolo,Consegna,Rientro,Tariffa,Giorni,Totale,Stato\n';
+      list.forEach(function(c){csv+=c.numero_contratto+','+(c.cliente?'"'+c.cliente.cognome_nome+'"':'-')+','+(c.veicolo?c.veicolo.targa:'-')+','+(c.data_consegna||'')+','+(c.data_rientro_prevista||'')+','+Number(c.tariffa_giornaliera||0)+','+(c.giorni_noleggio||0)+','+Number(c.totale_documento||0)+','+c.stato_contratto+'\n';});
+      downloadCSV(csv,'bestrent_contratti.csv');
+    });
+  } else if(tipo==='clienti'){
+    api('GET','/clienti').then(function(d){
+      var list=d.dati||[];
+      var csv='Nome,Telefono,Email,Patente,Nazione,Indirizzo\n';
+      list.forEach(function(c){csv+='"'+c.cognome_nome+'",'+(c.telefono||'')+','+(c.email||'')+','+(c.patente_nr||'')+','+(c.nazione||'')+','+(c.indirizzo||'')+'\n';});
+      downloadCSV(csv,'bestrent_clienti.csv');
+    });
+  } else if(tipo==='veicoli'){
+    api('GET','/veicoli').then(function(d){
+      var list=Array.isArray(d)?d:(d.dati||[]);
+      var csv='Targa,Marca,Modello,Km,Carburante,Sede,Stato\n';
+      list.forEach(function(v){csv+=v.targa+','+v.marca+','+v.modello+','+(v.km_attuali||0)+','+(v.tipo_carburante||'')+','+(v.sede||'')+','+v.stato+'\n';});
+      downloadCSV(csv,'bestrent_veicoli.csv');
+    });
+  } else if(tipo==='pagamenti'){
+    api('GET','/pagamenti').then(function(d){
+      var list=Array.isArray(d)?d:(d.dati||[]);
+      var csv='Data,Tipo,Importo,Deposito,Rimborsato\n';
+      list.forEach(function(p){csv+=(p.data_pagamento||'')+','+p.tipo_pagamento+','+Number(p.importo||0)+','+Number(p.deposito_cauzionale||0)+','+(p.rimborsato?'Si':'No')+'\n';});
+      downloadCSV(csv,'bestrent_pagamenti.csv');
+    });
+  }
+}
+
+function downloadCSV(csv,filename){
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download=filename;
+  link.click();
+}
+
+// ===== FILTRI CONTRATTI =====
+function filterContratti(){
+  var stato=document.getElementById('fc-stato').value;
+  var dal=document.getElementById('fc-dal').value;
+  var al=document.getElementById('fc-al').value;
+  var min=parseFloat(document.getElementById('fc-min').value)||0;
+  var max=parseFloat(document.getElementById('fc-max').value)||999999;
+  var rows=document.querySelectorAll('#contratti-tbody tr');
+  var count=0;
+  rows.forEach(function(r){
+    var show=true;
+    if(stato&&r.getAttribute('data-stato')!==stato)show=false;
+    if(dal&&r.getAttribute('data-data')<dal)show=false;
+    if(al&&r.getAttribute('data-data')>al)show=false;
+    var tot=parseFloat(r.getAttribute('data-totale'))||0;
+    if(tot<min||tot>max)show=false;
+    r.style.display=show?'':'none';
+    if(show)count++;
+  });
+  document.getElementById('fc-count').textContent='Mostrati: '+count+' contratti';
+}
+
+function resetFilterContratti(){
+  document.getElementById('fc-stato').value='';
+  document.getElementById('fc-dal').value='';
+  document.getElementById('fc-al').value='';
+  document.getElementById('fc-min').value='';
+  document.getElementById('fc-max').value='';
+  filterContratti();
+}
+
+// ===== FILTRI VEICOLI =====
+function filterVeicoli(){
+  var stato=document.getElementById('fv-stato').value;
+  var carb=document.getElementById('fv-carb').value;
+  var search=document.getElementById('fv-search').value.toLowerCase();
+  var rows=document.querySelectorAll('#veicoli-tbody tr');
+  var count=0;
+  rows.forEach(function(r){
+    var show=true;
+    if(stato&&r.getAttribute('data-stato')!==stato)show=false;
+    if(carb&&r.getAttribute('data-carb')!==carb)show=false;
+    if(search&&r.textContent.toLowerCase().indexOf(search)===-1)show=false;
+    r.style.display=show?'':'none';
+    if(show)count++;
+  });
+  document.getElementById('fv-count').textContent='Mostrati: '+count+' veicoli';
+}
+
+function resetFilterVeicoli(){
+  document.getElementById('fv-stato').value='';
+  document.getElementById('fv-carb').value='';
+  document.getElementById('fv-search').value='';
+  filterVeicoli();
+}
 
 // ===== EMAIL AUTOMATICHE =====
 function sendEmailConferma(idContratto){
   api('GET','/contratti/'+idContratto).then(function(c){
     if(!c||c.error){alert('Contratto non trovato');return;}
-    var cl=c.cliente||{};
-    var ve=c.veicolo||{};
-    var email=cl.email||'';
-    var nome=cl.cognome_nome||'Cliente';
+    var cl=c.cliente||{};var ve=c.veicolo||{};
+    var email=cl.email||'';var nome=cl.cognome_nome||'Cliente';
     var dc=c.data_consegna?new Date(c.data_consegna).toLocaleDateString('it-IT'):'-';
     var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
-
     var subject='Conferma Noleggio '+c.numero_contratto+' - BestRent S.r.l.';
-    var body='Gentile '+nome+',\n\n';
-    body+='Le confermiamo la prenotazione del seguente noleggio:\n\n';
-    body+='Contratto: '+c.numero_contratto+'\n';
-    body+='Veicolo: '+(ve.marca||'')+' '+(ve.modello||'')+' - Targa: '+(ve.targa||'')+'\n';
-    body+='Consegna: '+dc+'\n';
-    body+='Rientro previsto: '+dr+'\n';
-    body+='Tariffa giornaliera: EUR '+Number(c.tariffa_giornaliera||0).toFixed(2)+'\n';
-    body+='Totale: EUR '+Number(c.totale_documento||0).toFixed(2)+'\n\n';
-    body+='Sede ritiro: Via Europa 90, Lonate Pozzolo (VA)\n';
-    body+='Per qualsiasi informazione: +39 3500 300 197\n\n';
-    body+='Cordiali saluti,\nBestRent S.r.l.\nNoleggi al miglior prezzo';
-
+    var body='Gentile '+nome+',\n\nLe confermiamo la prenotazione del seguente noleggio:\n\nContratto: '+c.numero_contratto+'\nVeicolo: '+(ve.marca||'')+' '+(ve.modello||'')+' - Targa: '+(ve.targa||'')+'\nConsegna: '+dc+'\nRientro previsto: '+dr+'\nTariffa giornaliera: EUR '+Number(c.tariffa_giornaliera||0).toFixed(2)+'\nTotale: EUR '+Number(c.totale_documento||0).toFixed(2)+'\n\nSede ritiro: Via Europa 90, Lonate Pozzolo (VA)\nPer qualsiasi informazione: +39 3500 300 197\n\nCordiali saluti,\nBestRent S.r.l.\nNoleggi al miglior prezzo';
     showEmailPreview(email,subject,body,'Conferma Noleggio');
   });
 }
@@ -1804,24 +1241,11 @@ function sendEmailConferma(idContratto){
 function sendEmailRientro(idContratto){
   api('GET','/contratti/'+idContratto).then(function(c){
     if(!c||c.error){alert('Contratto non trovato');return;}
-    var cl=c.cliente||{};
-    var ve=c.veicolo||{};
-    var email=cl.email||'';
-    var nome=cl.cognome_nome||'Cliente';
+    var cl=c.cliente||{};var ve=c.veicolo||{};
+    var email=cl.email||'';var nome=cl.cognome_nome||'Cliente';
     var dr=c.data_rientro_prevista?new Date(c.data_rientro_prevista).toLocaleDateString('it-IT'):'-';
-
     var subject='Promemoria Rientro Veicolo - '+c.numero_contratto;
-    var body='Gentile '+nome+',\n\n';
-    body+='Le ricordiamo che il rientro del veicolo e\' previsto per il '+dr+'.\n\n';
-    body+='Dettagli:\n';
-    body+='Contratto: '+c.numero_contratto+'\n';
-    body+='Veicolo: '+(ve.marca||'')+' '+(ve.modello||'')+' - Targa: '+(ve.targa||'')+'\n';
-    body+='Data rientro: '+dr+'\n\n';
-    body+='La preghiamo di riconsegnare il veicolo con il pieno di carburante presso:\n';
-    body+='Via Europa 90, Lonate Pozzolo (VA)\n\n';
-    body+='Per modifiche o informazioni: +39 3500 300 197\n\n';
-    body+='Cordiali saluti,\nBestRent S.r.l.';
-
+    var body='Gentile '+nome+',\n\nLe ricordiamo che il rientro del veicolo e\' previsto per il '+dr+'.\n\nDettagli:\nContratto: '+c.numero_contratto+'\nVeicolo: '+(ve.marca||'')+' '+(ve.modello||'')+' - Targa: '+(ve.targa||'')+'\nData rientro: '+dr+'\n\nLa preghiamo di riconsegnare il veicolo con il pieno di carburante presso:\nVia Europa 90, Lonate Pozzolo (VA)\n\nPer modifiche o informazioni: +39 3500 300 197\n\nCordiali saluti,\nBestRent S.r.l.';
     showEmailPreview(email,subject,body,'Promemoria Rientro');
   });
 }
@@ -1829,23 +1253,12 @@ function sendEmailRientro(idContratto){
 function sendEmailRicevuta(idContratto){
   api('GET','/contratti/'+idContratto).then(function(c){
     if(!c||c.error){alert('Contratto non trovato');return;}
-    var cl=c.cliente||{};
-    var email=cl.email||'';
-    var nome=cl.cognome_nome||'Cliente';
+    var cl=c.cliente||{};var email=cl.email||'';var nome=cl.cognome_nome||'Cliente';
     var totale=Number(c.totale_documento||0);
     var imponibile=Math.round(totale/1.22*100)/100;
     var iva=Math.round((totale-imponibile)*100)/100;
-
     var subject='Ricevuta Pagamento '+c.numero_contratto+' - BestRent S.r.l.';
-    var body='Gentile '+nome+',\n\n';
-    body+='Le confermiamo la ricezione del pagamento per il noleggio:\n\n';
-    body+='Contratto: '+c.numero_contratto+'\n';
-    body+='Imponibile: EUR '+imponibile.toFixed(2)+'\n';
-    body+='IVA 22%: EUR '+iva.toFixed(2)+'\n';
-    body+='Totale pagato: EUR '+totale.toFixed(2)+'\n\n';
-    body+='La ringraziamo per aver scelto BestRent.\n\n';
-    body+='Cordiali saluti,\nBestRent S.r.l.\nVia Europa 90, Lonate Pozzolo (VA)\nTel. +39 3500 300 197';
-
+    var body='Gentile '+nome+',\n\nLe confermiamo la ricezione del pagamento per il noleggio:\n\nContratto: '+c.numero_contratto+'\nImponibile: EUR '+imponibile.toFixed(2)+'\nIVA 22%: EUR '+iva.toFixed(2)+'\nTotale pagato: EUR '+totale.toFixed(2)+'\n\nLa ringraziamo per aver scelto BestRent.\n\nCordiali saluti,\nBestRent S.r.l.\nVia Europa 90, Lonate Pozzolo (VA)\nTel. +39 3500 300 197';
     showEmailPreview(email,subject,body,'Ricevuta Pagamento');
   });
 }
@@ -1859,9 +1272,7 @@ function showEmailPreview(email,subject,body,tipo){
   h+='<div class="ep-body">'+body.replace(/\n/g,'<br>')+'</div>';
   h+='</div>';
   h+='<div class="modal-actions">';
-  if(email){
-    h+='<button class="btn btn-primary btn-sm" onclick="window.open(\'mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)+'\')">Invia con Email</button>';
-  }
+  if(email){h+='<button class="btn btn-primary btn-sm" onclick="window.open(\'mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)+'\')">Invia con Email</button>';}
   h+='<button class="btn btn-secondary btn-sm" onclick="copyEmailText(this)" data-body="'+body.replace(/"/g,'&quot;')+'">Copia Testo</button>';
   h+='<button class="btn btn-secondary btn-sm" onclick="closeModal()">Chiudi</button>';
   h+='</div></div></div>';
@@ -1871,12 +1282,27 @@ function showEmailPreview(email,subject,body,tipo){
 
 function copyEmailText(btn){
   var text=btn.getAttribute('data-body');
-  navigator.clipboard.writeText(text).then(function(){
-    btn.textContent='Copiato!';
-    setTimeout(function(){btn.textContent='Copia Testo';},2000);
-  });
+  navigator.clipboard.writeText(text).then(function(){btn.textContent='Copiato!';setTimeout(function(){btn.textContent='Copia Testo';},2000);});
 }
 
+// ===== WHATSAPP =====
+function sendWhatsApp(telefono,nome){
+  if(!telefono||telefono.length<8){alert('Numero di telefono non disponibile per questo cliente');return;}
+  var tel=telefono.replace(/[^0-9]/g,'');
+  if(tel.charAt(0)==='0')tel='39'+tel.substring(1);
+  if(tel.substring(0,2)!=='39'&&tel.length<11)tel='39'+tel;
+  var msg='Gentile '+nome+', la contattiamo da BestRent S.r.l. riguardo il suo noleggio. Per info: +39 3500 300 197';
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+function sendWhatsAppContratto(telefono,nome,contratto,targa){
+  if(!telefono||telefono.length<8){alert('Numero di telefono non disponibile');return;}
+  var tel=telefono.replace(/[^0-9]/g,'');
+  if(tel.charAt(0)==='0')tel='39'+tel.substring(1);
+  if(tel.substring(0,2)!=='39'&&tel.length<11)tel='39'+tel;
+  var msg='Gentile '+nome+', le ricordiamo il rientro del veicolo '+targa+' (contratto '+contratto+'). Per info: +39 3500 300 197 - BestRent S.r.l.';
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+}
 
 // ===== CHECKLIST CONSEGNA/RIENTRO =====
 var checklistData=JSON.parse(localStorage.getItem('bestrent-checklists')||'{}');
@@ -1884,13 +1310,11 @@ var checklistData=JSON.parse(localStorage.getItem('bestrent-checklists')||'{}');
 function showChecklist(idContratto,tipo){
   api('GET','/contratti/'+idContratto).then(function(c){
     if(!c||c.error){alert('Contratto non trovato');return;}
-    var cl=c.cliente||{};
-    var ve=c.veicolo||{};
+    var cl=c.cliente||{};var ve=c.veicolo||{};
     var key=c.numero_contratto+'_'+tipo;
     var saved=checklistData[key]||{};
     var titolo=tipo==='consegna'?'CHECKLIST CONSEGNA':'CHECKLIST RIENTRO';
     var colore=tipo==='consegna'?'#8B5CF6':'#EC4899';
-
     var items=[
       {id:'carrozzeria',label:'Carrozzeria',icon:'&#128663;'},
       {id:'pneumatici',label:'Pneumatici',icon:'&#9899;'},
@@ -1905,18 +1329,13 @@ function showChecklist(idContratto,tipo){
       {id:'navigatore',label:'Navigatore/Accessori',icon:'&#128225;'},
       {id:'pulizia',label:'Pulizia Veicolo',icon:'&#10024;'}
     ];
-
     var h='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" style="max-width:650px;max-height:90vh;overflow-y:auto" onclick="event.stopPropagation()">';
     h+='<h3 style="color:'+colore+'">'+titolo+'</h3>';
     h+='<div style="font-size:12px;color:var(--grigio);margin-bottom:12px">Contratto: <strong>'+c.numero_contratto+'</strong> | Cliente: <strong>'+(cl.cognome_nome||'-')+'</strong> | Veicolo: <strong>'+(ve.targa||'-')+' '+(ve.marca||'')+' '+(ve.modello||'')+'</strong></div>';
-
-    // Km e Carburante
     h+='<div class="check-section"><h4>&#128663; Km e Carburante</h4>';
     h+='<div class="form-row"><div class="form-group"><label>Km al momento</label><input id="ck-km" type="number" value="'+(saved.km||ve.km_attuali||0)+'"></div><div class="form-group"><label>Livello Carburante</label><select id="ck-fuel"><option value="100" '+(saved.fuel==='100'?'selected':'')+'>Pieno (100%)</option><option value="75" '+(saved.fuel==='75'?'selected':'')+'>3/4 (75%)</option><option value="50" '+(saved.fuel==='50'?'selected':'')+'>1/2 (50%)</option><option value="25" '+(saved.fuel==='25'?'selected':'')+'>1/4 (25%)</option><option value="10" '+(saved.fuel==='10'?'selected':'')+'>Riserva</option></select></div></div>';
     h+='<div class="fuel-gauge"><span style="font-size:11px">&#9981;</span><div class="fuel-bar"><div class="fuel-fill full" id="ck-fuel-bar" style="width:'+(saved.fuel||'100')+'%"></div></div><span class="fuel-label" id="ck-fuel-label">'+(saved.fuel||'100')+'%</span></div>';
     h+='</div>';
-
-    // Checklist items
     h+='<div class="check-section"><h4>&#9989; Controlli Veicolo</h4>';
     h+='<div class="check-grid" id="ck-grid">';
     items.forEach(function(item){
@@ -1928,29 +1347,20 @@ function showChecklist(idContratto,tipo){
       h+='</div>';
     });
     h+='</div></div>';
-
-    // Danni e note
     h+='<div class="check-section"><h4>&#128221; Danni e Note</h4>';
     h+='<textarea class="damage-note" id="ck-danni" placeholder="Descrivi eventuali danni, graffi, ammaccature...">'+(saved.danni||'')+'</textarea></div>';
-
-    // Note aggiuntive
     h+='<div class="check-section"><h4>&#128172; Note Aggiuntive</h4>';
     h+='<textarea class="damage-note" id="ck-note" placeholder="Altre osservazioni...">'+(saved.note||'')+'</textarea></div>';
-
-    // Firma
     h+='<div class="check-section"><h4>&#9999; Firma</h4>';
-    h+='<div class="form-row"><div class="form-group"><label>Operatore</label><input id="ck-operatore" value="'+(saved.operatore||currentUser.nome||'')+'"></div><div class="form-group"><label>Data/Ora</label><input id="ck-data" value="'+(saved.data||new Date().toLocaleString('it-IT'))+'" readonly></div></div>';
+    h+='<div class="form-row"><div class="form-group"><label>Operatore</label><input id="ck-operatore" value="'+(saved.operatore||(currentUser?currentUser.nome:'')||'')+'"></div><div class="form-group"><label>Data/Ora</label><input id="ck-data" value="'+(saved.data||new Date().toLocaleString('it-IT'))+'" readonly></div></div>';
     h+='</div>';
-
     h+='<div class="modal-actions">';
     h+='<button class="btn btn-secondary btn-sm" onclick="closeModal()">Annulla</button>';
     h+='<button class="btn btn-primary btn-sm" style="background:'+colore+'" onclick="saveChecklist(\''+c.numero_contratto+'\',\''+tipo+'\','+idContratto+')">Salva Checklist</button>';
     h+='<button class="btn btn-warning btn-sm" onclick="printChecklist(\''+c.numero_contratto+'\',\''+tipo+'\')">Stampa</button>';
     h+='</div></div></div>';
-
     document.getElementById('modal').innerHTML=h;
     document.getElementById('modal').classList.remove('hidden');
-
     document.getElementById('ck-fuel').addEventListener('change',function(){
       var v=this.value;
       var bar=document.getElementById('ck-fuel-bar');
@@ -1966,45 +1376,19 @@ function toggleCheckItem(id){
   var el=document.getElementById('ck-'+id);
   var st=document.getElementById('ck-st-'+id);
   var current=st.textContent;
-  if(current==='N/D'){
-    el.className='check-item checked';
-    st.className='ci-status ok';
-    st.textContent='OK';
-  } else if(current==='OK'){
-    el.className='check-item issue';
-    st.className='ci-status problema';
-    st.textContent='PROBLEMA';
-  } else {
-    el.className='check-item';
-    st.className='ci-status nd';
-    st.textContent='N/D';
-  }
+  if(current==='N/D'){el.className='check-item checked';st.className='ci-status ok';st.textContent='OK';}
+  else if(current==='OK'){el.className='check-item issue';st.className='ci-status problema';st.textContent='PROBLEMA';}
+  else{el.className='check-item';st.className='ci-status nd';st.textContent='N/D';}
 }
 
 function saveChecklist(numContratto,tipo,idContratto){
   var key=numContratto+'_'+tipo;
-  var data={
-    km:document.getElementById('ck-km').value,
-    fuel:document.getElementById('ck-fuel').value,
-    danni:document.getElementById('ck-danni').value,
-    note:document.getElementById('ck-note').value,
-    operatore:document.getElementById('ck-operatore').value,
-    data:document.getElementById('ck-data').value
-  };
-
+  var data={km:document.getElementById('ck-km').value,fuel:document.getElementById('ck-fuel').value,danni:document.getElementById('ck-danni').value,note:document.getElementById('ck-note').value,operatore:document.getElementById('ck-operatore').value,data:document.getElementById('ck-data').value};
   var items=['carrozzeria','pneumatici','finestrini','luci','interni','cruscotto','documenti','chiavi','ruota_scorta','triangolo','navigatore','pulizia'];
-  items.forEach(function(id){
-    var st=document.getElementById('ck-st-'+id);
-    if(st)data['item_'+id]=st.textContent==='OK'?'ok':st.textContent==='PROBLEMA'?'problema':'nd';
-  });
-
+  items.forEach(function(id){var st=document.getElementById('ck-st-'+id);if(st)data['item_'+id]=st.textContent==='OK'?'ok':st.textContent==='PROBLEMA'?'problema':'nd';});
   checklistData[key]=data;
   localStorage.setItem('bestrent-checklists',JSON.stringify(checklistData));
-
-  if(data.km){
-    api('PUT','/veicoli/'+idContratto,{km_attuali:parseInt(data.km)});
-  }
-
+  if(data.km){api('PUT','/veicoli/'+idContratto,{km_attuali:parseInt(data.km)});}
   closeModal();
   alert('Checklist '+tipo+' salvata per '+numContratto+'!');
 }
@@ -2013,15 +1397,12 @@ function printChecklist(numContratto,tipo){
   var key=numContratto+'_'+tipo;
   var saved=checklistData[key];
   if(!saved){alert('Nessuna checklist salvata. Salva prima di stampare.');return;}
-
   var titolo=tipo==='consegna'?'CHECKLIST CONSEGNA':'CHECKLIST RIENTRO';
   var items=['carrozzeria','pneumatici','finestrini','luci','interni','cruscotto','documenti','chiavi','ruota_scorta','triangolo','navigatore','pulizia'];
   var nomi={carrozzeria:'Carrozzeria',pneumatici:'Pneumatici',finestrini:'Finestrini/Specchietti',luci:'Luci e Frecce',interni:'Interni/Sedili',cruscotto:'Cruscotto/Spie',documenti:'Documenti',chiavi:'Chiavi',ruota_scorta:'Ruota Scorta',triangolo:'Triangolo/Giubbotto',navigatore:'Navigatore',pulizia:'Pulizia'};
-
   var h='<div class="print-overlay" id="print-overlay" onclick="closePrint()">';
   h+='<div class="print-box" onclick="event.stopPropagation()">';
   h+='<div class="pb-header"><img src="logo-bestrent.jpg" alt="BestRent" style="height:40px;margin-bottom:6px"><div style="font-size:18px;font-weight:800"><span style="color:#1A1A1A">BEST</span><span style="color:#CC1418">RENT</span> S.r.l.</div><div class="pb-title">'+titolo+'</div><div style="font-size:12px;color:var(--grigio)">Contratto: '+numContratto+'</div></div>';
-
   h+='<div class="check-summary"><h4>Stato Veicolo</h4>';
   h+='<div class="cs-row"><span class="cs-label">Km</span><span class="cs-value">'+saved.km+'</span></div>';
   h+='<div class="cs-row"><span class="cs-label">Carburante</span><span class="cs-value">'+saved.fuel+'%</span></div>';
@@ -2035,14 +1416,35 @@ function printChecklist(numContratto,tipo){
   h+='<div class="cs-row"><span class="cs-label">Operatore</span><span class="cs-value">'+saved.operatore+'</span></div>';
   h+='<div class="cs-row"><span class="cs-label">Data/Ora</span><span class="cs-value">'+saved.data+'</span></div>';
   h+='</div>';
-
   h+='<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:11px;color:#6B7280"><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Operatore</div><div style="border-top:1px solid #ccc;padding-top:8px;text-align:center">Firma Cliente</div></div>';
   h+='<div class="pb-actions"><button class="btn btn-primary btn-sm" style="width:auto" onclick="window.print()">Stampa</button> <button class="btn btn-secondary btn-sm" onclick="closePrint()">Chiudi</button></div>';
   h+='</div></div>';
   document.body.insertAdjacentHTML('beforeend',h);
 }
 
+// ===== DARK MODE =====
+var darkMode=localStorage.getItem('bestrent-dark')==='true';
+if(darkMode)document.body.classList.add('dark');
+updateDarkIcon();
 
+document.getElementById('dark-toggle').addEventListener('click',function(){
+  darkMode=!darkMode;
+  document.body.classList.toggle('dark');
+  localStorage.setItem('bestrent-dark',darkMode);
+  updateDarkIcon();
+});
+
+function updateDarkIcon(){
+  var btn=document.getElementById('dark-toggle');
+  if(darkMode){btn.innerHTML='&#9788;';btn.title='Passa a Light Mode';}
+  else{btn.innerHTML='&#9790;';btn.title='Passa a Dark Mode';}
+}
+
+// ===== CLOSE MODAL =====
+function closeModal(){
+  document.getElementById('modal').classList.add('hidden');
+  document.getElementById('modal').innerHTML='';
+}
 </script>
 </body>
 </html>

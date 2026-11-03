@@ -1,0 +1,1 @@
+const{PrismaClient}=require('@prisma/client');const db=new PrismaClient();db.().then(function(){console.log('DB CONNESSO OK');return db.operatore.findMany();}).then(function(r){console.log('Operatori:',JSON.stringify(r,null,2));}).catch(function(e){console.log('ERRORE:',e.message);}).finally(function(){db.();});
